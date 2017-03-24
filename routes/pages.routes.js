@@ -28,8 +28,10 @@ exports.seeder = function(req, res, next){
     desc += '\n* Do you really want to run the Seeder? *';
     desc += '\n*****************************************';
     desc += '\n [yes, no]';
+
     // user confirmation required!
     _prompt.start();
+    
     // disable prefix message & colors
     _prompt.message = '';
     _prompt.delimiter = '';
