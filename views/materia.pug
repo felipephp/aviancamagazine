@@ -1,0 +1,232 @@
+extends base
+
+block content
+	.main-content
+		// Page head tile
+		.page-head-tile
+			.container
+				.breadcrumbs-block
+					ul.breadcrumbs
+						li.bc-item
+							a(href='') Home
+							i.fa.fa-angle-right
+						li.bc-item
+							a(href='#') Matéria: #{materia.info_titulo}
+		// Page head tile END
+		// Main post image
+		.section
+			article.post.post-tp-27.mb-height
+				figure
+					a(href='')
+						img.adaptive(src=materia.info_imagem+"?dim=1140x535", height='535', width='1140', alt='Spectr News Theme')
+				.ptp-27-overlay
+					.table
+						.cell
+							a.category-tp-1(href='', tabindex='0') #{materia.categoria.nome} > #{materia.subcategoria.nome}
+							h2.title-18
+								a(href='')= materia.info_titulo
+							.meta-tp-4
+								.date-tp-4
+									i.li_clock
+									| #{materia.data_postagem}
+		// Main post image END
+		.section
+			.row
+				.content
+					.pst-block
+						.pst-block-main
+							.post-content
+								.post-sharing-tp-1
+									ul
+										li.fb
+											a(href='https://www.facebook.com/sharer/sharer.php?u='+thisURL, target="_blank")
+												i.fa.fa-facebook
+												span.mb-pt-hide Facebook
+										li.tw
+											a(href='https://twitter.com/intent/tweet?text='+materia.titulo_chamada+'&url='+thisURL+'&original_referer='+thisURL, target="_blank")
+												i.fa.fa-twitter
+												span.mb-pt-hide Twitter
+										li.gp
+											a(href='https://plus.google.com/share?url='+thisURL, target="_blank")
+												i.fa.fa-google-plus
+												span.mb-pt-hide Google+
+								p !{ materia.conteudo }
+								.post-tags
+									ul.post-tags-list
+										for tag in materia.tags
+											li
+												a(href="/tags/"+tag.nome)= tag.nome
+								
+								//- <div>
+								//- 	<section class="slider postGalleryShow" style="margin: 0 auto 30px;">
+								//- 		<div>
+								//- 			<img src="/uploads/1489577532498_hFu6DzjIUKDN9tIVy9it.jpg?dim=500x400">
+								//- 		</div>
+								//- 		<div>
+								//- 			<img src="/uploads/1489577532508_czZGUoPalgPmiPdMlLXi.jpg?dim=500x400">
+								//- 		</div>
+								//- 		<div>
+								//- 			<img src="/uploads/1489577532500_uJM5RLPpjSJGSvCT8ao7.jpg?dim=500x400">
+								//- 		</div>
+								//- 		<div>
+								//- 			<img src="/uploads/1489577532512_5uEMFiUMshCAkXoeKtNW.jpg?dim=500x400">
+								//- 		</div>
+								//- 		<div>
+								//- 			<img src="/uploads/1489577532506_K5rx9WnDWiBou7VFuUJG.jpg?dim=500x400">
+								//- 		</div>
+								//- 		<div>
+								//- 			<img src="/uploads/1489577532503_LSkEHANE0OWrVgCKZxki.jpg?dim=500x400">
+								//- 		</div>
+								//- 	</section>
+								//- </div>
+
+								//- <section class="center slider postGallery">
+								//- 	<div>
+								//- 		<img src="/uploads/1489577532498_hFu6DzjIUKDN9tIVy9it.jpg?dim=150x80">
+								//- 	</div>
+								//- 	<div>
+								//- 		<img src="/uploads/1489577532508_czZGUoPalgPmiPdMlLXi.jpg?dim=150x80">
+								//- 	</div>
+								//- 	<div>
+								//- 		<img src="/uploads/1489577532500_uJM5RLPpjSJGSvCT8ao7.jpg?dim=150x80">
+								//- 	</div>
+								//- 	<div>
+								//- 		<img src="/uploads/1489577532512_5uEMFiUMshCAkXoeKtNW.jpg?dim=150x80">
+								//- 	</div>
+								//- 	<div>
+								//- 		<img src="/uploads/1489577532506_K5rx9WnDWiBou7VFuUJG.jpg?dim=150x80">
+								//- 	</div>
+								//- 	<div>
+								//- 		<img src="/uploads/1489577532503_LSkEHANE0OWrVgCKZxki.jpg?dim=150x80">
+								//- 	</div>
+								//- </section>
+
+								.sharing-block(style="margin-top: 100px;")
+									.sharing-title Compartilhe com os seus amigos!
+									.post-sharing-tp-2
+										ul
+											li.fb
+												a(href='https://www.facebook.com/sharer/sharer.php?u='+thisURL, target="_blank")
+													i.fa.fa-facebook
+													span.mb-pt-hide Facebook
+											li.tw
+												a(href='https://twitter.com/intent/tweet?text='+materia.titulo_chamada+'&url='+thisURL+'&original_referer='+thisURL, target="_blank")
+													i.fa.fa-twitter
+													span.mb-pt-hide Twitter
+											li.gp
+												a(href='https://plus.google.com/share?url='+thisURL, target="_blank")
+													i.fa.fa-google-plus
+													span.mb-pt-hide Google+
+								//- .post-next-prev
+									.post-prev
+										a(href='')
+											i.fa.fa-angle-left
+											span.mb-pt-hide Candidates relate atales of addiction but are short on answers
+									.post-next
+										a(href='')
+											i.fa.fa-angle-right
+											span.mb-pt-hide Facebook's Design Resources lastest release: Watches
+								if materia.autor
+									.author-box-1
+										.author-photo
+											if materia.autor.avatar_path
+												img(src=materia.autor.avatar_path+"?dim=95x95", height='95', width='95', alt='Spectr News Theme')
+											else
+												img(src='/assets/img/person-flat.png', height='95', width='95', alt='Spectr News Theme')
+										.author-name= materia.autor.nome
+										.author-profession= materia.autor.cargo
+										.author-description= materia.autor.mini_cv
+								.pst-box
+									.pst-box-head
+										.title-blc-1
+											h4
+												| Matérias
+												span  Relacionadas
+									.pst-box-main
+										.pst-box-inner.js-pst-block-2
+											for rel in rels
+												.one-third
+													article.post.post-tp-30
+														figure
+															a(href='')
+																img.adaptive(src= ( rel.imagem_chamada_path ) ? rel.imagem_chamada_path : rel.imagem_principal_path, height='150', width='222', alt='Spectr News Theme')
+														h3.title-6
+															a(href='')= ( rel.titulo_chamada ) ? rel.titulo_chamada : rel.titulo
+								//- .comments-block
+								//- 	.title-blc-2
+								//- 		.title-blc-inner
+								//- 			h4 Comentários
+								//- 	.comments
+								//- 		#disqus_thread
+								//- 			script.
+								//- 				/**
+								//- 				*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+								//- 				*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+								//- 				/*
+								//- 				var disqus_config = function () {
+								//- 				this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+								//- 				this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+								//- 				};
+								//- 				*/
+								//- 				(function() { // DON'T EDIT BELOW THIS LINE
+								//- 				var d = document, s = d.createElement('script');
+								//- 				s.src = '//avianca-em-revista.disqus.com/embed.js';
+								//- 				s.setAttribute('data-timestamp', +new Date());
+								//- 				(d.head || d.body).appendChild(s);
+								//- 				})();
+								//- 			noscript
+								//- 				| Please enable JavaScript to view the
+								//- 				a(href='https://disqus.com/?ref_noscript') comments powered by Disqus.
+
+				aside.side-bar
+					.js-sidebar
+						include ./partials/_search
+						include ./partials/_tags
+						include ./partials/_newsletter
+
+block scripts
+	script.
+		$(document).ready(function(){
+			
+			$('.postGalleryShow').slick({
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				arrows: false,
+				fade: true,
+				asNavFor: '.postGallery'
+			});
+
+			$('.postGallery').slick({
+				slidesToShow: 3,
+				slidesToScroll: 1,
+				asNavFor: '.postGalleryShow',
+				dots: true,
+				centerMode: true,
+				focusOnSelect: true,
+				responsive: [
+					{
+					  breakpoint: 1024,
+					  settings: {
+					    slidesToShow: 3,
+					    slidesToScroll: 3,
+					    infinite: true,
+					    dots: true
+					  }
+					},
+					{
+					  breakpoint: 600,
+					  settings: {
+					    slidesToShow: 2,
+					    slidesToScroll: 2
+					  }
+					},
+					{
+					  breakpoint: 480,
+					  settings: {
+					    slidesToShow: 1,
+					    slidesToScroll: 1
+					  }
+					}
+				]
+			});
+		})

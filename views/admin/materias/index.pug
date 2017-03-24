@@ -1,0 +1,137 @@
+extends ../base.pug
+
+block content
+    .right_col(role='main')
+        div
+            .clearfix
+            .row
+                .col-md-12.col-sm-12.col-xs-12
+                    .x_panel
+                        .x_title
+                            h2
+                                | Matérias
+                            a.btn.btn-primary.btn-sm.pull-right(href="/admin/materias/create") Inserir
+                            .clearfix
+                        .x_content
+                            include ../../partials/_success
+                            table#datatable.table.table-striped.table-bordered
+                                thead
+                                    tr
+                                        th Título
+                                        th Categoria
+                                        th Edição
+                                        th Autor
+                                        th Ações
+                                tbody
+                                    for one in all
+                                        tr
+                                            td= one.titulo
+                                            td #{one.categoria.nome} > #{one.subcategoria.nome}
+                                            
+                                            //- if one.categoria
+                                            //-     td #{one.categoria.nome} > #{one.subcategoria.nome}
+                                            //- else
+                                            //-     td= 'Nada de categ'
+
+                                            if one.edicao
+                                                td ##{one.edicao.numero}
+                                            else
+                                                td
+
+                                            if one.autor
+                                                td= one.autor.nome
+                                            else        
+                                                td= 'Sem autor > ' + one._id
+                                            td
+                                                a.btn.btn-primary.btn-sm(href='/admin/materias/'+one._id+'/edit') Editar
+                                                a.btn.btn-primary.btn-sm.anchor-confirm(href='/admin/materias/'+one._id+'/delete') Deletar
+block scripts
+        // iCheck
+        script(src='/admin_assets/vendors/iCheck/icheck.min.js')
+        // Datatables
+        script(src='/admin_assets/vendors/datatables.net/js/jquery.dataTables.min.js')
+        script(src='/admin_assets/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js')
+        script(src='/admin_assets/vendors/datatables.net-buttons/js/dataTables.buttons.min.js')
+        script(src='/admin_assets/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js')
+        script(src='/admin_assets/vendors/datatables.net-buttons/js/buttons.flash.min.js')
+        script(src='/admin_assets/vendors/datatables.net-buttons/js/buttons.html5.min.js')
+        script(src='/admin_assets/vendors/datatables.net-buttons/js/buttons.print.min.js')
+        script(src='/admin_assets/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js')
+        script(src='/admin_assets/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js')
+        script(src='/admin_assets/vendors/datatables.net-responsive/js/dataTables.responsive.min.js')
+        script(src='/admin_assets/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js')
+        script(src='/admin_assets/vendors/datatables.net-scroller/js/datatables.scroller.min.js')
+        script(src='/admin_assets/vendors/jszip/dist/jszip.min.js')
+        script(src='/admin_assets/vendors/pdfmake/build/pdfmake.min.js')
+        script(src='/admin_assets/vendors/pdfmake/build/vfs_fonts.js')
+        // Datatables
+        script.
+            $(document).ready(function() {
+                var handleDataTableButtons = function() {
+                    if ($("#datatable-buttons").length) {
+                        $("#datatable-buttons").DataTable({
+                            dom: "Bfrtip",
+                            buttons: [
+                                {
+                                    extend: "copy",
+                                    className: "btn-sm"
+                                },
+                                {
+                                    extend: "csv",
+                                    className: "btn-sm"
+                                },
+                                {
+                                    extend: "excel",
+                                    className: "btn-sm"
+                                },
+                                {
+                                    extend: "pdfHtml5",
+                                    className: "btn-sm"
+                                },
+                                {
+                                    extend: "print",
+                                    className: "btn-sm"
+                                },
+                            ],
+                            responsive: true
+                        });
+                    }
+                };
+                TableManageButtons = function() {
+                    "use strict";
+                    return {
+                        init: function() {
+                            handleDataTableButtons();
+                        }
+                    };
+                }();
+                $('#datatable').dataTable();
+                $('#datatable-keytable').DataTable({
+                    keys: true
+                });
+                $('#datatable-responsive').DataTable();
+                $('#datatable-scroller').DataTable({
+                    ajax: "js/datatables/json/scroller-demo.json",
+                    deferRender: true,
+                    scrollY: 380,
+                    scrollCollapse: true,
+                    scroller: true
+                });
+                $('#datatable-fixed-header').DataTable({
+                    fixedHeader: true
+                });
+                var $datatable = $('#datatable-checkbox');
+                $datatable.dataTable({
+                    'order': [[ 1, 'asc' ]],
+                    'columnDefs': [
+                        { orderable: false, targets: [0] }
+                    ]
+                });
+                $datatable.on('draw.dt', function() {
+                    $('input').iCheck({
+                        checkboxClass: 'icheckbox_flat-green'
+                    });
+                });
+                TableManageButtons.init();
+            });
+        // /Datatables

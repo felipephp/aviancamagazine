@@ -1,0 +1,21 @@
+if flash.alert_errors
+    script.
+        console.log("got some errors");
+        var alert_errors = !{JSON.stringify(flash.alert_errors)};
+
+        var text = "<ul>";
+
+        for (var x in alert_errors) {
+            text += "<li>";
+            text += alert_errors[x];
+            text += "</li>";
+        }
+
+        text += "</ul>";
+
+        swal({
+            title: "Erros de validação!",
+            text: text,
+            type: "warning", confirmButtonText: "OK",
+            html: true
+        });

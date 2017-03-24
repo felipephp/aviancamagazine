@@ -1,0 +1,33 @@
+extends base
+
+block content
+	.main-content
+		// Page head tile
+		.page-head-tile
+			.container
+				.breadcrumbs-block
+					ul.breadcrumbs
+						li.bc-item
+							a(href='/') Home
+							i.fa.fa-angle-right
+						li.bc-item
+							a(href='#') Busca
+				.page-title
+					h1.title-16
+						strong Busca pelo termo: #{q}
+		// Page head tile END
+		.section
+			.row
+				.content
+					.pst-block
+						.pst-block-main
+							.posts
+								if !materias.length
+									.alert.alert-warning Não foram encontradas matérias com o termo escolhido.
+								for materia in materias
+									include partials/_materia
+				aside.side-bar
+					.js-sidebar
+						include ./partials/_search
+						include ./partials/_tags
+						include ./partials/_newsletter

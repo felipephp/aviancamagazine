@@ -1,0 +1,17 @@
+nav.am-menu
+    ul.am-list
+        li.am-item
+            a(href='/') home
+        li.am-item
+            a(href='/quem-somos') avianca
+        li.am-item
+            a(href='/edicoes') nossas capas
+        for cat in categorias
+            if cat.slug != "guia-de-entretenimento"
+                li.am-item
+                    a(href="/"+cat.slug)
+                        | #{cat.nome}
+        li.am-item
+            a(href="/welove") WeLove
+        //- li.am-item
+            a(href="/contato") Contato

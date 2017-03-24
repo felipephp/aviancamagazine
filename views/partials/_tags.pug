@@ -1,0 +1,11 @@
+.tags-widget
+    .pst-block
+        .pst-block-head
+            h2.title-4
+                strong Tags
+        .pst-block-main
+            .tags-block
+                ul.tags-list
+                    for t in tags
+                        li
+                            a(href='/tags/'+t.nome)= t.nome

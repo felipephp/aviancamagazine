@@ -1,0 +1,291 @@
+doctype html
+html(lang='en')
+    head
+        // Basic
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        title Avianca em Revista
+        meta(name='keywords', content='HTML5 Template')
+        meta(name='description', content='Responsive HTML5 Template')
+        meta(name='theme-color', content='#ffffff')
+        // Mobile Metas
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        // Web Fonts
+        link(href='https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic%7CInconsolata:400,700%7CMontserrat:400,700', rel='stylesheet', type='text/css')
+        // build:css css/icons.css
+        // Icon Fonts
+        link(rel='stylesheet', href='/assets/css/font-awesome.css')
+        link(rel='stylesheet', href='/assets/css/linecons.css')
+        link(rel='stylesheet', href='/assets/css/fontello.css')
+        // endbuild
+        // build:css css/vendor.css
+        // Vendor CSS
+        link(rel='stylesheet', href='/assets/css/jquery-ui.css')
+        link(rel='stylesheet', href='/assets/css/jquery-ui.structure.css')
+        link(rel='stylesheet', href='/assets/vendor/animate.css/animate.css')
+        link(rel='stylesheet', href='/assets/vendor/owl-carousel/owl-carousel/owl.carousel.css')
+        link(rel='stylesheet', href='/assets/vendor/owl-carousel/owl-carousel/owl.transitions.css')
+        link(rel='stylesheet', href='/assets/vendor/slick-carousel/slick/slick.css')
+        link(rel='stylesheet', href='/assets/vendor/slick-carousel/slick/slick-theme.css')
+        link(rel='stylesheet', href='/assets/vendor/Swiper/dist/css/swiper.css')
+        link(rel='stylesheet', href='/assets/vendor/magnific-popup/dist/magnific-popup.css')
+        // endbuild
+        // build:css css/main.css
+        // Theme CSS
+        link(rel='stylesheet', href='/admin_assets/css/sweetalert.css')
+        link(rel='stylesheet', href='/assets/css/main.css')
+        link(rel='stylesheet', href='/assets/css/avianca.css')
+        block styles
+
+        // Google maps API
+        script(src='https://maps.googleapis.com/maps/api/js?sensor=true&v=3')
+        // build:js scripts/vendor.js
+        // Vendor
+        script(src='/assets/vendor/jquery/dist/jquery.js')
+        script(src='/assets/js/jquery-ui.js')
+        script(src='/assets/vendor/waypoints/lib/jquery.waypoints.js')
+        script(src='/assets/vendor/superfish/dist/js/superfish.js')
+        script(src='/assets/vendor/magnific-popup/dist/jquery.magnific-popup.js')
+        script(src='/assets/vendor/imagesloaded/imagesloaded.pkgd.js')
+        script(src='/assets/vendor/owl-carousel/owl-carousel/owl.carousel.js')
+        script(src='/assets/vendor/slick-carousel/slick/slick.js')
+        script(src='/assets/vendor/Swiper/dist/js/swiper.jquery.js')
+        script(src='/assets/vendor/sticky-kit/jquery.sticky-kit.js')
+        // endbuild
+        //- build:js scripts/main.js
+        // Theme Base, Components and Settings
+        script(src='/assets/js/main.js')
+        script(src='/admin_assets/js/sweetalert.min.js')
+        script(src='/assets/js/avianca.js')        
+        // endbuild
+        block scripts
+        // endbuild
+    body
+        // Loader
+        //- .page-loader
+            .loader
+                .flipper
+                    .front
+                    .back
+        // Loader END
+        .main-wrapper
+            // Header
+            header.header-mb
+                .container
+                    .hdm-menu
+                        a.c-hamburger.htx.js-mb-menu(href='#mb-menu')
+                            span toggle menu
+                    .hdm-logo
+                        h1
+                            a(href='/')
+                                img.adaptive(src='/assets/img/logo_white.png', height='40', width='140', alt='Spectr')
+                    .hdm-search-user
+                        include ./partials/_busca
+                        .user
+                            a.js-popups(href='/assets/#login')
+                                i.li_user
+            .sticky-header.js-sticky-header
+                .container
+                    .main-nav-wrap
+                        .row
+                            include ./partials/_menu
+                            include ./partials/_busca
+            header.header-tp-4
+                .top-bar
+                  .container
+                    .top-bar-inner
+                      .row
+                        nav.tb-nav
+                          ul.tb-nav-list
+                            li
+                              a(href='/quem-somos') mob
+                            //- li
+                              a(href='/contato') CONTATO
+                        .tb-date
+                          i.li_calendar
+                          |  #{now.format('dddd')}, #{now.format('DD')} de #{now.format('MMMM')} de #{now.format('YYYY')}
+                        .tb-social
+                          ul.tb-social-list
+                            li.tw
+                              a(href='https://www.facebook.com/MediaOnboard/?fref=ts', target="_blank")
+                                i.fa.fa-facebook
+                            li.in
+                              a(href='https://www.instagram.com/aviancaemrevista/', target="_blank")
+                                i.fa.fa-instagram
+                        .tb-sing-login
+                          | Anúncie - 55 11 5505 0078
+
+                .main-header
+                    .mh-top
+                        .container
+                            .row.flex
+                                .mh-logo
+                                    a(href='/')
+                                        //- img(src=ultima_edicao.capa_path alt='Avianca Revista')
+                                        <img src="/media/images/topo-site.png">
+                                    h2.text-capa
+                                        //- span Edição
+                                        //- | ##{ultima_edicao.numero}
+                                .mh-banner
+                                    img.adaptive(src='http://placehold.it/950x160', height='160', width='950', alt='Banner Top')
+                    .mh-bottom
+                        .container
+                            .main-nav-wrap
+                                .row
+                                    include ./partials/_menu
+                                    include ./partials/_busca
+            // Header END
+            .inner-wrapper
+                .main
+                    // Content
+                    block content
+                    // Content END
+                    // Footer
+                    footer.main-footer
+                        .container
+
+                            .top-part
+                                .row
+                                    h3.edicoes Últimas edições
+                                    .edicoes-slider
+                                        for edicao in edicoes
+                                            .capa
+                                                a(href=edicao.link_online ,target="_blank")
+                                                    img(src=edicao.capa_path)
+
+
+                            .bottom-part
+                                .row
+                                    .ft-logo
+                                        a(href='')
+                                            //img(src='/assets/img/mob-logo.png', height='30', width='105', alt='Spectr News Theme')
+                                            img(src='/media/images/logo-mob.png', alt='Media Onboard logo' style="width: 100px")
+                                    .ft-about
+                                        article
+                                            h4.ft-title-1
+                                                strong Media Onboard
+                                            p.p Responsável por todo o entretenimento e mídia de bordo das aeronaves Avianca Brasil, oferecendo diversas plataformas criativas online e off-line para impactar o público alvo.
+                                            a(href="http://www.mediaonboard.com.br" target="_blank").footer-anuncie anuncie
+                                    .ft-social
+                                        ul.ft-social-list.pull-right
+                                            li.fb
+                                                a(href='https://www.facebook.com/AviancaBrasil')
+                                                    i.fa.fa-facebook
+                                            li.in
+                                                a(href='https://www.instagram.com/aviancaemrevista/')
+                                                    i.fa.fa-instagram
+                        .bottom-bar
+                            .container
+                                .row
+                                    .three-quarters
+                                        .ft-menu
+                                            ul.ft-menu-list
+                                                li
+                                                    a(href='http://www.mediaonboard.com.br' target="_blank") MOB
+                                    .one-quarter.sm-full
+                                        #cprh.copyright 
+                                            script.
+                                                document.getElementById('cprh').innerHTML = '© Copyright '+ new Date().getFullYear() +' MOB';
+                    // Footer END
+        a.go-top.animated.js-go-top(href='')
+            i.fa.fa-angle-up
+        // Search block popup
+        #search-block.pp-search-block.mfp-hide
+            .search
+                .search-btn
+                    button
+                        i.li_search
+                .search-input
+                    input(type='search', placeholder='Search')
+        // Login popup
+        #login.sp-popup.login.mfp-hide
+            .btns
+                a.js-popups(href='/assets/#signin') Registration
+                a.active.js-popups(href='/assets/#login') Login
+            .social
+                div Sign in with social account
+                ul.pp-social-list
+                    li.tw
+                        a(href='')
+                            i.fa.fa-twitter
+                    li.fb
+                        a(href='')
+                            i.fa.fa-facebook
+                    li.gp
+                        a(href='')
+                            i.fa.fa-google-plus
+                    li.vk
+                        a(href='')
+                            i.fa.fa-vk
+            .pp-title
+                span or
+            .form
+                input(type='text', placeholder='Username')
+                input(type='password', placeholder='Password')
+                button.btn-8 login
+                a.js-popups(href='/assets/#recentpass') Lost your Password?
+        // Sign in popup
+        #signin.sp-popup.signin.mfp-hide
+            .btns
+                a.active.js-popups(href='/assets/#signin') Registration
+                a.js-popups(href='/assets/#login') Login
+            .social
+                div Sign in with social account
+                ul.pp-social-list
+                    li.tw
+                        a(href='')
+                            i.fa.fa-twitter
+                    li.fb
+                        a(href='')
+                            i.fa.fa-facebook
+                    li.gp
+                        a(href='')
+                            i.fa.fa-google-plus
+                    li.vk
+                        a(href='')
+                            i.fa.fa-vk
+            .pp-title
+                span or
+            .form.not-valid
+                input(type='text', placeholder='Username')
+                input(type='email', placeholder='Email')
+                input(type='password', placeholder='Password')
+                button.btn-8 Registration
+                span A password will be send on your post
+        // Recent pass popup
+        #recentpass.sp-popup.recentpass.mfp-hide
+            .btns
+                a.js-popups(href='/assets/#signin') Registration
+                a.active.js-popups(href='/assets/#login') Login
+            .form
+                input(type='email', placeholder='Enter Your Email Adress')
+                button.btn-8 Get new password
+                a.js-popups(href='/assets/#signin')
+                    i.popup-arr-left-ic
+                    |  Registration
+        // Mobile menu
+        #mb-menu.mb-menu.mfp-hide
+            .container
+                nav.mobile-nav
+                    ul.mobile-nav-list
+                        li.mn-item
+                            a(href='/') home
+                        li.mn-item
+                            a(href='/quem-somos') avianca
+                        li.mn-item
+                            a(href='/edicoes') nossas capas
+                        for cat in categorias
+                            if cat.slug != "guia-de-entretenimento"
+                                li.mn-item
+                                    a(href="/"+cat.slug)
+                                        | #{cat.nome}
+                        li.mn-item
+                            a(href="/welove") WeLove
+                        //- li.mn-item
+                            a(href="/contato") Contato
+        // Aside menu
+        #aside-menu.aside-menu.mfp-hide
+            .am-container
+                include ./partials/_menu_mobile
+        include ./partials/sweetalert/_error
+        include ./partials/sweetalert/_success

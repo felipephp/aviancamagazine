@@ -1,0 +1,16 @@
+[
+  {
+      "script":"app.js",
+      "name":"avianca",
+      "instances":1,
+      "error_file":"errfile.log",
+      "out_file":"outfile.log"
+  },
+  {
+    "script":"webhook.js",
+    "name":"exames_webhook",
+    "instances":1,
+    "error_file":"errfile.log",
+    "out_file":"outfile.log"
+  }
+]

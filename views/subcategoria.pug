@@ -1,0 +1,111 @@
+extends base
+
+block content
+	.main-content
+		// Page head tile
+		.page-head-tile
+			.container
+				.breadcrumbs-block
+					ul.breadcrumbs
+						li.bc-item
+							a(href='/') Home
+							i.fa.fa-angle-right
+						li.bc-item
+							a(href='/'+subcategoria.categoria.slug) #{subcategoria.categoria.nome}
+							i.fa.fa-angle-right
+						li.bc-item
+							a(href='/'+subcategoria.categoria.slug+'/'+subcategoria.slug) #{subcategoria.nome}
+				.page-title
+					h1.title-16
+						strong Categoria: #{subcategoria.categoria.nome} > #{subcategoria.nome}
+		.main-posts-3
+			- var first_post = materias[0]
+			.mp-section
+				if first_post
+					.half.sm-full
+						article.post.post-tp-12
+							figure
+								a(href='/materias/'+first_post.slug)
+									img.adaptive(src=first_post.info_imagem+"?dim=568x500", height='500', width='568', alt='Spectr News Theme')
+							.ptp-1-overlay
+								.ptp-1-data
+									a.category-tp-1(href='/materias/'+first_post.slug) #{first_post.categoria.nome} > #{first_post.subcategoria.nome}
+									h2.title-13
+										a(href='/materias/'+first_post.slug)= first_post.info_titulo
+									.meta-tp-1
+										.ptp-1-date
+											a(href='/materias/'+first_post.slug)= first_post.data_postagem
+				.half.sm-full
+					.half
+						- var materia = materias[1]
+						if materia
+							article.post.post-tp-12
+								figure
+									a(href='/materias/'+materia.slug)
+										img.adaptive(src=materia.info_imagem+"?dim=282x248", height='248', width='282', alt='Spectr News Theme')
+								.ptp-1-overlay
+									.ptp-1-data
+										a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria.nome} > #{materia.subcategoria.nome}
+										h2.title-15
+											a(href='/materias/'+materia.slug)= materia.info_titulo
+										.meta-tp-1
+											.ptp-1-date
+												a(href='')= materia.data_postagem
+						- var materia = materias[2]
+						if materia
+							article.post.post-tp-12
+								figure
+									a(href='/materias/'+materia.slug)
+										img.adaptive(src=materia.info_imagem+"?dim=282x248", height='248', width='282', alt='Spectr News Theme')
+								.ptp-1-overlay
+									.ptp-1-data
+										a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria.nome} > #{materia.subcategoria.nome}
+										h2.title-15
+											a(href='/materias/'+materia.slug)= materia.info_titulo
+										.meta-tp-1
+											.ptp-1-date
+												a(href='')= materia.data_postagem
+					.half
+						- var materia = materias[3]
+						if materia
+							article.post.post-tp-12
+								figure
+									a(href='/materias/'+materia.slug)
+										img.adaptive(src=materia.info_imagem+"?dim=282x248", height='248', width='282', alt='Spectr News Theme')
+								.ptp-1-overlay
+									.ptp-1-data
+										a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria.nome} > #{materia.subcategoria.nome}
+										h2.title-15
+											a(href='/materias/'+materia.slug)= materia.info_titulo
+										.meta-tp-1
+											.ptp-1-date
+												a(href='')= materia.data_postagem
+						- var materia = materias[4]
+						if materia
+							article.post.post-tp-12
+								figure
+									a(href='/materias/'+materia.slug)
+										img.adaptive(src=materia.info_imagem+"?dim=282x248", height='248', width='282', alt='Spectr News Theme')
+								.ptp-1-overlay
+									.ptp-1-data
+										a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria.nome} > #{materia.subcategoria.nome}
+										h2.title-15
+											a(href='/materias/'+materia.slug)= materia.info_titulo
+										.meta-tp-1
+											.ptp-1-date
+												a(href='')= materia.data_postagem
+		.section
+			.row
+				.content
+					.pst-block
+						.pst-block-main
+							.posts
+								if !materias.length
+									.alert.alert-warning Não foram encontradas matérias para a categoria selecionada.
+								for materia in materias
+									include partials/_materia
+				aside.side-bar
+					.js-sidebar
+						include ./partials/_search
+						include ./partials/_tags
+						include ./partials/_newsletter

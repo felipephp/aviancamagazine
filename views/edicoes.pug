@@ -1,0 +1,41 @@
+extends base
+
+block content
+	.main-content
+		// Page head tile
+		.page-head-tile
+			.container
+				.breadcrumbs-block
+					ul.breadcrumbs
+						li.bc-item
+							a(href='/') Home
+							i.fa.fa-angle-right
+						li.bc-item
+							a(href='/welove') Edições
+				.page-title
+					h1.title-16
+						strong Edições
+		// Page head tile END
+		.section
+			.row
+				.content
+					.pst-block
+						.pst-block-main
+							p Com periodicidade mensal, a Avianca em Revista segue uma linha clean e sofisticada, voando para todas as cidades operadas pela companhia aérea. O conteúdo é dinâmico e contempla diferentes universos, como turismo, cultura, gastronomia, economia, moda e esportes. A inspiração vem de um cliente moderno, exigente e de bom gosto, que busca informação rápida e de qualidade.
+							p Clique nas miniaturas para ler Online!
+							//- .gallery
+								//- .inner
+							for edicao in edicoes
+								//- .one-third.sm-one-third.xs-half.mb-pt-full
+								.one-thirdsss(style="display: inline-block; margin-right: 0.9%;")
+									.gallery-item
+										.img
+											a(href=edicao.link_online, target="_blank")
+												img.adaptive(src=edicao.capa_path, height='168', width='230', alt='Edição '+edicao.numero)
+
+
+				aside.side-bar
+					.js-sidebar
+						include ./partials/_search
+						include ./partials/_tags
+						include ./partials/_newsletter

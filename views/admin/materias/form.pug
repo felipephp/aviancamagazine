@@ -1,0 +1,400 @@
+extends ../base
+
+block styles
+	link(rel="stylesheet", href="/assets/vendor/froala/css/froala_editor.css")
+	link(rel="stylesheet", href="/assets/vendor/froala/css/plugins/image.min.css")
+	link(rel="stylesheet", href="/assets/vendor/froala/css/plugins/code_view.min.css")
+	link(rel="stylesheet", href="/assets/vendor/froala/css/plugins/video.min.css")
+	link(rel="stylesheet", href="/admin_assets/css/bootstrap-select.min.css")
+	link(rel="stylesheet", href="/admin_assets/css/slim.min.css")
+	link(rel="stylesheet", href="/admin_assets/css/jquery.datetimepicker.min.css")
+
+block content
+	#app
+		.right_col(role='main')
+			div
+				.row
+					form(action= mode == 'create' ? '/admin/materias' : '/admin/materias/'+one._id, method="POST", enctype="multipart/form-data").form-horizontal.form-label-left
+						.col-md-12.col-sm-12.col-xs-12
+							.x_panel
+								.x_title
+									h2
+										| Matérias
+										small Criação/Edição
+									button.btn.btn-success.pull-right(type='submit') Enviar
+									.clearfix
+								.x_content
+										br
+										.col-md-12
+											include ../../partials/_errors
+										.form-group
+											label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
+												| Título
+												span.required *
+											.col-md-6.col-sm-6.col-xs-12
+												input#titulo.form-control.col-md-7.col-xs-12(type='text', required, name="titulo", value=one.titulo, maxlength="70")
+										.form-group
+											label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
+												| Imagem principal
+												span.required *
+											.col-md-6.col-sm-6.col-xs-12
+												.slim(data-ratio="4:3", data-label="Clique aqui para escolher a imagem principal"
+												data-instant-edit="true" data-button-confirm-label="Confirmar"
+												data-button-cancel-label="Cancelar" data-post="input, output, actions"
+												data-size="1200,900", style="width: 200px; height: 150px;")
+													img(src=one.imagem_principal_path, alt="")
+													input(type='file', name='imagem_principal')
+										.form-group
+											label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
+												| Título de Chamada
+											.col-md-6.col-sm-6.col-xs-12
+												input#titulo.form-control.col-md-7.col-xs-12.limit(type='text', name="titulo_chamada", value=one.titulo_chamada, maxlength="40")
+										.form-group
+											label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
+												| Imagem da Chamada
+											.col-md-6.col-sm-6.col-xs-12
+												.slim(data-ratio="4:3", data-label="Clique aqui para escolher a imagem principal"
+												data-instant-edit="true" data-button-confirm-label="Confirmar"
+												data-button-cancel-label="Cancelar" data-post="input, output, actions"
+												data-size="1200,900", style="width: 200px; height: 150px;")
+													img(src=one.imagem_chamada_path, alt="")
+													input(type='file', name='imagem_chamada')
+										.form-group
+											label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
+												| Conteúdo da Chamada
+											.col-md-6.col-sm-6.col-xs-12
+												textarea.form-control(name="conteudo_chamada", maxlength="200")= one.conteudo_chamada
+										.form-group
+											label.control-label.col-md-3.col-sm-3.col-xs-12(for='subcategoria')
+												| Categoria
+												span.required *
+											.col-md-6.col-sm-6.col-xs-12
+												select.form-control.col-md-7.col-xs-12.selectpicker(required, name="subcategoria" data-live-search="true")
+													if !results.subcategorias.length
+														option(value="") Nenhuma categoria cadastrada
+													else
+														option(value="", disabled, selected=!one.subcategoria) -- Selecione uma categoria --
+														for subcategoria in results.subcategorias
+															option(value=subcategoria._id, selected=one.subcategoria==subcategoria._id.toString()) #{subcategoria.categoria.nome} > #{subcategoria.nome}
+										.form-group
+											label.control-label.col-md-3.col-sm-3.col-xs-12(for='autor')
+												| Autor
+											.col-md-6.col-sm-6.col-xs-12
+												select.form-control.col-md-7.col-xs-12.selectpicker(name="autor" data-live-search="true" required="required")
+													if !results.autores.length
+														option(value="") Nenhum autor cadastrado
+													else
+														option(value="", disabled, selected=!one.autor) -- Selecione um autor --
+														for autor in results.autores
+															option(value=autor._id, selected=one.autor==autor._id.toString())= autor.nome
+										.form-group
+											label.control-label.col-md-3.col-sm-3.col-xs-12(for='edicao')
+												| Tags
+											.col-md-6.col-sm-6.col-xs-12
+												select.form-control.col-md-7.col-xs-12.selectpicker(name="tags", multiple data-live-search="true" title="Se desejar, selecione uma ou mais tags")
+													if !results.tags.length
+														option(value="") Nenhuma tag cadastrada
+													else
+														option(value="", disabled) -- Selecione uma edição --
+														for tag in results.tags
+															option(value=tag._id, selected=one.tags.indexOf(tag._id.toString()) != -1) ##{tag.nome}
+
+										.form-group
+											label.control-label.col-md-3.col-sm-3.col-xs-12(for='edicao')
+												| Edição
+												span.required *
+											.col-md-6.col-sm-6.col-xs-12
+												select.form-control.col-md-7.col-xs-12.selectpicker(required, name="edicao" data-live-search="true")
+													if results.edicoes.length
+														for edicao in results.edicoes
+															option(value=edicao._id, selected=one.edicao==edicao._id.toString()) ##{edicao.numero} - #{edicao.titulo}
+										.form-group
+											label.control-label.col-md-3.col-sm-3.col-xs-12(for='localizacao')
+												| Localização
+											.col-md-6.col-sm-6.col-xs-12
+												select.form-control.col-md-7.col-xs-12.selectpicker(name="localizacao" data-live-search="true")
+													option(value="") Sem localização
+													if results.localizacoes.length
+														for localizacao in results.localizacoes
+															option(value=localizacao._id, selected=one.localizacao==localizacao._id.toString()) #{localizacao.nome}
+										if mode != 'edit'
+											.form-group
+												label.control-label.col-md-3.col-sm-3.col-xs-12(for='localizacao')
+													| Data de Postagem
+												.col-md-6.col-sm-6.col-xs-12
+													select.form-control.col-md-7.col-xs-12(name="post_at", v-model="post_at")
+															option(value="now") Agora
+															option(value="choose_date") Escolher Data
+											.form-group(v-show="post_at == 'choose_date'")
+												label.control-label.col-md-3.col-sm-3.col-xs-12(for='localizacao')
+													| Escolher data da pastagem:
+												.col-md-6.col-sm-6.col-xs-12
+													input.form-control#datetimepicker(name="available_at")
+										else
+											.form-group
+												label.control-label.col-md-3.col-sm-3.col-xs-12(for='localizacao')
+													| Escolher data da pastagem:
+												.col-md-6.col-sm-6.col-xs-12
+													input.form-control#datetimepickeredit(name="available_at")
+										.form-group
+											label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
+												| Conteúdo
+												span.required *
+											.col-md-6.col-sm-6.col-xs-12
+												textarea#conteudo(name="conteudo")= one.conteudo
+										//.form-group
+											a(href=one.path, target="_blank") Ver atual
+											label.control-label.col-md-3.col-sm-3.col-xs-12(for='status') Arquivo
+												if mode == 'edit'
+													span &nbsp; (escolha pra trocar)
+											.col-md-6.col-sm-6.col-xs-12
+												input.form-control(type="file", name="arquivo")
+										.ln_solid
+										.form-group
+											.col-md-6.col-sm-6.col-xs-12.col-md-offset-3
+												a.btn.btn-primary(href="/admin/materias") Voltar
+												button.btn.btn-success(type='submit') Enviar
+											// /page content
+
+block scripts
+	// iCheck
+	script(src='/admin_assets/vendors/iCheck/icheck.min.js')
+	// bootstrap-daterangepicker
+	script(src='/admin_assets/vendors/moment/min/moment.min.js')
+	script(src='/admin_assets/vendors/bootstrap-daterangepicker/daterangepicker.js')
+	// bootstrap-wysiwyg
+	script(src='/admin_assets/vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js')
+	script(src='/admin_assets/vendors/jquery.hotkeys/jquery.hotkeys.js')
+	script(src='/admin_assets/vendors/google-code-prettify/src/prettify.js')
+	// jQuery Tags Input
+	script(src='/admin_assets/vendors/jquery.tagsinput/src/jquery.tagsinput.js')
+	// Switchery
+	script(src='/admin_assets/vendors/switchery/dist/switchery.min.js')
+	// Select2
+	script(src='/admin_assets/vendors/select2/dist/js/select2.full.min.js')
+	// Parsley
+	script(src='/admin_assets/vendors/parsleyjs/dist/parsley.min.js')
+	// Autosize
+	script(src='/admin_assets/vendors/autosize/dist/autosize.min.js')
+	// jQuery autocomplete
+	script(src='/admin_assets/vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js')
+	// starrr
+	script(src='/admin_assets/vendors/starrr/dist/starrr.js')
+	// Custom Theme Scripts
+	script(src='/admin_assets/build/js/custom.min.js')
+	// bootstrap-daterangepicker
+	script.
+		$(document).ready(function() {
+		$('#birthday').daterangepicker({
+		singleDatePicker: true,
+		calender_style: "picker_4"
+		}, function(start, end, label) {
+		console.log(start.toISOString(), end.toISOString(), label);
+		});
+		});
+	// /bootstrap-daterangepicker
+	// bootstrap-wysiwyg
+	script(src="/admin_assets/js/bootstrap-select.min.js")
+	script(src="/admin_assets/js/slim.kickstart.min.js")
+	script(src="/admin_assets/js/vue.min.js")
+	script.
+		var mode = "#{mode}";
+		new Vue({
+			el: "#app",
+			data: {
+				post_at: "now",
+				mode: mode
+			}
+		})
+	script(src="/admin_assets/js/jquery.datetimepicker.full.min.js")
+	script.
+		$('#datetimepicker').datetimepicker({
+			format:'d/m/Y H:i',
+		});
+	if mode == 'edit'
+		script.
+			var available_at = "#{one.data_postagem}";
+			console.log("available_at", available_at);
+			$('#datetimepickeredit').datetimepicker({
+				format:'d/m/Y H:i',
+				value: available_at
+			});
+
+	script.
+		$(document).ready(function() {
+		function initToolbarBootstrapBindings() {
+		var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
+		'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
+		'Times New Roman', 'Verdana'
+		],
+		fontTarget = $('[title=Font]').siblings('.dropdown-menu');
+		$.each(fonts, function(idx, fontName) {
+			//-   fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\\'' + fontName + '\'">' + fontName + '</a></li>'));
+		});
+		$('a[title]').tooltip({
+		container: 'body'
+		});
+		$('.dropdown-menu input').click(function() {
+		return false;
+		})
+		.change(function() {
+		$(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
+		})
+		.keydown('esc', function() {
+		this.value = '';
+		$(this).change();
+		});
+		$('[data-role=magic-overlay]').each(function() {
+		var overlay = $(this),
+		target = $(overlay.data('target'));
+		overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(target.outerWidth()).height(target.outerHeight());
+		});
+		if ("onwebkitspeechchange" in document.createElement("input")) {
+		var editorOffset = $('#editor').offset();
+		$('.voiceBtn').css('position', 'absolute').offset({
+		top: editorOffset.top,
+		left: editorOffset.left + $('#editor').innerWidth() - 35
+		});
+		} else {
+		$('.voiceBtn').hide();
+		}
+		}
+		function showErrorAlert(reason, detail) {
+		var msg = '';
+		if (reason === 'unsupported-file-type') {
+		msg = "Unsupported format " + detail;
+		} else {
+		console.log("error uploading file", reason, detail);
+		}
+		$('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
+		'<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
+		}
+		initToolbarBootstrapBindings();
+		$('#editor').wysiwyg({
+		fileUploadError: showErrorAlert
+		});
+		window.prettyPrint;
+		prettyPrint();
+		});
+	// /bootstrap-wysiwyg
+	// Select2
+	script.
+		$(document).ready(function() {
+		$(".select2_single").select2({
+		placeholder: "Select a state",
+		allowClear: true
+		});
+		$(".select2_group").select2({});
+		$(".select2_multiple").select2({
+		maximumSelectionLength: 4,
+		placeholder: "With Max Selection limit 4",
+		allowClear: true
+		});
+		});
+	// /Select2
+	// jQuery Tags Input
+	script.
+		function onAddTag(tag) {
+		alert("Added a tag: " + tag);
+		}
+		function onRemoveTag(tag) {
+		alert("Removed a tag: " + tag);
+		}
+		function onChangeTag(input, tag) {
+		alert("Changed a tag: " + tag);
+		}
+		$(document).ready(function() {
+		$('#tags_1').tagsInput({
+		width: 'auto'
+		});
+		});
+	// /jQuery Tags Input
+	// Parsley
+	script.
+		$(document).ready(function() {
+		$.listen('parsley:field:validate', function() {
+		validateFront();
+		});
+		$('#demo-form .btn').on('click', function() {
+		$('#demo-form').parsley().validate();
+		validateFront();
+		});
+		var validateFront = function() {
+		if (true === $('#demo-form').parsley().isValid()) {
+		$('.bs-callout-info').removeClass('hidden');
+		$('.bs-callout-warning').addClass('hidden');
+		} else {
+		$('.bs-callout-info').addClass('hidden');
+		$('.bs-callout-warning').removeClass('hidden');
+		}
+		};
+		});
+		$(document).ready(function() {
+		$.listen('parsley:field:validate', function() {
+		validateFront();
+		});
+		$('#demo-form2 .btn').on('click', function() {
+		$('#demo-form2').parsley().validate();
+		validateFront();
+		});
+		var validateFront = function() {
+		if (true === $('#demo-form2').parsley().isValid()) {
+		$('.bs-callout-info').removeClass('hidden');
+		$('.bs-callout-warning').addClass('hidden');
+		} else {
+		$('.bs-callout-info').addClass('hidden');
+		$('.bs-callout-warning').removeClass('hidden');
+		}
+		};
+		});
+		try {
+		hljs.initHighlightingOnLoad();
+		} catch (err) {}
+	// /Parsley
+	// Autosize
+	script.
+		$(document).ready(function() {
+		autosize($('.resizable_textarea'));
+		});
+	// /Autosize
+	// jQuery autocomplete
+	script.
+		$(document).ready(function() {
+		var countries = { AD:"Andorra",A2:"Andorra Test",AE:"United Arab Emirates",AF:"Afghanistan",AG:"Antigua and Barbuda",AI:"Anguilla",AL:"Albania",AM:"Armenia",AN:"Netherlands Antilles",AO:"Angola",AQ:"Antarctica",AR:"Argentina",AS:"American Samoa",AT:"Austria",AU:"Australia",AW:"Aruba",AX:"Åland Islands",AZ:"Azerbaijan",BA:"Bosnia and Herzegovina",BB:"Barbados",BD:"Bangladesh",BE:"Belgium",BF:"Burkina Faso",BG:"Bulgaria",BH:"Bahrain",BI:"Burundi",BJ:"Benin",BL:"Saint Barthélemy",BM:"Bermuda",BN:"Brunei",BO:"Bolivia",BQ:"British Antarctic Territory",BR:"Brazil",BS:"Bahamas",BT:"Bhutan",BV:"Bouvet Island",BW:"Botswana",BY:"Belarus",BZ:"Belize",CA:"Canada",CC:"Cocos [Keeling] Islands",CD:"Congo - Kinshasa",CF:"Central African Republic",CG:"Congo - Brazzaville",CH:"Switzerland",CI:"Côte d’Ivoire",CK:"Cook Islands",CL:"Chile",CM:"Cameroon",CN:"China",CO:"Colombia",CR:"Costa Rica",CS:"Serbia and Montenegro",CT:"Canton and Enderbury Islands",CU:"Cuba",CV:"Cape Verde",CX:"Christmas Island",CY:"Cyprus",CZ:"Czech Republic",DD:"East Germany",DE:"Germany",DJ:"Djibouti",DK:"Denmark",DM:"Dominica",DO:"Dominican Republic",DZ:"Algeria",EC:"Ecuador",EE:"Estonia",EG:"Egypt",EH:"Western Sahara",ER:"Eritrea",ES:"Spain",ET:"Ethiopia",FI:"Finland",FJ:"Fiji",FK:"Falkland Islands",FM:"Micronesia",FO:"Faroe Islands",FQ:"French Southern and Antarctic Territories",FR:"France",FX:"Metropolitan France",GA:"Gabon",GB:"United Kingdom",GD:"Grenada",GE:"Georgia",GF:"French Guiana",GG:"Guernsey",GH:"Ghana",GI:"Gibraltar",GL:"Greenland",GM:"Gambia",GN:"Guinea",GP:"Guadeloupe",GQ:"Equatorial Guinea",GR:"Greece",GS:"South Georgia and the South Sandwich Islands",GT:"Guatemala",GU:"Guam",GW:"Guinea-Bissau",GY:"Guyana",HK:"Hong Kong SAR China",HM:"Heard Island and McDonald Islands",HN:"Honduras",HR:"Croatia",HT:"Haiti",HU:"Hungary",ID:"Indonesia",IE:"Ireland",IL:"Israel",IM:"Isle of Man",IN:"India",IO:"British Indian Ocean Territory",IQ:"Iraq",IR:"Iran",IS:"Iceland",IT:"Italy",JE:"Jersey",JM:"Jamaica",JO:"Jordan",JP:"Japan",JT:"Johnston Island",KE:"Kenya",KG:"Kyrgyzstan",KH:"Cambodia",KI:"Kiribati",KM:"Comoros",KN:"Saint Kitts and Nevis",KP:"North Korea",KR:"South Korea",KW:"Kuwait",KY:"Cayman Islands",KZ:"Kazakhstan",LA:"Laos",LB:"Lebanon",LC:"Saint Lucia",LI:"Liechtenstein",LK:"Sri Lanka",LR:"Liberia",LS:"Lesotho",LT:"Lithuania",LU:"Luxembourg",LV:"Latvia",LY:"Libya",MA:"Morocco",MC:"Monaco",MD:"Moldova",ME:"Montenegro",MF:"Saint Martin",MG:"Madagascar",MH:"Marshall Islands",MI:"Midway Islands",MK:"Macedonia",ML:"Mali",MM:"Myanmar [Burma]",MN:"Mongolia",MO:"Macau SAR China",MP:"Northern Mariana Islands",MQ:"Martinique",MR:"Mauritania",MS:"Montserrat",MT:"Malta",MU:"Mauritius",MV:"Maldives",MW:"Malawi",MX:"Mexico",MY:"Malaysia",MZ:"Mozambique",NA:"Namibia",NC:"New Caledonia",NE:"Niger",NF:"Norfolk Island",NG:"Nigeria",NI:"Nicaragua",NL:"Netherlands",NO:"Norway",NP:"Nepal",NQ:"Dronning Maud Land",NR:"Nauru",NT:"Neutral Zone",NU:"Niue",NZ:"New Zealand",OM:"Oman",PA:"Panama",PC:"Pacific Islands Trust Territory",PE:"Peru",PF:"French Polynesia",PG:"Papua New Guinea",PH:"Philippines",PK:"Pakistan",PL:"Poland",PM:"Saint Pierre and Miquelon",PN:"Pitcairn Islands",PR:"Puerto Rico",PS:"Palestinian Territories",PT:"Portugal",PU:"U.S. Miscellaneous Pacific Islands",PW:"Palau",PY:"Paraguay",PZ:"Panama Canal Zone",QA:"Qatar",RE:"Réunion",RO:"Romania",RS:"Serbia",RU:"Russia",RW:"Rwanda",SA:"Saudi Arabia",SB:"Solomon Islands",SC:"Seychelles",SD:"Sudan",SE:"Sweden",SG:"Singapore",SH:"Saint Helena",SI:"Slovenia",SJ:"Svalbard and Jan Mayen",SK:"Slovakia",SL:"Sierra Leone",SM:"San Marino",SN:"Senegal",SO:"Somalia",SR:"Suriname",ST:"São Tomé and Príncipe",SU:"Union of Soviet Socialist Republics",SV:"El Salvador",SY:"Syria",SZ:"Swaziland",TC:"Turks and Caicos Islands",TD:"Chad",TF:"French Southern Territories",TG:"Togo",TH:"Thailand",TJ:"Tajikistan",TK:"Tokelau",TL:"Timor-Leste",TM:"Turkmenistan",TN:"Tunisia",TO:"Tonga",TR:"Turkey",TT:"Trinidad and Tobago",TV:"Tuvalu",TW:"Taiwan",TZ:"Tanzania",UA:"Ukraine",UG:"Uganda",UM:"U.S. Minor Outlying Islands",US:"United States",UY:"Uruguay",UZ:"Uzbekistan",VA:"Vatican City",VC:"Saint Vincent and the Grenadines",VD:"North Vietnam",VE:"Venezuela",VG:"British Virgin Islands",VI:"U.S. Virgin Islands",VN:"Vietnam",VU:"Vanuatu",WF:"Wallis and Futuna",WK:"Wake Island",WS:"Samoa",YD:"People's Democratic Republic of Yemen",YE:"Yemen",YT:"Mayotte",ZA:"South Africa",ZM:"Zambia",ZW:"Zimbabwe",ZZ:"Unknown or Invalid Region" };
+		var countriesArray = $.map(countries, function(value, key) {
+		return {
+		value: value,
+		data: key
+		};
+		});
+		// initialize autocomplete with custom appendTo
+		$('#autocomplete-custom-append').autocomplete({
+		lookup: countriesArray
+		});
+		});
+	// /jQuery autocomplete
+	// Starrr
+	script.
+		$(document).ready(function() {
+		$(".stars").starrr();
+		$('.stars-existing').starrr({
+		rating: 4
+		});
+		$('.stars').on('starrr:change', function (e, value) {
+		$('.stars-count').html(value);
+		});
+		$('.stars-existing').on('starrr:change', function (e, value) {
+		$('.stars-count-existing').html(value);
+		});
+		});
+	// /Starrr
+	script(src="/assets/vendor/froala/js/froala_editor.min.js")
+	script(src="/assets/vendor/froala/js/plugins/image.min.js")
+	script(src="/assets/vendor/froala/js/plugins/code_view.min.js")
+	script(src="/assets/vendor/froala/js/plugins/video.min.js")
+	script(src="/assets/vendor/froala/js/languages/pt_br.js")
+	script.
+		$('#conteudo').froalaEditor({
+			language: 'pt_br',
+			height: 400
+		})

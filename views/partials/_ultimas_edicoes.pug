@@ -1,0 +1,21 @@
+.sbr-slider
+    .pst-block
+        .pst-block-head
+            h2.title-4
+                strong Últimas
+                |  edições
+        .pst-block-main
+            .sidebar-slider
+                .js-sbr-slider
+                    for e in ultimas_edicoes
+                        .item
+                            article.post.post-tp-10
+                                figure
+                                    a(href=e.link_online, target="_blank")
+                                        img(src=e.capa_path+"?dim=360x467", alt='Spectr News Theme', height="270", style="width: auto; margin: 0 auto;")
+                                .ptp-10-data
+                                    h3.title-5
+                                        a(href='') ##{e.numero} - #{e.titulo}
+                .sbr-navs.js-sbr-navs
+        .pst-block-foot
+            .js-sbr-pagination

@@ -1,0 +1,86 @@
+extends base
+
+block content
+	.main-content
+		// Page head tile
+		.page-head-tile
+			.container
+				.page-title
+					h1.title-16
+						strong Entre em
+						|  Contato
+		// Page head tile END
+		.section
+			.row
+				.content
+					.pst-block
+						.pst-block-main
+							.post-content
+								article
+									.post-main-img
+										img.adaptive(src='/assets/img/banner-contact.jpg?dim=750x278', height='278', width='750', alt='Banner de Contato')
+									p Para entrar em contato com a Avianca Revista, mandar seus comentários, sugestões ou críticas, preencha o formulário abaixo.
+								.contactf-form-block
+									.title-blc-2
+										.title-blc-inner
+											h4
+												| Enviar&nbsp;
+												span Mensagem
+									.comments-form
+										form#contactForm.shake.form-breve(role='form', data-toggle='validator')
+											.form-group.form-control
+												label
+													| Nome*
+													input#name.form-control(type='text', placeholder='Digite o seu nome', required='', data-error='Please enter Your Name')
+												.help-block.with-errors
+											.form-group.form-control
+												label
+													| E-mail*
+													input#email.form-control(type='email', placeholder='Digite o seu e-mail', required='', data-error='Please enter Your Email')
+												.help-block.with-errors
+											.form-group.form-control
+												label
+													| Assunto
+													input.req(type='text', name='subject', placeholder='Digite o seu assunto')
+											.form-group.form-control
+												label
+													| Mensagem*
+													textarea#message.form-control(rows='5', placeholder='Digite a sua mensagem', required='', data-error='Please enter Your Message')
+												.help-block.with-errors
+											button#form-submit.btn.btn-3.btn-success.btn-lg.pull-right(type='submit') Enviar Mensagem
+											#msgSubmit.h3.text-center.hidden
+				aside.side-bar.sticky-wrap
+					.sbsb-block-1
+						h4.title-8
+							strong Avianca em Revista
+						p.phone
+							strong Para Anunciar:&nbsp;
+							span contato@mediaonboard.com.br contato@aviancaemrevista.com.br
+						p.phone
+							strong Sugestão de Pauta:&nbsp;
+							span redacao@aviancaemrevista.com.br redacao@mediaonboard.com.br
+					.sbsb-block-1
+						h4.title-8
+							strong Informações Avianca
+						p.phone
+							strong Central de reserva:&nbsp;
+							span 4004 4040
+						p.phone
+							strong Outras cidades:&nbsp;
+							span 0300 789 8160
+						p.phone
+							strong SAC:&nbsp;
+							span 0800 286 6543
+						p.phone
+							strong Atendimento ao deficiente auditivo:&nbsp;
+							span 0800 286 5445
+						p.phone
+							strong Atendimento ao deficiente auditivo:&nbsp;
+							span
+								a(href="http://www.avianca.com.br/amigo", target="_blank") http://www.avianca.com.br/amigo
+						p.phone
+							strong Acesse o site:&nbsp;
+							span
+								a(href="http://www.avianca.com.br", target="_blank") www.avianca.com.br
+
+					include ./partials/_newsletter

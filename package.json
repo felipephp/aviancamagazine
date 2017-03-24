@@ -1,0 +1,48 @@
+{
+  "name": "avianca_em_revista",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.0.0-rc.6",
+    "body-parser": "^1.14.2",
+    "connect-multiparty": "^2.0.0",
+    "cookie-parser": "^1.4.1",
+    "cookie-session": "^2.0.0-alpha.1",
+    "express": "^4.13.3",
+    "express-session": "^1.13.0",
+    "express-validator": "^2.18.0",
+    "gn-api-sdk-node": "0.0.16",
+    "i18n": "^0.8.3",
+    "ipware": "0.0.8",
+    "log": "^1.4.0",
+    "mailgun-js": "^0.7.11",
+    "moment": "^2.11.2",
+    "moment-timezone": "^0.5.3",
+    "mongoose": "^4.3.6",
+    "mongoose-auto-increment": "^5.0.1",
+    "mongoose-deep-populate": "^3.0.0",
+    "mongoose-paginate": "^5.0.0",
+    "mysql": "^2.13.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "password-hash": "^1.2.2",
+    "prompt": "^1.0.0",
+    "pug": "^2.0.0-beta5",
+    "quickthumb": "0.0.12",
+    "request": "^2.69.0",
+    "serve-favicon": "^2.3.0",
+    "sha1": "^1.1.1",
+    "striptags": "^3.0.1",
+    "thumbnail": "^0.1.9"
+  },
+  "devDependencies": {
+    "node-sass": "^4.5.0",
+    "nodemon": "^1.11.0"
+  }
+}

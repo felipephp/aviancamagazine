@@ -1,0 +1,91 @@
+nav.main-nav
+    a.c-hamburger.htx.js-asd-menu(href='#aside-menu')
+        span toggle menu
+    ul.main-nav-list.sf-menu
+        li.active
+            a(href='/') home
+    
+        for cat in categorias
+            //- if cat.slug == 'editorial'
+            //-     li
+            //-         a(href='/edicoes') nossas capas
+
+            //- if cat.slug != "guia-de-entretenimento"
+            if cat._id != "589bbddcd469b56893cfc27b"
+                li
+                    a(href="/"+cat.slug)
+                        | #{cat.nome}
+                        if cat.subcategorias.length
+                            i.fa.fa-angle-down
+                    if cat.subcategorias.length
+                        ul.sub
+                            for subcat in cat.subcategorias
+                                if subcat.slug != 'capa'
+                                    li
+                                        a(href="/"+cat.slug+"/"+subcat.slug)= subcat.nome
+                            if cat.slug == 'editorial'
+                                li
+                                    a(href='/edicoes') Nossas Capas
+            else
+                <li class="mf">
+                    <a href="/destinos">Destinos<i class="fa fa-angle-down"></i></a>
+                    <ul class="sub">
+                        <li>
+                            <div class="mega-menu">
+                                <div class="col-row">
+                                    <div class="col-one-fifth sm-col-one-fifth cats">
+                                        <ul>
+                                            <li><a href="/destinos/nacionais">Nacional</a></li>
+                                            <li><a href="/destinos/internacionais">Internacional</a></li>
+                                            <li><a href="/destinos/expedicao">Expedição</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-four-fifths sm-col-four-fifths">
+                                        <div class="mm-life-st-pst">
+                                            <div class="mm-life-st-title">
+                                                <span>Destinos</span>
+                                                <a href="/destinos" class="all">Todos os destinos</a>
+                                            </div>
+                                            <div class="col-row">
+                                            for des_menu in destinos_menu
+                                                <div class="col-one-quarter">
+                                                    <article class="post">
+                                                        <figure>
+                                                            <a href="/materias/#{des_menu.slug}">
+                                                                img(src=des_menu.imagem_principal_path, height="136", width="203")
+                                                                //- <img src= '#{des_menu.imagem_principal_path}' height="136" width="203" alt="Spectr News Theme" class="adaptive" />
+                                                            </a>
+                                                        </figure>
+                                                        <h6 class="title-12"><a href="">#{des_menu.titulo}</a></h6>
+                                                    </article>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+        <li>
+            //- <a href="/quem-somos">Avianca<i class="fa fa-angle-down"></i></a>
+            <a href="#">Avianca<i class="fa fa-angle-down"></i></a>
+            <ul class="sub">
+                <li>
+                    //- <a href="/guia-de-entretenimento">Guia de Entretenimento</a>
+                    //- <a href="/mapa-rotas">Mapa de Rotas</a>
+                    //- <a href="/lojas-avianca">Lojas Avianca</a>
+                    <a href="#">Guia de Entretenimento</a>
+                    <a href="#">Mapa de Rotas</a>
+                    <a href="#">Lojas Avianca</a>
+                </li>
+            </ul>
+        </li>
+
+        li
+            a(href="/welove")
+                | We&nbsp;
+                img.welove-icon(src="/assets/img/like.png")
+                | &nbsp;Love Avianca
+        //- li
+            a(href="/contato") Contato

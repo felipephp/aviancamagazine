@@ -1,0 +1,66 @@
+extends base
+
+block content
+    <div class="main-content">
+        <div class="page-head-tile"></div>
+
+        <div class="section">
+            <div class="row">
+                <img src="/media/images/welove.jpg" style="width: 100%;">
+            </div>
+
+            .row
+                .pst-block-main
+                    .search-form-3
+                        form(action='/welove', method='post' enctype="multipart/form-data" name="welove")
+                            <div class="foto">
+                                <div class="foto-container">
+                                    <div id="foto-src" style="background-image: url(/media/images/large_default_avatar.jpg)"></div>
+                                </div>
+                            </div>
+                            <div class="welove-form">
+                                h3 Selecione sua foto com a revista, preencha seus dados e apareça aqui!
+                                .form-group
+                                    input(type='text', name="nome", placeholder="Seu nome", required class="form-control")
+                                .form-group
+                                    input(type='email', name="email", placeholder="E-mail", required class="form-control")
+                                .form-group
+                                    input(type='text', name="origem", placeholder="Origem da Viagem", required class="form-control")
+                                .form-group
+                                    input(type='text', name="destino", placeholder="Destino da Viagem", required class="form-control")
+                                .form-group
+                                    input(type='file', name="imagem", class="form-control" style="display: none;")
+                                div.cleaner
+                                    button(type="submit").btn-welove enviar
+                            </div>
+        </div>
+
+        <div class="section">
+            <div class="row">
+                <div class="">
+                    <div class="pst-block">
+                        <div class="pst-block-main">
+                            <div class="post-content">
+                                <div class="members">
+                                    <div class="members-items">
+                                        for member in welove
+                                            <div class="one-fifth sm-one-third mb-ls-full">
+                                                <a href="#" class="members-item">
+                                                    <div class="members-photo welove">
+                                                        <img src=#{member.imagem_path} height="134" width="134" alt=#{member.nome}>
+                                                    </div>
+                                                    .members-name= member.nome
+                                                </a>
+                                            </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    block scripts.
+        script(src="/assets/js/welove.js")

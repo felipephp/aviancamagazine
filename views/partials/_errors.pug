@@ -1,0 +1,5 @@
+if flash.danger
+    div.alert.alert-danger
+        ul
+            for message in flash.danger
+                li!= message

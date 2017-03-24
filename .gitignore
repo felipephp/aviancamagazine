@@ -1,0 +1,14 @@
+node_modules/*
+node_modules/bcrypt/*
+/domain/cron.js
+.idea/*
+config/*
+public/uploads/*
+errfile-*
+outfile-*
+npm-debug.log
+logs/*
+public/.cache/
+.DS_Store
+node_modules/*
+newrelic_agent.log

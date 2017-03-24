@@ -1,0 +1,20 @@
+.search-forums-widget
+	.pst-block
+		.pst-block-head
+			h2.title-4
+				strong Envie a sua
+				|  foto
+		.pst-block-main
+			p  Quer aparecer aqui também? Envie uma foto sua com a nossa revista!
+			.search-form-3
+				form(action='/welove', method='post' enctype="multipart/form-data")
+					.src-input
+						input(type='email', name="email", placeholder="E-mail", required)
+					.src-input
+						input(type='text', name="origem", placeholder="Origem da Viagem", required)
+					.src-input
+						input(type='text', name="destino", placeholder="Destino da Viagem", required)
+					.src-input
+						input(type='file', name="imagem", required)
+					.sbsb-btn
+						button(type="submit").btn-avianca.full-width enviar

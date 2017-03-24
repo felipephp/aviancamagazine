@@ -1,0 +1,367 @@
+<div>TESTE</div>
+extends base
+
+block content
+    .main-content
+        init from -node
+        #app
+            .trending-posts-line
+                .container
+                    .trending-line
+                        .trending-now
+                            | Acontece
+                        .tl-slider
+                            for materia in ultimas_materias
+                                div
+                                    a(href='/materias/'+materia.slug)= materia.info_titulo
+                        .tl-slider-control
+            .main-posts-1
+                .mp-section
+                    .two-thirds.sm-full.main-slider-1(Style="height: 100%")
+                        .swiper-container.js-main-slider-1(Style="height: 100%")
+                            .swiper-wrapper
+
+                                for materiaSlider in mainSlider
+                                    .swiper-slide
+                                        article.post.post-tp-1(Style="height: 100%")
+                                            figure(Style="height: 100%")
+                                                a(href='/materias/'+materiaSlider.slug Style="height: 100%")
+                                                    div.adaptive(alt='Spectr News Theme' Style="height: 100%; width: 100%; background-image: url('"+materiaSlider.info_imagem+"'); background-size: 100%; background-position: 50%;")
+                                            .ptp-1-overlay
+                                                .ptp-1-data
+                                                    a.category-tp-1(href='/materias/'+materiaSlider.slug)
+                                                     | #{materiaSlider.categoria.nome} > #{materiaSlider.subcategoria.nome}
+                                                    h1.title-1
+                                                        a(href='/materias/'+materiaSlider.slug)= materiaSlider.info_titulo
+                                                    .meta-tp-1
+                                                        .ptp-1-date
+                                                            a(href='/materias/'+materiaSlider.slug)= materiaSlider.data_postagem
+                                                    a.read-tp-1(href='/materias/'+materiaSlider.slug)
+                                                        span Leia mais
+                                                        span.arr-right-light-ic
+                                                            i
+                            .nav-arrow.prev
+                                i.ms-prev
+                                .slide-count
+                            .nav-arrow.next
+                                i.ms-next
+                                .slide-count
+
+                    .one-third.sm-hide
+                        .trend-pst-slider
+                            .trpst-block
+                                .trpst-block-head
+                                    h2.title-4
+                                        strong Edição
+                                        | &nbsp;deste mês
+                                    .js-sbr-pagination
+                                .trpst-block-main
+                                    .js-trend-pst-slider
+                                        div
+                                            for materiaSlider in mainSlider
+                                                article.post.post-tp-3
+                                                    figure
+                                                        a(href='')
+                                                            img.adaptive(src=materiaSlider.info_imagem+"?dim=126x98", height='98', width='126', alt='Spectr News Theme')
+                                                    a.category-tp-2(href='') #{materiaSlider.subcategoria.nome}
+                                                    h3.title-3
+                                                        a(href='/materias/'+materiaSlider.slug)= materiaSlider.info_titulo
+                                                    .date-tp-2= materiaSlider.data_postagem
+                                .trpst-block-foot
+                                    a(href='/edicoes')
+                                        span.more-txt Mais matérias
+                                        span.arr-right-dark-ic
+                                            i
+                .mp-section
+
+                    for materia in AgendaCultural
+                        .one-third.sm-half.xs-full
+                            article.post.post-tp-2
+                                figure
+                                    a(href='/materias/'+materia.slug)
+                                        img.adaptive(src=materia.info_imagem+"?dim=380x258", height='258', width='380', alt='Spectr News Theme')
+                                .ptp-1-overlay
+                                    .ptp-1-data
+                                        a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria.nome} > #{materia.subcategoria.nome}
+                                        h2.title-29
+                                            //- a(href='#1')= materia.info_titulo
+                                            a(href='#1')= materia.info_titulo
+                                        .meta-tp-1
+                                            .ptp-1-date
+                                                a(href='')= materia.data_postagem
+            // Main posts END
+            .section
+                .trend-pst
+                    .pst-block
+                        .pst-block-head
+                            h2.title-4
+                                strong Life Style
+                            .filters
+                                ul.filters-list-1.xs-hide
+                                    li
+                                        a(href="javascript:void(0)", "v-on:click"="getMateriasByCategory('life_style', '589bbdfeebbd1068f49c0611')", "v-bind:class"="{active: life_style.active_sub == ''}") todos
+                                        li(v-for="subcategoria in life_style.subcategorias")
+                                            a(href='javascript:void(0)', "v-on:click"="getMateriasBySubCategory('life_style', subcategoria._id)" "v-bind:class"="{active: life_style.active_sub == subcategoria._id}") {{ subcategoria.nome }}
+                        .pst-block-main
+                            //- p Count: {{ count_negocios }}
+                            .col-row
+                                .alert.alert-danger(v-show="!life_style.materias.length") Não existem matérias nesta categoria.
+                                .col-one-quarter(v-for="materia in life_style.materias")
+                                    article.post.post-tp-4
+                                        figure
+                                            a("v-bind:href"="'/materias/'+materia.slug")
+                                                img.adaptive("v-bind:src"="materia.info_imagem+'?dim?260x186'", height='186', width='260', alt='Spectr News Theme')
+                                        h3.title-3
+                                            a("v-bind:href"="'/materias/'+materia.slug") {{ materia.info_titulo }}
+                                        .meta-tp-2
+                                            .date
+                                                span {{ materia.data_postagem }}
+                                            .category
+                                                i.li_pen
+                                                span {{ materia.subcategoria.nome }}
+                        .pst-block-foot
+                            a(href='/life-style') mais matérias
+
+            .main-video-posts
+                .video-posts-pane
+                    .vpst-block
+                        .vpst-block-head
+                            h2.title-4
+                                strong Vídeos
+
+                        .vpst-block-main
+                            .js-video-pst-slider
+                                .vps-item
+                                    .half.sm-full.mb-pt-hide
+                                        - var video = _categorias.videos.shift()
+                                        article.post.post-tpv-1
+                                            figure
+                                                a(href='/videos/'+video.slug)
+                                                    img.adaptive(src=video.miniatura_path+"?dim=570x430", height='430', width='570', alt='Spectr News Theme')
+                                            .ptp-1-overlay
+                                                span.arr-left-light-lg-ic.video-lg-ic
+                                                    i
+                                                .ptp-1-data
+                                                    a.category-tp-1.breve(href='javascript:void(0)') video
+                                                    h2.title-7
+                                                        a(href='/videos/'+video.slug)= video.nome
+                                                    .meta-tp-1
+                                                        .ptp-1-date
+                                                            // a.breve(href='javascript:void(0)')= video.data_cadastro
+
+                                    .half.sm-full
+                                        for video in _categorias.videos
+                                            .half
+                                                article.post.post-tpv-2
+                                                    figure
+                                                        a(href='/videos/'+video.slug)
+                                                            img.adaptive(src=video.miniatura_path+"?dim=285x215", height='215', width='285', alt='Spectr News Theme')
+                                                    .ptp-1-overlay
+                                                        .ptp-1-data
+                                                            span.arr-left-light-sm-ic.video-sm-ic
+                                                                i
+                                                            h2.title-5
+                                                                a(href='/videos/'+video.slug)= video.nome
+                                                            .date-tp-2
+                                                                //- span= video.data_cadastro
+                        .vpst-block-foot
+                            a.breve(href='/videos') Mais vídeos
+
+
+
+
+
+
+            .section
+                .row
+                    .content
+                        .popular-pst
+                            .pst-block
+                                .pst-block-head
+                                    h2.title-4
+                                        strong Negócios
+                                    .filters
+                                        ul.filters-list-1.xs-hide
+                                            li
+                                                a(href="javascript:void(0)", "v-on:click"="getMateriasByCategory('negocios', '589bbe4c01c0ae69d1a0c181', 2)", "v-bind:class"="{active: negocios.active_sub == ''}") todos
+                                                li(v-for="subcategoria in negocios.subcategorias")
+                                                    a(href='javascript:void(0)', "v-on:click"="getMateriasBySubCategory('negocios', subcategoria._id, 2)" "v-bind:class"="{active: negocios.active_sub == subcategoria._id}") {{ subcategoria.nome }}
+                                .pst-block-main
+                                    .col-row
+                                        .alert.alert-danger(v-show="!negocios.materias.length") Não existem matérias nesta categoria.
+                                        .col-half(v-for="materia in negocios.materias")
+                                            article.post.post-tp-5
+                                                figure
+                                                    a("v-bind:href"="'/materias/'+materia.slug")
+                                                        img.adaptive("v-bind:src"="materia.info_imagem+'?dim?260x186'", height='186', width='260', alt='Spectr News Theme')
+                                                h3.title-5
+                                                    a("v-bind:href"="'/materias/'+materia.slug") {{ materia.info_titulo }}
+                                                .meta-tp-2
+                                                    .date
+                                                        span {{ materia.data_postagem }}
+                                                    .category
+                                                        i.li_pen
+                                                        span {{ materia.subcategoria.nome }}
+                                                p.p {{ materia.info_conteudo }}
+
+                                .pst-block-foot
+                                    a(href='/negocios') mais matérias
+
+
+                    aside.side-bar
+                        include ./partials/_search
+                        include ./partials/_tags
+                        include ./partials/_advertising
+
+            .section
+                .main-slider-1
+                    .swiper-container.js-main-slider-1
+                        .swiper-wrapper
+                            for materia in destinos
+                                .swiper-slide
+                                    article.post.post-tp-1
+                                        figure
+                                            a(href='/materias/'+materia.slug)
+                                                img.adaptive(src=materia.info_imagem+"?dim=1140x511", height='511', width='1140', alt='Spectr News Theme')
+                                        .ptp-1-overlay
+                                            .ptp-1-data
+                                                a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria.nome} > #{materia.subcategoria.nome}
+                                                h1.title-1
+                                                    a(href='#1')= materia.info_titulo
+                                                .meta-tp-1
+                                                    .ptp-1-date
+                                                        a(href='')= materia.data_postagem
+                                                a.read-tp-1(href='')
+                                                    span Leia mais
+                                                    span.arr-right-light-ic
+                                                        i
+                        .nav-arrow.prev
+                            i.ms-prev
+                            .slide-count
+                        .nav-arrow.next
+                            i.ms-next
+                            .slide-count
+
+
+            .main-video-posts
+                .video-posts-pane
+                    .vpst-block
+                        .vpst-block-head
+                            h2.title-4
+                                strong We Love Avianca
+                        .vpst-block-main
+                            .js-video-pst-slider
+                                .vps-item
+                                    .half.sm-full
+                                        for a in [1, 2, 3, 4]
+                                            - var welove = getRandomFromArray(_categorias.welove)
+                                            - var index = _categorias.welove.indexOf(welove);
+                                            - _categorias.welove.splice(index, 1);
+                                            if welove
+                                                .half
+                                                    article.post.post-tpv-2
+                                                        figure
+                                                            img.adaptive(src=welove.imagem_path+"?dim=285x215", height='215', width='285', alt='Spectr News Theme')
+                                    .half.sm-full
+                                        for a in [1, 2, 3, 4]
+                                            - var welove = getRandomFromArray(_categorias.welove)
+                                            - var index = _categorias.welove.indexOf(welove);
+                                            - _categorias.welove.splice(index, 1);
+                                            if welove
+                                                .half
+                                                    article.post.post-tpv-2
+                                                        figure
+                                                            img.adaptive(src=welove.imagem_path+"?dim=285x215", height='215', width='285', alt='Spectr News Theme')
+                        .vpst-block-foot
+                            a.breve(href='/welove') Mais fotos
+
+        .section(style="margin-bottom: 0 !important;")
+            .trend-pst
+                .pst-block
+                    .pst-block-head
+                        h2.title-4
+                            strong Guia de Entretenimento
+                    .pst-block-main
+                        //- p Count: {{ count_negocios }}
+                        .col-row
+                            //.alert.alert-danger(v-show="!life_style.materias.length") Não existem matérias nesta categoria.
+                        - var first_four = _categorias.guia_de_entretenimento.splice(0, 4)
+                        for materia in first_four
+                            .col-one-quarter
+                                article.post.post-tp-4
+                                    figure
+                                        a
+                                            img.adaptive(src=materia.info_imagem, height='186', width='260', alt='Spectr News Theme')
+                                    h3.title-3
+                                        //- a(href='/materias/'+materia.slug)= materia.info_titulo
+                                        a
+                                    .meta-tp-2
+                    .pst-block-foot
+                        //- a(href='/life-style') Veja a programação que está a bordo
+                        a Veja a programação que está a bordo
+
+        .main-video-posts(style="background: #ebebeb; margin: 0;")
+            .video-posts-pane
+                .vpst-block
+                    .vpst-block-head
+                        h2.title-4
+                            strong(style="color: #000") Social
+                    .vpst-block-main
+                        each val, index in _categorias.social.imagens
+                            if val
+                                .social-image
+                                        article.post.post-tpv-2
+                                            figure
+                                                img.adaptive(src=val+"?dim=285x215", height='215', width='285', alt='Spectr News Theme')
+                                            .ptp-1-overlay
+                                                .ptp-1-data
+                                                    h2.title-7= _categorias.social.titulos[index]
+                .vpst-block-foot
+                    a.breve.social(href='#') Mais fotos
+
+block scripts
+    script(src="/assets/js/vue.min.js")
+    script.
+
+        $(document).ready(function(){
+            var subcategorias_negocios = !{JSON.stringify(_categorias.negocios.subcategorias)};
+            var subcategorias_life_style = !{JSON.stringify(_categorias.life_style.subcategorias)};
+
+            new Vue({
+                el: "#app",
+                data: {
+                    negocios: {materias: [], active_sub: "", subcategorias: subcategorias_negocios},
+                    life_style: {materias: [], active_sub: "", subcategorias: subcategorias_life_style},
+                },
+                mounted: function() {
+                    console.log("ready");
+                    this.getMateriasByCategory("negocios", "589bbe4c01c0ae69d1a0c181", 2);
+                    this.getMateriasByCategory("life_style", "589bbdfeebbd1068f49c0611");
+                },
+                methods: {
+                    getMateriasBySubCategory: function(key, sub, lmt) {
+                        var self = this;
+                        var limit = lmt || 4;
+                        $.ajax({
+                            url: "/api/subcategorias/"+sub+"/materias?limit="+limit,
+                            success: function(data) {
+                                self[key].materias = data.results;
+                                self[key].active_sub = sub;
+                            }
+                        })
+                    },
+                    getMateriasByCategory: function(key, cat, lmt) {
+                        var self = this;
+                        var limit = lmt || 4;
+                        $.ajax({
+                            url: "/api/categorias/"+cat+"/materias?limit="+limit,
+                            success: function(data) {
+                            console.log(data);
+                                self[key].materias = data.results;
+                                self[key].active_sub = "";
+                            }
+                        })
+                    },
+                }
+            })
+        })

@@ -1,0 +1,22 @@
+{
+  "name": "exames_para_todos",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "Gabriel Stein <workstein0@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "vue": "^1.0.26"
+  }
+}

@@ -1,0 +1,133 @@
+doctype html
+html(lang='en')
+    head
+        meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+        // Meta, title, CSS, favicons, etc.
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        title Administração - Revista Avianca
+        // Bootstrap
+        link(href='/admin_assets/vendors/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+        // Font Awesome
+        link(href='/admin_assets/vendors/font-awesome/css/font-awesome.min.css', rel='stylesheet')
+        // NProgress
+        link(href='/admin_assets/vendors/nprogress/nprogress.css', rel='stylesheet')
+        // iCheck
+        link(href='/admin_assets/vendors/iCheck/skins/flat/green.css', rel='stylesheet')
+        // bootstrap-progressbar
+        link(href='/admin_assets/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css', rel='stylesheet')
+        // JQVMap
+        link(href='/admin_assets/vendors/jqvmap/dist/jqvmap.min.css', rel='stylesheet')
+        link(href='/admin_assets/css/sweetalert.css', rel='stylesheet')
+        // Custom Theme Style
+        link(href='/admin_assets/build/css/custom.min.css', rel='stylesheet')
+        block styles
+    body.nav-md
+        .container.body
+            .main_container
+                .col-md-3.left_col
+                    .left_col.scroll-view
+                        .navbar.nav_title(style='border: 0;')
+                            a.site_title(href='/admin')
+                                span Avianca - Admin
+                        .clearfix
+                        // menu profile quick info
+                        br
+                        // sidebar menu
+                        #sidebar-menu.main_menu_side.hidden-print.main_menu
+                            .menu_section
+                                h3 Gerenciamento
+                                ul.nav.side-menu
+                                    li
+                                        a(href="/admin")
+                                            i.fa.fa-home
+                                            |  Dashboard
+                                    li
+                                        a(href="/admin/materias")
+                                            i.fa.fa-newspaper-o
+                                            |  Matérias
+                                    li
+                                        a(href="/admin/tags")
+                                            i.fa.fa-hashtag
+                                            |  Tags
+                                    li
+                                        a(href="/admin/autores")
+                                            i.fa.fa-user
+                                            |  Autores
+                                    li
+                                        a(href="/admin/categorias")
+                                            i.fa.fa-tag
+                                            |  Categorias
+                                    li
+                                        a(href="/admin/subcategorias")
+                                            i.fa.fa-tag
+                                            |  Subcategorias
+                                    li
+                                        a(href="/admin/edicoes")
+                                            i.fa.fa-book
+                                            |  Edições
+                                    li
+                                        a(href="/admin/localizacoes")
+                                            i.fa.fa-map-marker
+                                            |  Localizações
+                                    li
+                                        a(href="/admin/videos")
+                                            i.fa.fa-camera
+                                            |  Vídeos
+                                    li
+                                        a(href="/admin/welove")
+                                            i.fa.fa-camera
+                                            |  WeLove
+                                    li
+                                        a(href="/admin/config/social")
+                                            i.fa.fa-users
+                                            |  Social
+
+                        // /sidebar menu
+                        // /menu footer buttons
+                        .sidebar-footer.hidden-small
+                            a(title='Sair' href="/logout")
+                                span.glyphicon.glyphicon-off(aria-hidden='true')
+                        // /menu footer buttons
+                // top navigation
+                .top_nav
+                    .nav_menu
+                        nav
+                            .nav.toggle
+                                a#menu_toggle
+                                    i.fa.fa-bars
+                            ul.nav.navbar-nav.navbar-right
+                                li
+                                    a.user-profile.dropdown-toggle(href='javascript:;', data-toggle='dropdown', aria-expanded='false')
+                                        | Administrador&nbsp;
+                                        span.fa.fa-angle-down
+                                    ul.dropdown-menu.dropdown-usermenu.pull-right
+                                        li
+                                            a(href='/logout')
+                                                i.fa.fa-sign-out.pull-right
+                                                |  Sair
+                // /top navigation
+                // page content
+                block content
+                // /page content
+                // footer content
+                footer
+                    .pull-right
+                        | Desenvolvido por&nbsp;
+                        a(href='http://www.gabrielstein.com.br', target="_blank") Gabriel Stein
+                    .clearfix
+                // /footer content
+        // jQuery
+        script(src='/admin_assets/vendors/jquery/dist/jquery.min.js')
+        // Bootstrap
+        script(src='/admin_assets/vendors/bootstrap/dist/js/bootstrap.min.js')
+        // FastClick
+        script(src='/admin_assets/vendors/fastclick/lib/fastclick.js')
+        // NProgress
+        script(src='/admin_assets/vendors/nprogress/nprogress.js')
+        script(src='/admin_assets/js/sweetalert.min.js')
+        script(src='/admin_assets/js/main.js')
+        // Custom Theme Scripts
+        script(src='/admin_assets/build/js/custom.min.js')
+        block scripts

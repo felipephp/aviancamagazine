@@ -1,0 +1,41 @@
+extends base
+
+block content
+	.main-content
+		// Page head tile
+		.page-head-tile
+			.container
+				.breadcrumbs-block
+					ul.breadcrumbs
+						li.bc-item
+							a(href='/') Home
+							i.fa.fa-angle-right
+						li.bc-item
+							a(href='/welove') WeLove
+				.page-title
+					h1.title-16
+						strong WeLove
+		// Page head tile END
+		.section
+			.row
+				.content
+					.pst-block
+						.pst-block-main
+							if !welove.length
+								.alert.alert-info
+									p Não encontramos nenhum resultado. Seja o primeiro a enviar a sua foto e aparecer aqui!
+							.gallery
+								.inner
+									for a in welove
+										.one-third.sm-one-third.xs-half.mb-pt-full
+											.gallery-item
+												.img
+													a.js-gallery-link(href=a.imagem_path)
+														img.adaptive(src=a.imagem_path+"?dim=250x250", height='250', width='250', alt='WeLove')
+
+
+				aside.side-bar
+					.js-sidebar
+						include ./partials/_welove
+						include ./partials/_tags
+						include ./partials/_newsletter

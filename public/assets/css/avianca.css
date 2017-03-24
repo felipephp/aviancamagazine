@@ -1,0 +1,245 @@
+.cleaner{
+    width: 100%;
+    height: 0px !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    clear: both !important;
+}
+
+.mh-logo img {
+    height: 70px;
+}
+
+
+.inner-wrapper {
+    padding: 0;
+}
+
+.mh-top {
+    margin: 14px 0 0px;
+}
+
+/*.mh-logo img {
+    height: 160px;
+}*/
+
+.mh-logo img {
+    height: 150px;
+    margin-top: 0;
+    position: relative;
+    top: 10px;
+    left: -20px;
+}
+.main-header .mh-logo, .sticky-header .mh-logo {
+    /*padding: 0;*/
+}
+
+p.phone {
+    margin-bottom: 5px;
+}
+
+p.phone strong {
+    display: block;
+    color: #fd3a13;
+}
+
+p.phone a {
+    color: #8a8a8a;
+}
+
+.full-width {
+    width: 100%;
+    display: block;
+}
+
+/*.btn-avianca {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    color: #fff;
+    background-color: #fd3a13;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    cursor: pointer;
+    font: 500 11px/20px "Poppins";
+    border: none;
+    display: block;
+    padding: 6px 10px 4px;
+    min-width: 88px;
+    text-align: center;
+    text-transform: uppercase;
+}*/
+
+.mh-banner img {
+    height: 125px;
+    width: auto !important;
+}
+
+.top-bar .tb-sing-login {
+    width: 15.75%;
+}
+
+.text-capa {
+    display: inline-block;
+    padding: 0;
+    margin-left: 10px;
+    color: #c20d19;
+    font-size: 34px;
+    font-weight: normal;
+}
+
+.text-capa span {
+    display: block;
+    font-size: 14px;
+    color: black;
+}
+
+h3.edicoes {
+    color: #a4a4a5;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: 10px;
+}
+
+.trending-line {
+    padding: 0 70px 0 130px;
+}
+
+.capa {
+    text-align: center;
+}
+
+.capa img {
+    width: 90%;
+}
+
+.main-slider-2 .slide-count, .main-slider-3 .slide-count {
+    width: 70px;
+}
+
+.trending-line .trending-now {
+    background-color: #c20d19;
+}
+
+.trending-line .trending-now:after {
+    border-left: 5px solid #c20d19;
+}
+
+.welove-icon {
+    width: 15px;
+}
+
+.social-image {
+    display: block;
+    float: left;
+}
+
+/*WeLove Form*/
+form[name="welove"] .form-group {
+    width: 50%;
+    float: left;
+    text-align: center;
+    padding: 0 17px;
+}
+
+form[name="welove"] .form-group input.form-control {
+    width: 100%;
+    border: 1px solid #ebebeb;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+form[name="welove"] button.btn-welove {
+    background: #ebebeb;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 3px;
+    font-family: 'montserrat';
+    text-transform: uppercase;
+    font-size: 11px;
+    color: gray;
+    float: right;
+    margin-right: 17px;
+    margin-top: 20px;
+}
+
+.welove-form {
+    width: 78%;
+    float: left;
+}
+
+.welove-form h3 {
+    padding-left: 17px;
+    color: #cecece;
+}
+
+form[name="welove"] .foto {
+    width: 22%;
+    float: left;
+    padding-left: 17px;
+}
+form[name="welove"] .foto .foto-container {
+    border: 1px dashed #cacaca;
+    border-radius: 5px;
+    height: 245px;
+    padding: 10px;
+}
+
+form[name="welove"] .foto .foto-container #foto-src{
+    width: 100%;
+    height: 100%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+/*WeLove Form*/
+
+/*Slick slider*/
+.slick-initialized .slick-slide{
+    outline: none;
+}
+
+.postGalleryShow {
+    width: 500px;
+}
+.postGalleryShow img{
+    width: 100%;
+}
+/*Slick slider*/
+
+@media screen and (max-width: 1400px){
+    .postGalleryShow{
+        width: 100%;
+    }
+} 
+
+/*Sweet alert*/
+.sweet-alert .sa-icon.sa-success .sa-placeholder{
+    border: 4px solid rgba(216, 216, 216, 0.2) !important;
+}
+
+.sweet-alert .sa-icon.sa-success .sa-line{
+    background-color: #d6d6d6 !important;
+}
+
+.sweet-alert .sa-icon.sa-success{
+    border-color: red;
+}
+
+.vpst-block-foot a.social {
+    border-top: 1px solid #d2d2d2;
+    color: inherit;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    padding: 14px 20px 13px;
+    color: #000;
+}
+
+.welove.members-photo img {
+    width: 200px;
+    height: 200px;
+}

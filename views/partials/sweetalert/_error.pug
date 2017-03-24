@@ -1,0 +1,8 @@
+if flash.sa_danger
+    script.
+        var message = "!{flash.sa_danger}";
+        swal({
+            title: "Erro",
+            text: message,
+            type: "error", confirmButtonText: "OK"
+        });

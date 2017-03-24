@@ -1,0 +1,57 @@
+extends ../base
+
+block content
+    .right_col(role='main')
+      div
+        .row
+          .col-md-12.col-sm-12.col-xs-12
+            .x_panel
+              .x_title
+                h2
+                  | Configurações
+                  small Vídeos Home
+                .clearfix
+              .x_content
+                br
+                form(action="/admin/config/videos", method="POST").form-horizontal.form-label-left
+                  .col-md-12
+                      include ../../partials/_errors
+                      include ../../partials/_success
+                  .form-group
+                    label.control-label.col-md-3.col-sm-3.col-xs-12(for='nome')
+                      | Vídeo 1 Código
+                      span.required *
+                    .col-md-6.col-sm-6.col-xs-12
+                      input.form-control.col-md-7.col-xs-12(type='text', required, name="video1_url", value=configs.video1_url)
+                  .form-group
+                    label.control-label.col-md-3.col-sm-3.col-xs-12(for='nome')
+                      | Vídeo 2 Código
+                      span.required *
+                    .col-md-6.col-sm-6.col-xs-12
+                      input.form-control.col-md-7.col-xs-12(type='text', required, name="video2_url", value=configs.video2_url)
+                  .form-group
+                    label.control-label.col-md-3.col-sm-3.col-xs-12(for='nome')
+                      | Vídeo 3 Código
+                      span.required *
+                    .col-md-6.col-sm-6.col-xs-12
+                      input.form-control.col-md-7.col-xs-12(type='text', required, name="video3_url", value=configs.video3_url)
+                  .form-group
+                    label.control-label.col-md-3.col-sm-3.col-xs-12(for='nome')
+                      | Vídeo 4 Código
+                      span.required *
+                    .col-md-6.col-sm-6.col-xs-12
+                      input.form-control.col-md-7.col-xs-12(type='text', required, name="video4_url", value=configs.video4_url)
+                  .form-group
+                    label.control-label.col-md-3.col-sm-3.col-xs-12(for='nome')
+                      | Vídeo 5 Código
+                      span.required *
+                    .col-md-6.col-sm-6.col-xs-12
+                      input.form-control.col-md-7.col-xs-12(type='text', required, name="video5_url", value=configs.video5_url)
+
+
+
+                  .ln_solid
+                  .form-group
+                    .col-md-6.col-sm-6.col-xs-12.col-md-offset-3
+                      button.btn.btn-success(type='submit') Enviar
+    // /page content

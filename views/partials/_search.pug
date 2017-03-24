@@ -1,0 +1,16 @@
+.search-forums-widget
+    .pst-block
+        .pst-block-head
+            h2.title-4
+                strong Faça
+                |  uma busca
+        .pst-block-main
+            form.search-form-3(action="/buscar", method="GET")
+                form(action='#', method='post')
+                    .src-input
+                        if q
+                            input(type='search', name="q" placeholder='Buscar..', value=q)
+                        else
+                            input(type='search', name="q" placeholder='Buscar..')
+                        .src-icon
+                            i.li_search

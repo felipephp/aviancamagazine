@@ -1,0 +1,9 @@
+if flash.sa_success
+    script.
+        var message = "!{flash.sa_success}";
+        swal({
+            title: "Sucesso!",
+            text: message,
+            html: true,
+            type: "success", confirmButtonText: "OK"
+        });
