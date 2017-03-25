@@ -4,7 +4,7 @@ module.exports = {
 
     host: "127.0.0.1",
     user: "root",
-    password: "elipse",
+    password: "Elipse#1126",
     database: "node_avianca",
     connection: null,
     query: null,
