@@ -1,5 +1,6 @@
 var async = require('async');
 
+var Autor = require('../models/autor.model');
 var Materia = require('../models/materia.model');
 var Edicao = require('../models/edicao.model');
 var Categoria = require('../models/categoria.model');
@@ -18,8 +19,455 @@ var express = require('express');
 var app = express();
 
 var Seeder = require('../models/seeders/_main.seeder');
-
+var querystring = require('querystring');
 var _prompt = require('prompt');
+
+exports.migrate = function(req, res, next){
+    async.waterfall(
+        [
+            function(callback, socket, data)
+            {
+                data = {};
+                callback(null, socket, data);
+            },
+
+            //readCateg,
+            //readArticles,
+            //readEditions,
+            //readAuthors,
+            //readSubcat,
+            // updateArticlesFK,
+            convert,
+            confirmExport
+
+            // migrateArticles
+        ],
+        function(err, result)
+        {
+            //console.log('\n\n ======================= Enviar para isnertMany');
+            //console.log('result::',result);
+            mysql.insertMany( { table: result.table, data: result.mysqlData }, function(rows){
+                console.log('\n\n *********** Ok, inserted');
+            });
+        }
+    )
+
+    function readCateg(socket, data, callback){
+        Categoria.find({})
+            .exec(function(err, result){
+                if (err) { return next(err); }
+                // console.log(result);
+
+                cols = {
+                    _id: 'old_id',
+                    slug: 'slug',
+                    nome: 'name',
+                    fixed_menu: 'fixed',
+                    ordem: 'position',
+                    created_at: 'created_at'
+                }
+
+
+                data.controllers = {
+                    fixed: function(value){
+                        if (!value) {
+                            value = 0;
+                        }
+
+                        return value;
+                    },
+
+                    position: function(value){
+                        if (!value) {
+                            value = 0;
+                        }
+
+                        return value;
+                    },
+
+                    old_id: function(value){
+                        return "'"+value+"'";
+                    }
+                }
+
+                data.table = 'categories';
+                data.cols   = cols;
+                data.found  = result;
+
+                callback(null, socket, data);
+            })
+    }
+
+    function readArticles(socket, data, callback){
+        //var sub_id = 'Here';
+
+        Materia.find({})
+            .populate(['subcategoria','autor','edicao'])
+            .exec(function(err, result){
+                if (err) { return next(err); }
+                console.log('res::', result);
+
+                cols = {
+                    "_id"                   : 'old_id',
+                    "subcategoria"          : 'old_cat_id',
+                    "autor"                 : 'old_aut_id',
+                    "edicao"                : 'old_edi_id',
+                    "slug"                  : 'slug',
+                    "imagem_principal_path" : 'main_img_path',
+                    "titulo"                : 'title',
+                    "titulo_chamada"        : 'headline_title',
+                    "conteudo_chamada"      : 'headline_content',
+                    "available_at"          : 'available_at',
+                    "conteudo"              : 'content',
+                    "created_at"            : 'created_at',
+                    // "tags"                  : 'tags',
+                }
+
+
+                data.controllers = {
+                    old_id: function(value){
+                        return "'"+value+"'";
+                    },
+
+                    old_cat_id: function(value){
+                        return "'"+value._id+"'";
+                    },
+
+                    old_aut_id: function(value){
+                        if (value == undefined) {
+                            //avianca em revista
+                            return '58a2fe0375a20b763a07366d';
+                        }else{
+                            return "'"+value._id+"'";
+                        }
+                    },
+                    old_edi_id: function(value){
+                        return "'"+value._id+"'";
+                    },
+                }
+
+                data.table = 'articles';
+                data.cols   = cols;
+                data.found  = result;
+
+                callback(null, socket, data);
+            })
+    }
+
+    function readEditions(socket, data, callback){
+        Edicao.find({})
+            .exec(function(err, result){
+                if (err) { return next(err); }
+                // console.log(result);
+
+                cols = {
+                    _id: 'old_id',
+                    'capa_path': 'img_path',
+                    'numero': 'number',
+                    'titulo': 'title',
+                    'link_online': 'link',
+                    'created_at': 'created_at'
+                }
+
+
+                data.controllers = {
+                    old_id: function(value){
+                        return "'"+value+"'";
+                    }
+                }
+
+                data.table = 'editions';
+                data.cols   = cols;
+                data.found  = result;
+
+                callback(null, socket, data);
+            })
+    }
+
+    function readAuthors(socket, data, callback)
+    {
+        Autor.find({})
+        .exec(function(err, result){
+            if (err) { return next(err); }
+            // console.log(result);
+
+            cols = {
+                _id: 'old_id',
+                'nome': 'name',
+                'cargo': 'position',
+                'mini_cv': 'short_resume',
+                'created_at': 'created_at'
+            }
+
+
+            data.controllers = {
+                old_id: function(value){
+                    return "'"+value+"'";
+                }
+            }
+
+            data.table = 'authors';
+            data.cols   = cols;
+            data.found  = result;
+
+            callback(null, socket, data);
+        })
+    }
+
+    function readSubcat(socket, data, callback){
+        Subcategoria.find({ 'categoria' : '58d5778bca66604b76f992f6' })
+            .exec(function(err, result){
+                if (err) { return next(err); }
+                // console.log(result);
+
+                cols = {
+                    _id: 'old_id',
+                    'slug': 'slug',
+                    'nome': 'name',
+                    'categoria': 'categories_id',
+                    'created_at': 'created_at'
+                }
+
+                data.controllers = {
+                    old_id: function(value){
+                        return "'"+value+"'";
+                    },
+
+                    categories_id: function(value){
+                        var real_id = 0;
+                        //value = "'"+value+"'";
+
+                        var V = value.toString();
+                        //console.log('currval::', value);
+                        
+                        switch(V)
+                        {
+                            case '589bbddcd469b56893cfc27b':
+                                real_id = 1;
+                                break;
+
+                            case '589bbe420551da698b474c05':
+                                real_id = 2;
+                                break;
+
+                            case '589bbdfeebbd1068f49c0611':
+                                real_id = 3;
+                                break;
+
+                            case '589bbe4c01c0ae69d1a0c181':
+                                real_id = 4;
+                                break;
+
+                            case '58ab73fb1413ce267e4d3172':
+                                real_id = 5;
+                                break;
+
+                            case '58d03619a7692b27f8c868d3': //categoria perdida
+                                real_id = 6;
+                                break;
+
+                            case '58d5676efe4d0945a268bbd2': //categoria perdida
+                                real_id = 7;
+                                break;
+
+                            case '58a5a8b24f533c41dad42baf':
+                                real_id = 8;
+                                break;
+
+                            case '58d5778bca66604b76f992f6': //categoria perdida
+                                real_id = 9;
+                                break;
+                        }
+
+                        return real_id;
+                    }
+                }
+
+                data.table  = 'categories';
+                data.cols   = cols;
+                data.found  = result;
+
+                callback(null, socket, data);
+            })
+    }
+
+    function updateArticlesFK(socket, data, callback){
+        async.waterfall(
+            [
+                function(callback2) {
+                    callback2(null, socket, data);
+                },
+
+                getCategories,
+                getAuthors,
+                getEdtitions,
+            ],
+            function(err2, finalResult)
+            {
+
+            }
+        )
+
+        function getCategories(socket2, data2, callback2) {
+
+            console.log('\n **************************************** \n * categories have already been updated * \n ****************************************');
+            callback2(null, socket2, data2);
+            return false;
+
+            mysql.query('SELECT id, old_id FROM categories WHERE categories_id IS NOT NULL', function(subcats){
+                
+                for(var idx in subcats)
+                {
+                    var scat = subcats[idx];
+                    //console.log('old found::', scat.old_id);
+                    mysql.query.update = true;
+                    mysql.query.arrayValues = [scat.id, scat.old_id];
+                    mysql.query("UPDATE articles SET categories_id = ? WHERE old_cat_id = ?", function(){
+                        //console.log('\n\nupdated...');
+                    })
+                }
+
+            });
+
+        }
+
+        function getAuthors(socket2, data2, callback2) {
+
+            console.log('\n ************************************* \n * authors have already been updated * \n *************************************');
+            callback2(null, socket2, data2);
+            return false;
+
+            mysql.query('SELECT id, old_id FROM authors', function(authors){
+                
+                for(var idx in authors)
+                {
+                    var scat = authors[idx];
+                    //console.log('old found::', scat.old_id);
+                    mysql.query.update = true;
+                    mysql.query.arrayValues = [scat.id, scat.old_id];
+                    mysql.query("UPDATE articles SET authors_id = ? WHERE old_aut_id = ?", function(){
+                        //console.log('\n\nupdated...');
+                    })
+                }
+
+            });
+        }
+
+        function getEdtitions(socket2, data2, callback2) {
+
+            console.log('\n ************************************** \n * editions have already been updated * \n **************************************');
+            callback2(null, socket2, data2);
+            return false;
+
+            mysql.query('SELECT id, old_id FROM editions', function(editions){
+                
+                for(var idx in editions)
+                {
+                    var scat = editions[idx];
+                    //console.log('old found::', scat.old_id);
+                    mysql.query.update = true;
+                    mysql.query.arrayValues = [scat.id, scat.old_id];
+                    mysql.query("UPDATE articles SET editions_id = ? WHERE old_edi_id = ?", function(){
+                        //console.log('\n\nupdated...');
+                    })
+                }
+
+            });
+        }
+    }
+
+    function convert(socket, data, callback){
+
+        var converted = [];
+        var found = data.found;
+        var cols = data.cols;
+
+        for(var idx in found)
+        {
+            var obj = {};
+            var cat = found[idx];
+
+            //console.log('\ncat '+idx+'\n');
+            for(var attr_i in cols)
+            {
+                var col = cols[attr_i];
+
+                //console.log('col '+attr_i+' da categoria é: '+cat[attr_i]+' e a coluna no mysql será: '+col);
+
+                //var value = ( !cat[attr_i] ) ? null : cat[attr_i];
+                var value;
+                if ( typeof data.controllers[col] == 'function' ) {
+                    //Example: fixed(colValue)
+                    value = data.controllers[col](cat[attr_i]);
+                }else{
+                    //Just assign and continue...
+                    value = cat[attr_i];
+                }
+
+                obj[col] = value;
+            }
+
+            //console.log('mysql converted: ', obj);
+            converted.push(obj);
+        }
+
+        data.mysqlData = converted;
+
+        callback(null, socket, data);
+    }
+
+    function migrateArticles(socket, data, callback){
+
+    }
+
+    function confirmExport(socket, data, callback){
+        var desc = '\n ';
+        desc += '\n******************************';
+        desc += '\n* EXPORTAR DADOS PARA MYSQL? *';
+        desc += '\n******************************';
+        desc += '\n [yes, no]';
+
+
+        //console.log('DATA::', data);
+        // user confirmation required!
+        _prompt.start();
+        
+        // disable prefix message & colors
+        _prompt.message = '';
+        _prompt.delimiter = '';
+        _prompt.colors = false;
+        // wait for user confirmation
+        _prompt.get({
+            properties: {
+                
+                // setup the dialog
+                confirm: {
+                    // allow yes, no, y, n, YES, NO, Y, N as answer
+                    pattern: /^(yes|no|y|n)$/gi,
+                    description: desc,
+                    message: 'Type yes/no',
+                    required: true,
+                    default: 'no'
+                }
+            }
+        }, function (err, result){
+            // transform to lower case
+            var c = result.confirm.toLowerCase();
+            
+            // yes or y typed ? otherwise abort
+            if (c!='y' && c!='yes'){
+                console.log(' ****************** \n * Action Aborted * \n ******************');
+                return;
+            }
+            
+            // your code
+            //sendSeed();
+            callback(null, data);
+            console.log(' ******************** \n * Action confirmed * \n ********************');
+            
+        });
+    }
+}
 
 exports.seeder = function(req, res, next){
 
@@ -127,114 +575,54 @@ exports.home = function(req, res, next) {
     var negocios_id = null;
     var life_style_id = null;
 
-    var edicoes_ids = null;
+    //var edicoes_ids = null;
+    var slider = {};
 
     async.series({
-        edicoes_ids: function(cb) {
-            Edicao.find({})
-                .sort('-numero')
-                .skip(1)
-                .limit(3)
-                .exec(function(err, result) {
-                    if (err) { return next(err); }
-                    edicoes_ids = result;
-                    cb(null);
-                })
-        },
 
-        mainSlider: function(cb){
+        slider: function(cb){
 
-                FinalObj = {};
-
-                async.waterfall([
-                    //Verificar qual é a última edição
-                    function(cb2) {
-                        Edicao.findOne({})
-                            .sort('-numero')
-                            .exec(function(err, edicaoAtual) {
-                                if (err) { return cb(err); }
-                                FinalObj['edicaoAtual'] = edicaoAtual;
-                                cb2(null);
-                            })
+            async.waterfall(
+                [
+                    function(callback, socket, data) {
+                        callback(null, socket, data);
                     },
 
-                    //Encontrar categoria DESTINOS
-                    function (cb2){
-                        Categoria.findOne({ 'slug': 'destinos' })
-                            .exec(function(err, categ){
-                                FinalObj['destinos_id'] = categ._id;
-                                cb2(null);
-                            })
-                    },
-                    
-                    //Pegar a matéria de capa da ultima edição, se existir.
-                    function(cb2) {
-                        id_edicao = FinalObj.edicaoAtual._id;
+                    getLastCover,
+                    getLastDestinations,
+                ], 
+                function(err, socket, finalResult)
+                {
+                    cb();
+                }
+            )
 
-                        Materia.findOne({ 'edicao' : id_edicao, 'subcategoria' : '58a5eab84f533c41dad42be4' })
-                            .populate(['categoria','subcategoria'])
-                            .select({'conteudo': false, 'info_conteudo': false})
-                            .sort('created_at')
-                            .exec(function(err, materia) {
-                                if (err) { return cb(err); }
+            function getLastCover(socket, data, callback){
+                var querystring = 'select a.main_img_path, a.title, a.slug, b.name AS subcategoria, c.name AS categoria from articles as a ';
+                querystring += 'inner join categories as b ON a.categories_id = b.id ';
+                querystring += 'inner join categories as c ON b.categories_id = c.id';
 
-                                if (materia) {
-                                    FinalObj['capa'] = materia; 
-                                }
+                mysql.query(querystring, function(rows){
+                    slider[0] = rows[0];
+                    callback(null, socket, data);
+                });
+            }
 
-                                cb2(null);
-                            })
-                    },
+            function getLastDestinations(socket, data, callback){
+                var querystring =
+                    'select a.main_img_path, a.title, a.slug, b.name AS subcategoria, c.name AS categoria from articles as a ' +
+                    'inner join categories as b ON a.categories_id = b.id ' +
+                    'inner join categories as c ON b.categories_id = c.id ' +
+                    'where a.categories_id = 11 OR a.categories_id = 10 order by editions_id DESC LIMIT 2';
 
-                    //Se não houver matéria de capa da ultima edição, pegar a capa mais recente.
-                    function(cb2){
-                        // console.log(FinalObj);
-                        if (!FinalObj.capa) {
-                            Materia.findOne({ 'subcategoria' : '58a5eab84f533c41dad42be4' })
-                                .populate(['categoria','subcategoria'])
-                                .select({'conteudo': false, 'info_conteudo': false})
-                                .sort('created_at')
-                                .exec(function(err, materia) {
-                                    if (err) { return cb(err); }
-                                    FinalObj['capa'] = materia;
-                                    cb2(null);
-                                })
-                        //se houver, continua normalmente...
-                        }else{
-                            cb2(null);
-                        }
-                    },
+                mysql.query(querystring, function(rows){
+                    slider[1] = rows[0];
+                    slider[2] = rows[1];
 
-                    //Encontrar matérias de destinos
-                    function (cb2){
-                        Materia.find({ 'categoria': FinalObj.destinos_id })
-                            .populate(['categoria','subcategoria'])
-                            .select({'conteudo': false, 'info_conteudo': false})
-                            .sort('created_at')
-                            .limit(2)
-                            .exec(function(err, destinos){
-                                if (err) { return cb(err); }
-                                FinalObj['destinos'] = destinos;
-                                cb2(null);
-                            })
-                    },
-                ], function(err) {
-                    
-                    if (err) {
-                        return cb(err);
-                    }
-
-                    // console.log('fo::', FinalObj);
-                    var obj = {
-                        0: FinalObj.capa,
-                        1: FinalObj.destinos[0],
-                        2: FinalObj.destinos[1]
-                    }
-
-                    FinalObj = obj;
-                    // console.log(obj);
-                    cb(null);
-                })
+                    console.log('SLIDER::', slider);
+                    callback(null, socket, data);
+                });   
+            }
         },
 
         negocios: function(cb) {
@@ -248,6 +636,7 @@ exports.home = function(req, res, next) {
                     cb(null, result);
                 });
         },
+
         negocios_materias: function(cb) {
             //console.log("negocios_id", negocios_id);
             Materia.find({categoria: negocios_id})
@@ -258,6 +647,7 @@ exports.home = function(req, res, next) {
                     cb(null, result);
                 });
         },
+
         life_style: function(cb) {
             Categoria.findOne({slug: "life-style"})
                 .limit(5)
@@ -344,7 +734,7 @@ exports.home = function(req, res, next) {
         // results['mainSlider'] = FinalObj;
         // console.log(results);
         // return hb.compile('home');
-        return res.render('home', {_categorias: results, mainSlider: FinalObj});
+        return res.render('home', {_categorias: results, mainSlider: slider});
     })
 
 

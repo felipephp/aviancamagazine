@@ -15,7 +15,7 @@ module.exports = {
         this.connection = MySQLExt.createConnection({
           host: "127.0.0.1",
           user: "root",
-          password: "elipse",
+          password: "rst5630991",
           database: "node_avianca"
         });
     },
@@ -49,10 +49,22 @@ module.exports = {
 
         this.connect();
         
-        var fn = this.connection.query(queryString, function(err, result){
-            if(err) throw err;
-            callback(result);
-        });
+        if (this.query.insert || this.query.update) {
+            //console.log(this.query.arrayValues);
+            console.log('\n\n::querystring', queryString);
+            var fn = this.connection.query(queryString, this.query.arrayValues, function(err, result){
+                if(err) throw err;
+                callback(result);
+            });
+
+        }
+        else{
+            console.log('here');
+            var fn = this.connection.query(queryString, function(err, result){
+                if(err) throw err;
+                callback(result);
+            });
+        }
 
         
         this.end();
@@ -101,22 +113,30 @@ module.exports = {
 
         var cols = false;
         var values = '';
+        var arrayValues = [];
 
         for(col in data)
         {
             if (!cols) 
             { 
                 cols    = col; 
-                values  = '"'+data[col]+'"';
+                // values  = '"'+data[col]+'"';
+                values = '?';
             }
             else 
             { 
                 cols += ', '+col; 
-                values += ', "'+data[col]+'"';
+                //values += ', "'+data[col]+'"';
+                values += ', ?';
             }
+
+            arrayValues.push(data[col]);
         }
 
-        this.query.insert = "INSERT INTO "+table+" ("+cols+") value("+values+")";
+        this.query.arrayValues = arrayValues;
+        this.query.insert = "INSERT INTO "+table+" ("+cols+") values("+ values +")";
+
+        // console.log(  this.query.arrayValues );
         return this;
     },
 

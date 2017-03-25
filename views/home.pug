@@ -25,16 +25,15 @@ block content
                                         article.post.post-tp-1(Style="height: 100%")
                                             figure(Style="height: 100%")
                                                 a(href='/materias/'+materiaSlider.slug Style="height: 100%")
-                                                    div.adaptive(alt='Spectr News Theme' Style="height: 100%; width: 100%; background-image: url('"+materiaSlider.info_imagem+"'); background-size: 100%; background-position: 50%;")
+                                                    div.adaptive(alt='Spectr News Theme' Style="height: 100%; width: 100%; background-image: url('"+materiaSlider.main_img_path+"'); background-size: 100%; background-position: 50%;")
                                             .ptp-1-overlay
                                                 .ptp-1-data
                                                     a.category-tp-1(href='/materias/'+materiaSlider.slug)
-                                                     | #{materiaSlider.categoria.nome} > #{materiaSlider.subcategoria.nome}
+                                                     | #{materiaSlider.categoria} > #{materiaSlider.subcategoria}
                                                     h1.title-1
-                                                        a(href='/materias/'+materiaSlider.slug)= materiaSlider.info_titulo
+                                                        a(href='/materias/'+materiaSlider.slug)= materiaSlider.title
                                                     .meta-tp-1
                                                         .ptp-1-date
-                                                            a(href='/materias/'+materiaSlider.slug)= materiaSlider.data_postagem
                                                     a.read-tp-1(href='/materias/'+materiaSlider.slug)
                                                         span Leia mais
                                                         span.arr-right-light-ic
@@ -61,11 +60,10 @@ block content
                                                 article.post.post-tp-3
                                                     figure
                                                         a(href='')
-                                                            img.adaptive(src=materiaSlider.info_imagem+"?dim=126x98", height='98', width='126', alt='Spectr News Theme')
-                                                    a.category-tp-2(href='') #{materiaSlider.subcategoria.nome}
+                                                            img.adaptive(src=materiaSlider.main_img_path+"?dim=126x98", height='98', width='126', alt='Spectr News Theme')
+                                                    a.category-tp-2(href='') #{materiaSlider.subcategoria}
                                                     h3.title-3
-                                                        a(href='/materias/'+materiaSlider.slug)= materiaSlider.info_titulo
-                                                    .date-tp-2= materiaSlider.data_postagem
+                                                        a(href='/materias/'+materiaSlider.slug)= materiaSlider.title
                                 .trpst-block-foot
                                     a(href='/edicoes')
                                         span.more-txt Mais matérias

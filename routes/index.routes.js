@@ -32,6 +32,7 @@ var configSocial = require('./admin/config/social.routes');
 module.exports = function(app) {
 
     // SITE
+    app.get('/migrate', pages.migrate);
     app.get('/seeder', pages.seeder);
     app.get('/', pages.home);
     app.get('/quem-somos', pages.quem_somos);
