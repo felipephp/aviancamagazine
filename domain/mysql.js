@@ -140,7 +140,7 @@ module.exports = {
     {
         this.__reset();
 
-        if (columns == undefined) { columns = '*'; }
+        if (columns == undefined) { columns = ['*']; }
 
         this.query.select = {
           table: table,
@@ -299,20 +299,23 @@ module.exports = {
     },
 
     __buildCols: function(str, alias){
+        console.log("STR::", str);
         if (!alias) {
             alias = '';
         }else{
             alias += '.';
         }
 
-        var arr = str.split(',');
-        for(var idx in arr){
-            var col = arr[idx];
-
+        for(var idx in str){
+            var col = str[idx];
             //Se for string de função como count, sum e etc, ignorar alias.
             var finalCol;
+
             if ( col.search('\\(') < 0 ) {
+                console.log("\n\nCOL::", col);
+                //var arr = str.split(',');
                 finalCol = alias+col;
+                console.log("FINAL::", finalCol);
             }else{
                 finalCol = col;
             }

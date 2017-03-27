@@ -190,8 +190,8 @@ exports.edit = function(req, res, next) {
                 })
         },
         subcategorias: function (cb) {
-            mysql.select('categories', 'id AS sub_id, name AS sub_name')
-                .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: 'name AS cat_name' })
+            mysql.select('categories', ['id AS sub_id', 'name AS sub_name'])
+                .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS cat_name'] })
                 .where('A.categories_id IS NOT NULL')
                 .orderBy('B.name')
                 .exec(function (subcategorias) {
@@ -222,11 +222,12 @@ exports.edit = function(req, res, next) {
     }, function(err, results) {
         if (err) { return next(err); }
 
-        mysql.select('articles')
-            .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: 'id AS sub_id' })
-            .join({ table: 'editions', on: 'id', key: 'A.editions_id', columns: 'id AS edi_id' })
-            .join({ table: 'authors', on: 'id', key: 'A.authors_id', columns: 'id AS aut_id' })
-            .join({ type: 'LEFT', table: 'locations_has_articles', on: 'articles_id', key: 'A.id', columns: 'locations_id' })
+        mysql.select('articles') //a
+            .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['id AS sub_id'] }) //b
+            .join({ table: 'editions', on: 'id', key: 'A.editions_id', columns: ['id AS edi_id'] }) //c
+            .join({ table: 'authors', on: 'id', key: 'A.authors_id', columns: ['id AS aut_id'] }) //d
+            .join({ type: 'LEFT', table: 'locations_has_articles', on: 'articles_id', key: 'A.id', columns: ['locations_id'] }) //e
+            .join({ type: 'LEFT', table: 'articles_has_tags', on: 'articles_id', key: 'A.id', columns: ["CONCAT(F.tags_id, ',') AS tags"] }) //f
             .where('A.id = '+id)
             .exec(function (row) {
                 row = row[0];
@@ -238,16 +239,8 @@ exports.edit = function(req, res, next) {
                 console.log('found::', row);
                 return res.render('admin/'+base_route+'/form', {mode: "edit", one: row, results: results});
             });
-        // Model.findOne({_id: id}, function(err, one) {
-        //     if (err) { return next(err); }
-        //     return res.render('admin/'+base_route+'/form', {mode: "edit", one: one, results: results});
-        // });
-
     })
-
-
-
-}
+};
 
 
 exports.update = function(req, res, next) {
