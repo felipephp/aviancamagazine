@@ -14,7 +14,7 @@ block content
 		.right_col(role='main')
 			div
 				.row
-					form(action= mode == 'create' ? '/admin/materias' : '/admin/materias/'+one._id, method="POST", enctype="multipart/form-data").form-horizontal.form-label-left
+					form(action= mode == 'create' ? '/admin/materias' : '/admin/materias/'+one.id, method="POST", enctype="multipart/form-data").form-horizontal.form-label-left
 						.col-md-12.col-sm-12.col-xs-12
 							.x_panel
 								.x_title
@@ -32,7 +32,7 @@ block content
 												| Título
 												span.required *
 											.col-md-6.col-sm-6.col-xs-12
-												input#titulo.form-control.col-md-7.col-xs-12(type='text', required, name="titulo", value=one.titulo, maxlength="70")
+												input#titulo.form-control.col-md-7.col-xs-12(type='text', required, name="title", value=one.title, maxlength="70")
 										.form-group
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
 												| Imagem principal
@@ -42,13 +42,13 @@ block content
 												data-instant-edit="true" data-button-confirm-label="Confirmar"
 												data-button-cancel-label="Cancelar" data-post="input, output, actions"
 												data-size="1200,900", style="width: 200px; height: 150px;")
-													img(src=one.imagem_principal_path, alt="")
-													input(type='file', name='imagem_principal')
+													img(src=one.main_img_path, alt="")
+													input(type='file', name='main_img_path')
 										.form-group
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
 												| Título de Chamada
 											.col-md-6.col-sm-6.col-xs-12
-												input#titulo.form-control.col-md-7.col-xs-12.limit(type='text', name="titulo_chamada", value=one.titulo_chamada, maxlength="40")
+												input#titulo.form-control.col-md-7.col-xs-12.limit(type='text', name="headline_title", value=one.headline_title, maxlength="40")
 										.form-group
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
 												| Imagem da Chamada
@@ -57,36 +57,36 @@ block content
 												data-instant-edit="true" data-button-confirm-label="Confirmar"
 												data-button-cancel-label="Cancelar" data-post="input, output, actions"
 												data-size="1200,900", style="width: 200px; height: 150px;")
-													img(src=one.imagem_chamada_path, alt="")
-													input(type='file', name='imagem_chamada')
+													img(src=one.headline_img_path, alt="")
+													input(type='file', name='headline_img_path')
 										.form-group
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
 												| Conteúdo da Chamada
 											.col-md-6.col-sm-6.col-xs-12
-												textarea.form-control(name="conteudo_chamada", maxlength="200")= one.conteudo_chamada
+												textarea.form-control(name="headline_content", maxlength="200")= one.headline_content
 										.form-group
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='subcategoria')
 												| Categoria
 												span.required *
 											.col-md-6.col-sm-6.col-xs-12
-												select.form-control.col-md-7.col-xs-12.selectpicker(required, name="subcategoria" data-live-search="true")
+												select.form-control.col-md-7.col-xs-12.selectpicker(required, name="categories_id" data-live-search="true")
 													if !results.subcategorias.length
 														option(value="") Nenhuma categoria cadastrada
 													else
-														option(value="", disabled, selected=!one.subcategoria) -- Selecione uma categoria --
+														option(value="", disabled, selected=!one.sub_id) -- Selecione uma categoria --
 														for subcategoria in results.subcategorias
-															option(value=subcategoria.sub_id, selected=one.subcategoria==subcategoria.sub_id.toString()) #{subcategoria.cat_name} > #{subcategoria.sub_name}
+															option(value=subcategoria.sub_id, selected=one.sub_id==subcategoria.sub_id.toString()) #{subcategoria.cat_name} > #{subcategoria.sub_name}
 										.form-group
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='autor')
 												| Autor
 											.col-md-6.col-sm-6.col-xs-12
-												select.form-control.col-md-7.col-xs-12.selectpicker(name="autor" data-live-search="true" required="required")
+												select.form-control.col-md-7.col-xs-12.selectpicker(name="authors_id" data-live-search="true" required="required")
 													if !results.autores.length
 														option(value="") Nenhum autor cadastrado
 													else
 														option(value="", disabled, selected=!one.autor) -- Selecione um autor --
 														for autor in results.autores
-															option(value=autor.id, selected=one.autor==autor.id.toString())= autor.name
+															option(value=autor.id, selected=one.authors_id==autor.id.toString())= autor.name
 										.form-group
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='edicao')
 												| Tags
@@ -104,28 +104,28 @@ block content
 												| Edição
 												span.required *
 											.col-md-6.col-sm-6.col-xs-12
-												select.form-control.col-md-7.col-xs-12.selectpicker(required, name="edicao" data-live-search="true")
+												select.form-control.col-md-7.col-xs-12.selectpicker(required, name="editions_id" data-live-search="true")
 													if results.edicoes.length
 														for edicao in results.edicoes
-															option(value=edicao.id, selected=one.edicao==edicao.id.toString()) ##{edicao.number} - #{edicao.title}
+															option(value=edicao.id, selected=one.editions_id==edicao.id.toString()) ##{edicao.number} - #{edicao.title}
 										.form-group
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='localizacao')
 												| Localização
 											.col-md-6.col-sm-6.col-xs-12
-												select.form-control.col-md-7.col-xs-12.selectpicker(name="localizacao" data-live-search="true")
+												select.form-control.col-md-7.col-xs-12.selectpicker(name="locations_id" data-live-search="true")
 													option(value="") Sem localização
 													if results.localizacoes.length
 														for localizacao in results.localizacoes
-															option(value=localizacao.id, selected=one.localizacao==localizacao.id.toString()) #{localizacao.name}
+															option(value=localizacao.id, selected=one.locations_id==localizacao.id.toString()) #{localizacao.name}
 										if mode != 'edit'
 											.form-group
 												label.control-label.col-md-3.col-sm-3.col-xs-12(for='localizacao')
 													| Data de Postagem
 												.col-md-6.col-sm-6.col-xs-12
-													select.form-control.col-md-7.col-xs-12(name="post_at", v-model="post_at")
+													select.form-control.col-md-7.col-xs-12(name="created_at", v-model="created_at")
 															option(value="now") Agora
 															option(value="choose_date") Escolher Data
-											.form-group(v-show="post_at == 'choose_date'")
+											.form-group(v-show="created_at == 'choose_date'")
 												label.control-label.col-md-3.col-sm-3.col-xs-12(for='localizacao')
 													| Escolher data da pastagem:
 												.col-md-6.col-sm-6.col-xs-12
@@ -141,7 +141,7 @@ block content
 												| Conteúdo
 												span.required *
 											.col-md-6.col-sm-6.col-xs-12
-												textarea#conteudo(name="conteudo")= one.conteudo
+												textarea#conteudo(name="content")= one.content
 										//.form-group
 											a(href=one.path, target="_blank") Ver atual
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='status') Arquivo
@@ -185,6 +185,20 @@ block scripts
 	// bootstrap-daterangepicker
 	script.
 		$(document).ready(function() {
+
+		var A = '16/02/2017 11:26:00';
+		var avail = A.split('/');
+
+		var date 	= avail[0];
+		var month 	= parseInt(avail[1]);
+		var year 	= avail[2].split(' ')[0];
+		var time 	= avail[2].split(' ')[1];
+
+		var final = year+'-'+month+'-'+date+' '+time;
+		console.log(avail);
+		console.log('final', final);
+		//- var D = new 
+
 		$('#birthday').daterangepicker({
 		singleDatePicker: true,
 		calender_style: "picker_4"
@@ -202,7 +216,7 @@ block scripts
 		new Vue({
 			el: "#app",
 			data: {
-				post_at: "now",
+				created_at: "now",
 				mode: mode
 			}
 		})
@@ -213,10 +227,10 @@ block scripts
 		});
 	if mode == 'edit'
 		script.
-			var available_at = "#{one.data_postagem}";
+			var available_at = "#{one.available_at}";
 			console.log("available_at", available_at);
 			$('#datetimepickeredit').datetimepicker({
-				format:'d/m/Y H:i',
+				format:'d/m/Y H:i:s',
 				value: available_at
 			});
 

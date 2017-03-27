@@ -4,7 +4,7 @@ var config = require('../config');
 module.exports = {
 
     connection: null,
-    query: null,
+    // query: null,
     stored: {}, //objeto de queries armazenado para pegar psoterior a um laoço, caso não haja callback
 
     createConnection: function()
@@ -46,9 +46,10 @@ module.exports = {
 
         this.connect();
         
-        if (this.query.insert || this.query.update) {
+        if (this.query.insert || this.query.update || this.query.delete) {
+
             //console.log(this.query.arrayValues);
-            console.log('\n\n::querystring', queryString);
+            //console.log('\n\n::querystring', queryString);
             var fn = this.connection.query(queryString, this.query.arrayValues, function(err, result){
                 if(err) throw err;
                 callback(result);
@@ -73,6 +74,7 @@ module.exports = {
 
     insertMany: function(cfg)
     {
+        // this.__reset();
         var all = [];
 
         for(var idx in cfg.data)
@@ -88,8 +90,15 @@ module.exports = {
             this.insert(cfg.table, reg).exec(currCallback);
         }
 
+        if ( !cfg.data.length ) {
+            onEnd(null);
+        }
+
         function once(row){
             //console.log('\n once::', row);
+            if ( typeof cfg.once == 'function'  ) {
+                cfg.once(row);
+            }
             all.push(row);
         }
 
@@ -97,6 +106,97 @@ module.exports = {
             all.push(row); //push the last row
             cfg.onEnd(all);
         }
+    },
+
+    syncManyToMany: function (table, main, newData, callbacks)
+    {
+        this.__reset();
+        $this = this;
+
+        //Example: newData = { key: 'asd_id', data: ['new_value1', 'new_value2'] };
+
+        if ( typeof callbacks == 'function') {
+            //callbacks.onEnd
+            var newCBS = {};
+            newCBS.onEnd = callbacks;
+            newCBS.once = function _blank() {}
+
+            callbacks = newCBS;
+        }
+
+        if (typeof callbacks.onEnd != 'function' ) {
+            throw new Error('function onEnd is required for syncManyToMany');
+        }
+
+        this.delete(table)
+            .where(main.key+' = '+main.value)
+            .exec(function () {
+
+                var finalData = [];
+
+                for(var idx in newData.data)
+                {
+                    var newValue = newData.data[idx];
+                    var obj = {};
+                    obj[newData.key]    = newValue;
+                    obj[main.key]       = main.value;
+
+                    finalData.push(obj);
+                }
+
+                $this.insertMany({
+                    table: table,
+                    data: finalData,
+                    once: callbacks.once,
+                    onEnd: callbacks.onEnd
+                })
+
+            })
+    },
+
+    delete: function (table) {
+        this.query.delete = 'DELETE FROM '+table;
+
+        return this;
+    },
+
+    update: function(table, data)
+    {
+        if ( data instanceof Array ) {
+            throw new Error('This function only accept objects and insert only one record at a time. If you want to insert many records, please, use insertMany() function');
+        }
+
+        this.__reset();
+
+        var cols = false;
+        var values = '';
+        var arrayValues = [];
+
+        for(col in data)
+        {
+            if (!cols)
+            {
+                cols    = col+'=?';
+                // values  = '"'+data[col]+'"';
+                // values = '?';
+            }
+            else
+            {
+                cols += ', '+col+'=?';
+                //values += ', "'+data[col]+'"';
+                // values += ', ?';
+            }
+
+            arrayValues.push(data[col]);
+        }
+
+        this.query.arrayValues = arrayValues;
+        // this.query.update = "UPDATE "+table+" ("+cols+") values("+ values +")";
+        console.log("h1::", "UPDATE "+table+" SET "+cols);
+        this.query.update = "UPDATE "+table+" SET "+cols;
+
+        // console.log(  this.query.arrayValues );
+        return this;
     },
 
     insert: function(table, data)
@@ -177,7 +277,8 @@ module.exports = {
     },
 
     where: function(where){
-        if (this.query.select == undefined) {
+        console.log("up::", this.query.update);
+        if (this.query.select == undefined && this.query.update == undefined && this.query.delete == undefined && this.query.insert == undefined) {
             throw new Error('First [select, joins...] then where. Please, follow the correct SQL sequence,');
         }
 
@@ -206,6 +307,16 @@ module.exports = {
         return this;
     },
 
+    groupBy: function(str){
+        if (this.query.select == undefined) {
+            throw new Error('First [select, joins...] then where. Please, follow the correct SQL sequence.');
+        }
+
+        this.query.groupBy = 'GROUP BY '+str;
+
+        return this;
+    },
+
     //Setup alfabetic alias from number (array position)
     __setAlias: function(n){
         //97 é para lower case, para upper case é 65
@@ -215,8 +326,15 @@ module.exports = {
     /*
     * Only for developer. Just get builded query to analyse.
     * */
-    _get: function () {
-        return this.exec(null, false);
+    _get: function (callback) {
+
+        if ( typeof callback != 'function') {
+            callback = function (QUERY) {
+                console.log('\n ======= QUER STRING'+QUERY+"\n ===========\n");
+            }
+        }
+
+        this.exec(callback, false);
     },
 
     //Build query from complete object
@@ -237,13 +355,26 @@ module.exports = {
             return JOIN+' '+table+' AS '+data.alias+' ON '+data.alias+'.'+data.on+' = '+data.key;
         }
 
-        if (this.query.insert || this.query.update)
+        if (this.query.update)
         {
-            $this.query(this.query.insert, callback);
+            if (!this.query.where) {
+                throw new Error("Insets, Updates and Deletations needs a WHERE clause");
+            }
+
+            QUERY_STRING = this.query.update;
+            //$this.query(this.query.insert, callback);
         }
         else if(this.query.delete)
         {
+            if (!this.query.where) {
+                throw new Error("Insets, Updates and Deletations needs a WHERE clause");
+            }
 
+            QUERY_STRING = this.query.delete;
+        }
+        else if(this.query.insert)
+        {
+            QUERY_STRING = this.query.insert;
         }
         else if(this.query.joins || this.query.select)
         {
@@ -283,14 +414,21 @@ module.exports = {
         if (this.query.orderBy) {
             QUERY_STRING += ' '+this.query.orderBy;
         }
-        QUERY_STRING = QUERY_STRING.replace('{{cols}}', this.query.cols);
+
+        if (this.query.groupBy) {
+            QUERY_STRING += ' '+this.query.groupBy;
+        }
+
+        if (this.query.select) {
+            QUERY_STRING = QUERY_STRING.replace('{{cols}}', this.query.cols);
+        }
 
         console.log('\n ***********************');
         console.log(QUERY_STRING);
         console.log('\n ***********************');
 
         if (!exec) {
-            return QUERY_STRING;
+            callback(QUERY_STRING);
         }else{
             this.query(QUERY_STRING, callback);
         }
@@ -299,7 +437,7 @@ module.exports = {
     },
 
     __buildCols: function(str, alias){
-        console.log("STR::", str);
+        //console.log("STR::", str);
         if (!alias) {
             alias = '';
         }else{
@@ -312,10 +450,10 @@ module.exports = {
             var finalCol;
 
             if ( col.search('\\(') < 0 ) {
-                console.log("\n\nCOL::", col);
+                //console.log("\n\nCOL::", col);
                 //var arr = str.split(',');
                 finalCol = alias+col;
-                console.log("FINAL::", finalCol);
+                //console.log("FINAL::", finalCol);
             }else{
                 finalCol = col;
             }
@@ -331,10 +469,14 @@ module.exports = {
     //Reset query object
     __reset: function()
     {
+        this.query.delete   = null;
+        this.query.update   = null;
+        this.query.insert   = null;
         this.query.select   = null;
         this.query.joins    = null;
         this.query.where    = null;
         this.query.orderBy  = null;
-        this.query.cols  = null;
+        this.query.groupBy  = null;
+        this.query.cols     = null;
     }
 }

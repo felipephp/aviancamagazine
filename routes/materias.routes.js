@@ -204,10 +204,10 @@ exports.mostrar = function(req, res, next)
                     if (i == 0) {
                         add( socket, data, data.rels, total, callback );
                     }
-                })
+                });
             i--;
         }
-    }
+    };
 
     add = function( socket, data, asyncObj, total, callback) 
     {
@@ -221,10 +221,10 @@ exports.mostrar = function(req, res, next)
 //            console.log('FinalTTL::', data);
             callback(null, data );
         }
-    }
+    };
 
     createGlobalGroup();
-}
+};
 
 
 exports.porSubcategoriaApi = function(req, res, next) {

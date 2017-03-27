@@ -114,6 +114,7 @@ exports.migrate = function(req, res, next){
                     "edicao"                : 'old_edi_id',
                     "slug"                  : 'slug',
                     "imagem_principal_path" : 'main_img_path',
+                    "imagem_chamada_path"   : 'headline_img_path',
                     "titulo"                : 'title',
                     "titulo_chamada"        : 'headline_title',
                     "conteudo_chamada"      : 'headline_content',
@@ -598,9 +599,9 @@ exports.home = function(req, res, next) {
             );
 
             function getLastCover(socket, data, callback){
-                mysql.select('articles', 'main_img_path, title, slug')
-                    .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: 'name AS subcategoria' })
-                    .join({ table: 'categories', on: 'id', key: 'B.categories_id', columns: 'name AS categoria' })
+                mysql.select('articles', ['main_img_path', 'title', 'slug'])
+                    .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS subcategoria'] })
+                    .join({ table: 'categories', on: 'id', key: 'B.categories_id', columns: ['name AS categoria'] })
                     .where('A.categories_id = 35')
                     .orderBy('A.editions_id DESC')
                     .limit(1)
@@ -611,9 +612,9 @@ exports.home = function(req, res, next) {
             }
 
             function getLastDestinations(socket, data, callback){
-                mysql.select('articles', 'main_img_path, title, slug')
-                    .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: 'name AS subcategoria' })
-                    .join({ table: 'categories', on: 'id', key: 'B.categories_id', columns: 'name AS categoria' })
+                mysql.select('articles', ['main_img_path', 'title', 'slug'])
+                    .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS subcategoria'] })
+                    .join({ table: 'categories', on: 'id', key: 'B.categories_id', columns: ['name AS categoria'] })
                     .where('A.categories_id = 11 OR A.categories_id = 10')
                     .orderBy('A.editions_id DESC')
                     .limit(2)

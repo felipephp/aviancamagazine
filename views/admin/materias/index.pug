@@ -25,26 +25,13 @@ block content
                                 tbody
                                     for one in all
                                         tr
-                                            td= one.titulo
-                                            td #{one.categoria.nome} > #{one.subcategoria.nome}
-                                            
-                                            //- if one.categoria
-                                            //-     td #{one.categoria.nome} > #{one.subcategoria.nome}
-                                            //- else
-                                            //-     td= 'Nada de categ'
-
-                                            if one.edicao
-                                                td ##{one.edicao.numero}
-                                            else
-                                                td
-
-                                            if one.autor
-                                                td= one.autor.nome
-                                            else        
-                                                td= 'Sem autor > ' + one._id
+                                            td= one.title
+                                            td #{one.categoria} > #{one.subcategoria}
+                                            td ##{one.edition}
+                                            td= one.author_name
                                             td
-                                                a.btn.btn-primary.btn-sm(href='/admin/materias/'+one._id+'/edit') Editar
-                                                a.btn.btn-primary.btn-sm.anchor-confirm(href='/admin/materias/'+one._id+'/delete') Deletar
+                                                a.btn.btn-primary.btn-sm(href='/admin/materias/'+one.id+'/edit') Editar
+                                                a.btn.btn-primary.btn-sm.anchor-confirm(href='/admin/materias/'+one.id+'/delete') Deletar
 block scripts
         // iCheck
         script(src='/admin_assets/vendors/iCheck/icheck.min.js')

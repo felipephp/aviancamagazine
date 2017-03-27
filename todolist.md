@@ -38,6 +38,7 @@ mysql pass do: Elipse#1126
 -[x] <span style="color: green; font-weight: bold">[ OK ]</span>Retirar lojas Avianca 
 -[x] <span style="color: green; font-weight: bold">[ OK ]</span>Colocar um item Avianca ( Quem é Avianca, prêmios, contatos, WiFi)
 -[x] <span style="color: green; font-weight: bold">[ OK ]</span>Retirar as redes sociais da parte superior
+-[ ] Quando mudar para mysql, listar notícias por available_At dentro da single de categoria
  
  #### PÓS
 -[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span> Galerias internas- colocar um campo de nome em cada foto para cadastrar o fotografo
