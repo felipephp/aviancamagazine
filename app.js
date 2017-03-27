@@ -21,11 +21,11 @@ var i18n = require('i18n');
 var moment = require('moment');
 require('moment/locale/pt-br');
 moment.locale('pt-br');
-var mysql = require('./domain/mysql');
-
 var config = require('./config');
 
 var app = express();
+
+var mysql = require('./domain/mysql');
 
 var Categoria = require('./models/categoria.model');
 var SubCategoria = require('./models/subcategoria.model');

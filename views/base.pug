@@ -121,8 +121,10 @@ html(lang='en')
                             .row.flex
                                 .mh-logo
                                     a(href='/')
-                                        //- img(src=ultima_edicao.capa_path alt='Avianca Revista')
-                                        <img src="/media/images/topo-site.png">
+                                        img(src=ultima_edicao.capa_path alt='Avianca Revista')
+                                    .top-phrase#top-phrase
+                                        span Nossa<br>edição<br>de <span style="font-weight: 400;">{{month}}</span><br>Já está<br>a bordo
+                                        //- <img src="/media/images/topo-site.png">
                                     h2.text-capa
                                         //- span Edição
                                         //- | ##{ultima_edicao.numero}
@@ -289,3 +291,22 @@ html(lang='en')
                 include ./partials/_menu_mobile
         include ./partials/sweetalert/_error
         include ./partials/sweetalert/_success
+
+        script(src="/assets/js/vue.min.js")
+        script.
+            $(document).ready(function(){
+                new Vue({
+                  el: '#top-phrase',
+                  data: {
+                    month: getMonth()
+                  }
+                })
+
+                function getMonth(){
+                    var date = new Date();
+                    var m = date.getMonth();
+                    var months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+
+                    return months[m];
+                }
+            })

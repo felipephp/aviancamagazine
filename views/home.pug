@@ -2,7 +2,6 @@ extends base
 
 block content
     .main-content
-        init from -node
         #app
             .trending-posts-line
                 .container
@@ -33,7 +32,7 @@ block content
                                                     h1.title-1
                                                         a(href='/materias/'+materiaSlider.slug)= materiaSlider.title
                                                     .meta-tp-1
-                                                        .ptp-1-date
+                                                        //.ptp-1-date
                                                     a.read-tp-1(href='/materias/'+materiaSlider.slug)
                                                         span Leia mais
                                                         span.arr-right-light-ic
@@ -83,8 +82,8 @@ block content
                                         h2.title-29
                                             //- a(href='#1')= materia.info_titulo
                                             a(href='#1')= materia.info_titulo
-                                        .meta-tp-1
-                                            .ptp-1-date
+                                        //.meta-tp-1
+                                            //.ptp-1-date
                                                 a(href='')= materia.data_postagem
             // Main posts END
             .section
@@ -111,8 +110,8 @@ block content
                                         h3.title-3
                                             a("v-bind:href"="'/materias/'+materia.slug") {{ materia.info_titulo }}
                                         .meta-tp-2
-                                            .date
-                                                span {{ materia.data_postagem }}
+                                            //.date
+                                                //span {{ materia.data_postagem }}
                                             .category
                                                 i.li_pen
                                                 span {{ materia.subcategoria.nome }}
@@ -143,8 +142,8 @@ block content
                                                     h2.title-7
                                                         a(href='/videos/'+video.slug)= video.nome
                                                     .meta-tp-1
-                                                        .ptp-1-date
-                                                            // a.breve(href='javascript:void(0)')= video.data_cadastro
+                                                        //.ptp-1-date
+                                                            a.breve(href='javascript:void(0)')= video.data_cadastro
 
                                     .half.sm-full
                                         for video in _categorias.videos
@@ -194,8 +193,8 @@ block content
                                                 h3.title-5
                                                     a("v-bind:href"="'/materias/'+materia.slug") {{ materia.info_titulo }}
                                                 .meta-tp-2
-                                                    .date
-                                                        span {{ materia.data_postagem }}
+                                                    //.date
+                                                        //span {{ materia.data_postagem }}
                                                     .category
                                                         i.li_pen
                                                         span {{ materia.subcategoria.nome }}
@@ -226,7 +225,7 @@ block content
                                                 h1.title-1
                                                     a(href='#1')= materia.info_titulo
                                                 .meta-tp-1
-                                                    .ptp-1-date
+                                                    //.ptp-1-date
                                                         a(href='')= materia.data_postagem
                                                 a.read-tp-1(href='')
                                                     span Leia mais

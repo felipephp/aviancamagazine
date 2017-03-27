@@ -595,33 +595,33 @@ exports.home = function(req, res, next) {
                 {
                     cb();
                 }
-            )
+            );
 
             function getLastCover(socket, data, callback){
-                var querystring = 'select a.main_img_path, a.title, a.slug, b.name AS subcategoria, c.name AS categoria from articles as a ';
-                querystring += 'inner join categories as b ON a.categories_id = b.id ';
-                querystring += 'inner join categories as c ON b.categories_id = c.id';
-
-                mysql.query(querystring, function(rows){
-                    slider[0] = rows[0];
-                    callback(null, socket, data);
-                });
+                mysql.select('articles', 'main_img_path, title, slug')
+                    .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: 'name AS subcategoria' })
+                    .join({ table: 'categories', on: 'id', key: 'B.categories_id', columns: 'name AS categoria' })
+                    .where('A.categories_id = 35')
+                    .orderBy('A.editions_id DESC')
+                    .limit(1)
+                    .exec(function (rows) {
+                        slider[0] = rows[0];
+                        callback(null, socket, data);
+                    });
             }
 
             function getLastDestinations(socket, data, callback){
-                var querystring =
-                    'select a.main_img_path, a.title, a.slug, b.name AS subcategoria, c.name AS categoria from articles as a ' +
-                    'inner join categories as b ON a.categories_id = b.id ' +
-                    'inner join categories as c ON b.categories_id = c.id ' +
-                    'where a.categories_id = 11 OR a.categories_id = 10 order by editions_id DESC LIMIT 2';
-
-                mysql.query(querystring, function(rows){
-                    slider[1] = rows[0];
-                    slider[2] = rows[1];
-
-                    console.log('SLIDER::', slider);
-                    callback(null, socket, data);
-                });   
+                mysql.select('articles', 'main_img_path, title, slug')
+                    .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: 'name AS subcategoria' })
+                    .join({ table: 'categories', on: 'id', key: 'B.categories_id', columns: 'name AS categoria' })
+                    .where('A.categories_id = 11 OR A.categories_id = 10')
+                    .orderBy('A.editions_id DESC')
+                    .limit(2)
+                    .exec(function (rows) {
+                        slider[1] = rows[0];
+                        slider[2] = rows[1];
+                        callback(null, socket, data);
+                    });
             }
         },
 

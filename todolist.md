@@ -18,30 +18,34 @@ mysql pass do: Elipse#1126
 ### --------------------------------------------------------------------------------
 
 #### Hard
--[ ] <a name="1">Finalizar conversão do DB mongo/mysql</a>
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span> Finalizar conversão do DB mongo/mysql
 -[ ] Reescrever queries do painel
+-[ ] Reescrever queries do site e ajustes de rotas
 -[ ] Transformar em pop up o cadastro welove;
 -[ ] <span style="color: orange; font-weight: bold">Layout</span>Alterar a galeria.
 
 #### Medium
--[ ] Reescrever queries do site
--[ ] HTML da revista no topo
--[ ] <span style="color: orange; font-weight: bold">Layout</span>colocar o prêmio da revista e logo 
--[ ] <span style="color: orange; font-weight: bold">Layout</span>No item de compartilhar, colocar o texto "gostou do nosso conteúdo? compartilhe "
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span> HTML da revista no topo
+-[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span>colocar o prêmio da revista e logo 
+-[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span>No item de compartilhar, colocar o texto "gostou do nosso conteúdo? compartilhe "
 
 #### Easy
--[ ] remover LOVE 
--[ ] remover icones redes sociais 
--[ ] adicionar template HTML de comentários
--[ ] Mudar o Banner escrever; ( clique aqui e envie sua foto )
--[ ] Retirar lojas Avianca 
--[ ] Colocar um item Avianca ( Quem é Avianca, prêmios, contatos, WiFi)
--[ ] Retirar as redes sociais da parte superior
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span> remover LOVE 
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span>remover icones redes sociais 
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span>remover horários 
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span> Adicionar template HTML de comentários
+-[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span> Mudar o Banner escrever; ( clique aqui e envie sua foto )
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span>Retirar lojas Avianca 
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span>Colocar um item Avianca ( Quem é Avianca, prêmios, contatos, WiFi)
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span>Retirar as redes sociais da parte superior
  
  #### PÓS
- -[ ] <span style="color: orange; font-weight: bold">Layout</span> Galerias internas- colocar um campo de nome em cada foto para cadastrar o fotografo
- -[ ] <span style="color: orange; font-weight: bold">Layout</span> No item de compartilhar, colocar o texto "gostou do nosso conteúdo? compartilhe "
- -[ ] Galerias dentro do texto. 
- -[ ] liberar o link para externo
- -[ ] Social  -> criar a página
- -[ ] Converter usuários para Mysql e verificar segurança da senha
+-[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span> Galerias internas- colocar um campo de nome em cada foto para cadastrar o fotografo
+-[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span> No item de compartilhar, colocar o texto "gostou do nosso conteúdo? compartilhe"
+-[ ] Galerias dentro do texto. 
+-[ ] liberar o link para externo
+-[ ] Social  -> criar a página
+-[ ] Converter usuários para Mysql e verificar segurança da senha
+-[ ] Fazer CRUD de comentários (3 dias)
+-[ ] Ajustes de segurança em WHERE e ORDER by enviando valores via ? e arrayValues (2 dias)
+-[ ] No slider, ainda aparece "OF". e só muda para 3 of 3 qdo clica, no início é 1/14.

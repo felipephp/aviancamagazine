@@ -1,11 +1,8 @@
 var MySQLExt = require('mysql');
+var config = require('../config');
 
 module.exports = {
 
-    host: "127.0.0.1",
-    user: "root",
-    password: "Elipse#1126",
-    database: "node_avianca",
     connection: null,
     query: null,
     stored: {}, //objeto de queries armazenado para pegar psoterior a um laoço, caso não haja callback
@@ -13,10 +10,10 @@ module.exports = {
     createConnection: function()
     {
         this.connection = MySQLExt.createConnection({
-          host: "127.0.0.1",
-          user: "root",
-          password: "rst5630991",
-          database: "node_avianca"
+          host: config.mysql.host,
+          user: config.mysql.user,
+          password: config.mysql.password,
+          database: config.mysql.database
         });
     },
 
@@ -59,7 +56,6 @@ module.exports = {
 
         }
         else{
-            console.log('here');
             var fn = this.connection.query(queryString, function(err, result){
                 if(err) throw err;
                 callback(result);
@@ -149,17 +145,15 @@ module.exports = {
         this.query.select = {
           table: table,
           columns: columns
-        }
+        };
 
-        //this.query = 'SELECT '+columns+' FROM '+table;
         return this;
     },
 
     join: function(data)
     {
-        if (!data.type) { data.type = 'inner'; }
-
-        //console.log('TODO:: Criar validação de json do atributo "data" obrigatório para join\n');
+        if (!data.type) { data.type = 'INNER'; }
+        data.type += ' JOIN';
 
         if (this.query.select == null) {
             throw new Error('This function requires this.select() first. Please, follow the correct SQL sequence, ');
@@ -187,18 +181,27 @@ module.exports = {
             throw new Error('First [select, joins...] then where. Please, follow the correct SQL sequence,');
         }
 
-        if (this.query.order != undefined) {
-            throw new Error('WHERE goes before order. Please, follow the correct SQL sequence,');
-        }
-
-        this.query.where = where;
+        this.query.where = 'WHERE '+where;
 
         return this;
     },
 
-    order: function(order){
-        //TODO
-        this.query.order = order;
+    orderBy: function(orderBy){
+        if (this.query.select == undefined) {
+            throw new Error('First [select, joins...] then where. Please, follow the correct SQL sequence.');
+        }
+
+        this.query.orderBy = 'ORDER BY '+orderBy;
+
+        return this;
+    },
+
+    limit: function(limit){
+        if (this.query.select == undefined) {
+            throw new Error('First [select, joins...] then where. Please, follow the correct SQL sequence.');
+        }
+
+        this.query.limit = 'LIMIT '+limit;
 
         return this;
     },
@@ -209,84 +212,117 @@ module.exports = {
         return String.fromCharCode(n+65);
     },
 
-    //Find table alias from table name
-    __findTableAlias: function(table){
-        var $this = this;
-        var tableName = table.name;
-        var found = false;
-
-        //First find in main table (SELECT) 
-        (function(){
-            if (tableName == $this.query.select.table) {
-                found = $this.query.select.alias;
-                //console.log('Table: "'+tableName+'" has found in select object, and your alias is: "'+found+'"');
-            }
-        })();
-
-        if (found) {
-            return found;
-        }
-
-        //If table wasnt the main table, continue search in join tables.
-        (function(){
-            for (var idx in $this.query.joins) {
-                var curr = $this.query.joins[idx];
-
-                if (curr.table.name == tableName) {
-                    found = curr.alias;
-                    //console.log('[JOIN] Table: "'+tableName+'" has found in JOIN object, and your alias is: "'+found+'"');
-                }
-            }
-        })();
-
-        if(found)  { return found } else { throw new Error('The alias from ('+tableName+') cannot be found') };
+    /*
+    * Only for developer. Just get builded query to analyse.
+    * */
+    _get: function () {
+        return this.exec(null, false);
     },
 
     //Build query from complete object
-    exec: function(callback)
+    exec: function(callback, exec)
     {
+        if ( exec == undefined ) {
+            exec = true;
+        }
+
+        var QUERY_STRING = '';
         var $this = this;
         //Create join query from object
         function join(data)
         {
-            // obj = { 
-            //     type: 'inner', 
-            //     table: { name: 'edition', col: 'id' },
-            //     f_table: { name: 'social', col: 'editions_id' }
-            // }
-
-            var type            = data.type;
+            var JOIN            = data.type;
             var table           = data.table;
 
-            var f_tableAlias    = $this.__findTableAlias(data.f_table);
-            var f_table         = $this.__findTableAlias(data.f_table);
-
-            return type+' join '+table.name+' as '+data.alias+' on '+data.alias+'.'+table.col+' = '+f_tableAlias+'.'+f_table.col;
+            return JOIN+' '+table+' AS '+data.alias+' ON '+data.alias+'.'+data.on+' = '+data.key;
         }
 
-        function select()
-        {
-            var str = '';
-            this.query = 'SELECT '+columns+' FROM '+table;
-        }
-
-        if (this.query.insert) 
+        if (this.query.insert || this.query.update)
         {
             $this.query(this.query.insert, callback);
         }
-        if (this.query.joins != null) 
+        else if(this.query.delete)
         {
-            var objteste = this.query.joins[0];
-            console.log(this.query.joins);
-            var t = join(objteste);
+
+        }
+        else if(this.query.joins || this.query.select)
+        {
+            if (this.query.select)
+            {
+                if (this.query.select.alias != undefined) {
+                    this.query.select.table = this.query.select.table +' AS '+this.query.select.alias;
+                }
+
+                this.__buildCols(this.query.select.columns, this.query.select.alias);
+                QUERY_STRING = 'SELECT {{cols}} FROM '+this.query.select.table;
+            }
+
+            if (this.query.joins != null)
+            {
+                var QUERY_JOIN = null;
+                for(var idx in this.query.joins)
+                {
+
+                    var i_join = this.query.joins[idx];
+                    this.__buildCols(i_join.columns, i_join.alias);
+                    ( !QUERY_JOIN ) ? QUERY_JOIN = join(i_join) : QUERY_JOIN += ' '+join(i_join);
+                }
+
+                QUERY_STRING += ' '+QUERY_JOIN;
+            }
+        }
+        else
+        {
+            throw new Error("There isn't query to build");
         }
 
-        if (this.query.select)
-        {
+        if (this.query.where) {
+            QUERY_STRING += ' '+this.query.where;
+        }
 
+        if (this.query.orderBy) {
+            QUERY_STRING += ' '+this.query.orderBy;
+        }
+        QUERY_STRING = QUERY_STRING.replace('{{cols}}', this.query.cols);
+
+        console.log('\n ***********************');
+        console.log(QUERY_STRING);
+        console.log('\n ***********************');
+
+        if (!exec) {
+            return QUERY_STRING;
+        }else{
+            this.query(QUERY_STRING, callback);
         }
 
         this.__reset();
+    },
+
+    __buildCols: function(str, alias){
+        if (!alias) {
+            alias = '';
+        }else{
+            alias += '.';
+        }
+
+        var arr = str.split(',');
+        for(var idx in arr){
+            var col = arr[idx];
+
+            //Se for string de função como count, sum e etc, ignorar alias.
+            var finalCol;
+            if ( col.search('\\(') < 0 ) {
+                finalCol = alias+col;
+            }else{
+                finalCol = col;
+            }
+
+            if(!this.query.cols){
+                this.query.cols = finalCol;
+            }else{
+                this.query.cols += ', '+finalCol;
+            }
+        }
     },
 
     //Reset query object
@@ -295,6 +331,7 @@ module.exports = {
         this.query.select   = null;
         this.query.joins    = null;
         this.query.where    = null;
-        this.query.order    = null;
+        this.query.orderBy  = null;
+        this.query.cols  = null;
     }
 }

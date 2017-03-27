@@ -1,6 +1,7 @@
 var path = require('path');
 var async = require('async');
 var moment = require('moment');
+var mysql = require('../../domain/mysql');
 
 var uploadFile = require('../../lib/upload-file');
 var random = require('../../lib/random');
@@ -35,42 +36,45 @@ exports.create = function(req, res, next) {
 
 
         async.series({
-            autores: function(cb) {
-                Autor.find({})
-                    .sort('nome')
-                    .exec(function(err, autores) {
-                        return cb(null, autores);
+            autores: function (cb) {
+                mysql
+                    .select('authors')
+                    .orderBy('name')
+                    .exec(function (authors) {
+                        console.log('at::', authors);
+                        return cb(null, authors);
                     })
             },
-            subcategorias: function(cb) {
-                Subcategoria.find({})
-                    .populate('categoria')
-                    .sort('nome')
-                    .exec(function(err, subcategorias) {
+            subcategorias: function (cb) {
+                mysql.select('categories', 'id AS sub_id, name AS sub_name')
+                    .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: 'name AS cat_name' })
+                    .where('A.categories_id IS NOT NULL')
+                    .orderBy('B.name')
+                    .exec(function (subcategorias) {
                         return cb(null, subcategorias);
-                    })
+                    });
             },
-            edicoes: function(cb) {
-                Edicao.find({})
-                    .sort('-numero')
-                    .exec(function(err, edicoes) {
+            edicoes: function (cb) {
+                mysql.select('editions')
+                    .orderBy('number DESC')
+                    .exec(function (edicoes) {
                         return cb(null, edicoes);
                     })
             },
-            tags: function(cb) {
-                Tag.find({})
-                    .sort('nome')
-                    .exec(function(err, tags) {
+            tags: function (cb) {
+                mysql.select('tags')
+                    .orderBy('name')
+                    .exec(function (tags) {
                         return cb(null, tags);
                     })
             },
-            localizacoes: function(cb) {
-                Localizacao.find({})
-                    .sort('nome')
-                    .exec(function(err, localizacoes) {
-                        return cb(null, localizacoes);
+            localizacoes: function (cb) {
+                mysql.select('locations')
+                    .orderBy('name')
+                    .exec(function (locais) {
+                        return cb(null, locais);
                     })
-            },
+            }
         }, function(err, results) {
             if (err) { return next(err); }
 
@@ -176,49 +180,68 @@ exports.edit = function(req, res, next) {
     var id = req.params.id;
 
     async.series({
-        autores: function(cb) {
-            Autor.find({})
-                .sort('nome')
-                .exec(function(err, autores) {
-                    return cb(null, autores);
+        autores: function (cb) {
+            mysql
+                .select('authors')
+                .orderBy('name')
+                .exec(function (authors) {
+                    console.log('at::', authors);
+                    return cb(null, authors);
                 })
         },
-        subcategorias: function(cb) {
-            Subcategoria.find({})
-                .populate('categoria')
-                .sort('nome')
-                .exec(function(err, subcategorias) {
+        subcategorias: function (cb) {
+            mysql.select('categories', 'id AS sub_id, name AS sub_name')
+                .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: 'name AS cat_name' })
+                .where('A.categories_id IS NOT NULL')
+                .orderBy('B.name')
+                .exec(function (subcategorias) {
                     return cb(null, subcategorias);
-                })
+                });
         },
-        edicoes: function(cb) {
-            Edicao.find({})
-                .sort('nome')
-                .exec(function(err, edicoes) {
+        edicoes: function (cb) {
+            mysql.select('editions')
+                .orderBy('number DESC')
+                .exec(function (edicoes) {
                     return cb(null, edicoes);
                 })
         },
-        tags: function(cb) {
-            Tag.find({})
-                .sort('nome')
-                .exec(function(err, tags) {
+        tags: function (cb) {
+            mysql.select('tags')
+                .orderBy('name')
+                .exec(function (tags) {
                     return cb(null, tags);
                 })
         },
-        localizacoes: function(cb) {
-            Localizacao.find({})
-                .sort('nome')
-                .exec(function(err, localizacoes) {
-                    return cb(null, localizacoes);
+        localizacoes: function (cb) {
+            mysql.select('locations')
+                .orderBy('name')
+                .exec(function (locais) {
+                    return cb(null, locais);
                 })
-        },
+        }
     }, function(err, results) {
         if (err) { return next(err); }
 
-        Model.findOne({_id: id}, function(err, one) {
-            if (err) { return next(err); }
-            return res.render('admin/'+base_route+'/form', {mode: "edit", one: one, results: results});
-        });
+        mysql.select('articles')
+            .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: 'id AS sub_id' })
+            .join({ table: 'editions', on: 'id', key: 'A.editions_id', columns: 'id AS edi_id' })
+            .join({ table: 'authors', on: 'id', key: 'A.authors_id', columns: 'id AS aut_id' })
+            .join({ type: 'LEFT', table: 'locations_has_articles', on: 'articles_id', key: 'A.id', columns: 'locations_id' })
+            .where('A.id = '+id)
+            .exec(function (row) {
+                row = row[0];
+                row.categoria = { id: row.sud_id };
+                row.edicao = { id: row.edi_id };
+                row.autor = { id: row.aut_id };
+                row.localizacao = { id: row.locations_id };
+
+                console.log('found::', row);
+                return res.render('admin/'+base_route+'/form', {mode: "edit", one: row, results: results});
+            });
+        // Model.findOne({_id: id}, function(err, one) {
+        //     if (err) { return next(err); }
+        //     return res.render('admin/'+base_route+'/form', {mode: "edit", one: one, results: results});
+        // });
 
     })
 

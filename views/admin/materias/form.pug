@@ -75,7 +75,7 @@ block content
 													else
 														option(value="", disabled, selected=!one.subcategoria) -- Selecione uma categoria --
 														for subcategoria in results.subcategorias
-															option(value=subcategoria._id, selected=one.subcategoria==subcategoria._id.toString()) #{subcategoria.categoria.nome} > #{subcategoria.nome}
+															option(value=subcategoria.sub_id, selected=one.subcategoria==subcategoria.sub_id.toString()) #{subcategoria.cat_name} > #{subcategoria.sub_name}
 										.form-group
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='autor')
 												| Autor
@@ -86,7 +86,7 @@ block content
 													else
 														option(value="", disabled, selected=!one.autor) -- Selecione um autor --
 														for autor in results.autores
-															option(value=autor._id, selected=one.autor==autor._id.toString())= autor.nome
+															option(value=autor.id, selected=one.autor==autor.id.toString())= autor.name
 										.form-group
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='edicao')
 												| Tags
@@ -97,7 +97,7 @@ block content
 													else
 														option(value="", disabled) -- Selecione uma edição --
 														for tag in results.tags
-															option(value=tag._id, selected=one.tags.indexOf(tag._id.toString()) != -1) ##{tag.nome}
+															option(value=tag.id, selected=one.tags.indexOf(tag.id.toString()) != -1) ##{tag.name}
 
 										.form-group
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='edicao')
@@ -107,7 +107,7 @@ block content
 												select.form-control.col-md-7.col-xs-12.selectpicker(required, name="edicao" data-live-search="true")
 													if results.edicoes.length
 														for edicao in results.edicoes
-															option(value=edicao._id, selected=one.edicao==edicao._id.toString()) ##{edicao.numero} - #{edicao.titulo}
+															option(value=edicao.id, selected=one.edicao==edicao.id.toString()) ##{edicao.number} - #{edicao.title}
 										.form-group
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='localizacao')
 												| Localização
@@ -116,7 +116,7 @@ block content
 													option(value="") Sem localização
 													if results.localizacoes.length
 														for localizacao in results.localizacoes
-															option(value=localizacao._id, selected=one.localizacao==localizacao._id.toString()) #{localizacao.nome}
+															option(value=localizacao.id, selected=one.localizacao==localizacao.id.toString()) #{localizacao.name}
 										if mode != 'edit'
 											.form-group
 												label.control-label.col-md-3.col-sm-3.col-xs-12(for='localizacao')
