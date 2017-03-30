@@ -4,6 +4,7 @@ var Tag = require('../models/tag.model');
 var Materia = require('../models/materia.model');
 
 var async = require('async');
+var mysql = require('../domain/mysql-helper/mysql');
 
 exports.porCategoria = function(req, res, next) {
 
@@ -142,7 +143,7 @@ exports.mostrar = function(req, res, next)
             return res.render("materia", result );
             // cb(null, b);
         });
-    }
+    };
 
     findArticle = function(socket, data, callback) 
     {
@@ -162,7 +163,7 @@ exports.mostrar = function(req, res, next)
                 })
 
             })
-    }
+    };
 
     countThisCategory = function(socket, data, callback) {
 
@@ -176,7 +177,7 @@ exports.mostrar = function(req, res, next)
                 data['count'] = count;
                 callback(null, socket, data );
             })
-    }
+    };
 
     selectRandom = function(socket, data, callback) 
     {
@@ -189,7 +190,7 @@ exports.mostrar = function(req, res, next)
         {
             //TODO Temos um problema aqui. número randomico não pode repetir, no mysql isso é muito mais fácil, e agora? Trocar???
             //
-            var random = Math.floor(Math.random() * data.count)
+            var random = Math.floor(Math.random() * data.count);
             // Get a random entry
             //var random = Math.floor(Math.random() * count)
 
@@ -226,37 +227,35 @@ exports.mostrar = function(req, res, next)
     createGlobalGroup();
 };
 
-
 exports.porSubcategoriaApi = function(req, res, next) {
 
-    var subcategoria_id = req.params.subcategoria_id;
+    // console.log('PR::', req.body);
+    var subcategoria_id = req.body.id;
+    var limit = parseInt(req.body.limit);
 
-    var limit = parseInt(req.query.limit);
-
-    Materia.find({subcategoria: subcategoria_id})
-        .populate(['categoria', 'subcategoria'])
-        .sort('-available_at')
+    mysql.select('articles')
+        .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS main_categ_name'] })
+        .where({categories_id: { alias: 'A', o: '=', v: subcategoria_id } })
         .limit(limit)
-        .exec(function(err, materias) {
-            if (err) { return next(err); }
+        .orderBy('available_at')
+        .exec(function (materias) {
+            // console.log("RESLTS:: ", materias);
             return res.send({results: materias});
-        })
-
+        });
 };
 
 exports.porCategoriaApi = function(req, res, next) {
 
-    var categoria_id = req.params.categoria_id;
+    var id = req.body.id;
+    var limit = parseInt(req.body.limit);
 
-    var limit = parseInt(req.query.limit);
-
-    Materia.find({categoria: categoria_id})
-        .populate(['categoria', 'subcategoria'])
-        .sort('-available_at')
+    mysql.select('categories', ['name AS main_categ_name'])
+        .join({ type: 'LEFT', table: 'articles', on: 'categories_id', key: 'A.id', columns: ['*'] })
+        .where({ categories_id: { alias: 'A', o: '=', v: id } })
+        .orderBy('B.available_at')
         .limit(limit)
-        .exec(function(err, materias) {
-            if (err) { return next(err); }
-            return res.send({results: materias});
+        .exec(function (rows) {
+            return res.send({results: rows});
         })
 
 };

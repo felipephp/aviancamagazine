@@ -9,9 +9,8 @@ var Video = require('../models/video.model');
 var WeLove = require('../models/welove.model');
 var Config = require('../models/config.model');
 
-// var mysql = require('/domain/mysql');
 // var hb = require('handlebars');
-var mysql = require('../domain/mysql');
+var mysql = require('../domain/mysql-helper/mysql');
 
 var sha1 = require('sha1');
 
@@ -572,13 +571,7 @@ exports.seeder = function(req, res, next){
 }
 
 exports.home = function(req, res, next) {
-
-    var negocios_id = null;
-    var life_style_id = null;
-
-    //var edicoes_ids = null;
     var slider = {};
-
     async.series({
 
         slider: function(cb){
@@ -602,10 +595,13 @@ exports.home = function(req, res, next) {
                 mysql.select('articles', ['main_img_path', 'title', 'slug'])
                     .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS subcategoria'] })
                     .join({ table: 'categories', on: 'id', key: 'B.categories_id', columns: ['name AS categoria'] })
-                    .where('A.categories_id = 35')
+                    .where({
+                        categories_id: { o: '=', v: '35', alias: 'A' }
+                    })
                     .orderBy('A.editions_id DESC')
                     .limit(1)
                     .exec(function (rows) {
+                        console.log("R@::", rows);
                         slider[0] = rows[0];
                         callback(null, socket, data);
                     });
@@ -615,7 +611,11 @@ exports.home = function(req, res, next) {
                 mysql.select('articles', ['main_img_path', 'title', 'slug'])
                     .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS subcategoria'] })
                     .join({ table: 'categories', on: 'id', key: 'B.categories_id', columns: ['name AS categoria'] })
-                    .where('A.categories_id = 11 OR A.categories_id = 10')
+                    .where({
+                        categories_id: { o: '=', v: '10', alias: 'A' },
+                        besides: 'OR',
+                        categories_id2: { alias: 'A', column: 'categories_id', o: '=', v: '11' }
+                    })
                     .orderBy('A.editions_id DESC')
                     .limit(2)
                     .exec(function (rows) {
@@ -626,115 +626,104 @@ exports.home = function(req, res, next) {
             }
         },
 
-        negocios: function(cb) {
-            // console.log('current::', FinalObj); 
-            Categoria.findOne({slug: "negocios"})
-                .limit(4)
-                .populate('subcategorias')
-                .exec(function(err, result) {
-                    if (err) { return cb(err); }
-                    negocios_id = result._id;
-                    cb(null, result);
-                });
+        agendaCultural: function (cb)
+        {
+            mysql.select('articles')
+                .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS subcategoria'] })
+                .join({ table: 'categories', on: 'id', key: 'B.categories_id', columns: ['name AS categoria'] })
+                .where({ id: { alias: 'C',  o: '=', v: '2' } })
+                .orderBy('A.available_at')
+                .limit('3')
+                .exec(function (rows) {
+                    cb(null, rows);
+                })
         },
 
-        negocios_materias: function(cb) {
-            //console.log("negocios_id", negocios_id);
-            Materia.find({categoria: negocios_id})
-                .populate(['categoria','subcategoria'])
-                .sort('-created_at')
-                .exec(function(err, result) {
-                    if (err) { return cb(err); }
-                    cb(null, result);
-                });
+        lastArticles: function (cb) {
+            mysql.select('articles', ['id', 'title'])
+                .limit(12)
+                .orderBy('available_at')
+                .exec(function (rows) {
+                    cb(null, rows);
+                })
         },
 
-        life_style: function(cb) {
-            Categoria.findOne({slug: "life-style"})
-                .limit(5)
-                .populate('subcategorias')
-                .exec(function(err, result) {
-                    if (err) { return cb(err); }
-                    life_style_id = result._id;
-                    cb(null, result);
-                });
+        negociosSub: function (cb) {
+            mysql.select('categories')
+                .where({ categories_id: { o: '=', v: '4' } })
+                .exec(function (rows) {
+                    cb(null, rows);
+                })
         },
-        life_style_materias: function(cb) {
-            //console.log("life_style_id", life_style_id);
-            Materia.find({categoria: life_style_id})
-                .populate(['categoria','subcategoria'])
-                .sort('-created_at')
-                .limit(2)
-                .exec(function(err, result) {
-                    if (err) { return cb(err); }
-                    cb(null, result);
-                });
+
+        lifeStyleSub: function (cb) {
+            mysql.select('categories')
+                .where({ categories_id: { o: '=', v: '3' } })
+                .exec(function (rows) {
+                    cb(null, rows);
+                })
         },
-        guia_de_entretenimento: function(cb) {
-            Materia.find({categoria: '58ab73fb1413ce267e4d3172'})
-                .populate(['categoria','subcategoria'])
-                .sort('-created_at')
-                .limit(8)
-                .exec(function(err, result) {
-                    if (err) { return cb(err); }
-                    cb(null, result);
-                });
+
+        guia: function (cb) {
+            //TODO - Entertianemnt will be a different table
+            mysql.select('articles')
+                .where({ id: { alias: 'C',  o: '=', v: '5' } })
+                .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS subcategoria'] })
+                .join({ table: 'categories', on: 'id', key: 'B.categories_id', columns: ['name AS categoria'] })
+                .orderBy('A.available_at')
+                .exec(function (rows) {
+                    console.log("Guide:: ", rows);
+                    cb(null, rows);
+                })
         },
+
         videos: function(cb) {
-            Video.find()
-                .sort('ordem')
-                .limit(5)
-                .exec(function(err, result) {
-                    if (err) { return cb(err); }
-                    cb(null, result);
+            mysql.select('videos')
+                .orderBy('created_at')
+                .limit('5')
+                .exec(function (rows) {
+                    cb(null, rows);
                 });
         },
         welove: function(cb) {
-            WeLove.find({'status':'aprovado'})
-                .sort('created_at')
-                .limit(8)
-                .exec(function(err, result) {
-                    if (err) { return cb(err); }
-                    cb(null, result);
-                });
-        },
-        social: function(cb) {
-            Config.find({key: /^social/})
-                .limit(16)
-                .sort('key')
-                .exec(function(err, result) {
-                    if (err) { return cb(err); }
-                    //console.log("result", result);
+            mysql.select('welove')
+                .where({ status: { o: '=', v: '1' } })
+                .orderBy('created_at')
+                .limit('8')
+                .exec(function (rows) {
+                    var a1 = [];
+                    var a2 = [];
 
-                    var titulos = {};
-                    var imagens = {};
-
-                    for (var i = 0; i < result.length; i ++) {
-
-                        var key = result[i].key;
-                        var value = result[i].value;
-
-                        var key_splited = key.split('_')
-
-                        var index = key_splited[0].split('social')[1];
-
-                        if (key_splited[1] == "imagem") {
-                            imagens[index] = value;
-                        } else {
-                            titulos[index] = value;
+                    var m = 0;
+                    var i = 0;
+                    while(i < 8)
+                    {
+                        if (i <= 3)
+                        {
+                            a1.push(rows[i]);
+                        }else
+                        {
+                            a2.push(rows[i]);
                         }
 
+                        i++;
                     }
 
-                    cb(null, {titulos: titulos, imagens: imagens});
-                });
-        }
+                    cb(null, [ a1, a2 ] );
+                })
+        },
+
+        social: function (cb) {
+            mysql.select('social')
+                .orderBy('editions_id')
+                .exec(function (rows) {
+                    cb(null, rows);
+                })
+        },
     }, function(err, results) {
         if (err) { return next(err); }
-        categorias = {};
-        // results['mainSlider'] = FinalObj;
-        // console.log(results);
-        // return hb.compile('home');
+        console.log("RES:>:", results.agendaCultural);
+        // categorias = {};
         return res.render('home', {_categorias: results, mainSlider: slider});
     })
 

@@ -25,7 +25,7 @@ var config = require('./config');
 
 var app = express();
 
-var mysql = require('./domain/mysql');
+var mysql = require('./domain/mysql-helper/mysql');
 
 var Categoria = require('./models/categoria.model');
 var SubCategoria = require('./models/subcategoria.model');
@@ -241,21 +241,21 @@ app.use(function(req, res, next){
         })
 });
 
-app.use(function(req, res, next) {
-
-    //Agenda Cultural
-    Materia.find({ categoria : '589bbe420551da698b474c05' })
-        .populate('subcategoria')
-        .populate('categoria')
-        .limit(3)
-        .sort('created_at')
-        .exec(function(err, res)
-        {
-            //if (err) { return next(err); }
-            app.locals.AgendaCultural = res;
-            next();
-        });
-});
+// app.use(function(req, res, next) {
+//
+//     //Agenda Cultural
+//     Materia.find({ categoria : '589bbe420551da698b474c05' })
+//         .populate('subcategoria')
+//         .populate('categoria')
+//         .limit(3)
+//         .sort('created_at')
+//         .exec(function(err, res)
+//         {
+//             //if (err) { return next(err); }
+//             app.locals.AgendaCultural = res;
+//             next();
+//         });
+// });
 
 app.use(function(req, res, next) {
 
@@ -302,33 +302,6 @@ app.use(function(req, res, next) {
         .exec(function(err, result) {
             if (err) { return next(err); }
             app.locals.capa = result;
-            next();
-        });
-});
-
-app.use(function(req, res, next) {
-
-    Materia.find({})
-        .sort('-created_at')
-        .limit(3)
-        .populate(['categoria', 'subcategoria'])
-        .exec(function(err, result) {
-            if (err) { return next(err); }
-            app.locals.ultimas_materias = result;
-            next();
-        });
-});
-
-app.use(function(req, res, next) {
-
-    Materia.find({edicao: {$ne: app.locals.ultima_edicao._id}})
-        .sort('-created_at')
-        .skip(3)
-        .limit(3)
-        .populate(['categoria', 'subcategoria'])
-        .exec(function(err, result) {
-            if (err) { return next(err); }
-            app.locals.ultimas_materias_2 = result;
             next();
         });
 });

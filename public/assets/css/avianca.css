@@ -232,6 +232,10 @@ form[name="welove"] .foto .foto-container #foto-src{
     outline: none;
 }
 
+.slick-track{
+    margin-left: 40px;
+}
+
 .postGalleryShow {
     width: 500px;
 }

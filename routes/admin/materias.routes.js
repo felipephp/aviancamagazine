@@ -1,7 +1,7 @@
 var path = require('path');
 var async = require('async');
 var moment = require('moment');
-var mysql = require('../../domain/mysql');
+var mysql = require('../../domain/mysql-helper/mysql');
 var generateSlug = require('../../domain/generate-slug');
 
 var uploadFile = require('../../lib/upload-file');
@@ -32,6 +32,17 @@ exports.index = function(req, res, next) {
 
 exports.create = function(req, res, next) {
 
+    mysql.select('articles', ['id', 'title'])
+        .where({
+            headline_img_path: { o: '?', v: 'IS NOT NULL' },
+            besides: 'OR',
+            categories_id: { o: '=', v: '12' }
+        })
+        .exec(function (rows) {
+            //console.log('newWhere::', rows);
+            //die();
+        });
+
     var one = new Model;
         async.series({
             autores: function (cb) {
@@ -39,14 +50,16 @@ exports.create = function(req, res, next) {
                     .select('authors')
                     .orderBy('name')
                     .exec(function (authors) {
-                        console.log('at::', authors);
+                        //console.log('at::', authors);
                         return cb(null, authors);
                     })
             },
             subcategorias: function (cb) {
                 mysql.select('categories', ['id AS sub_id', 'name AS sub_name'])
                     .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS cat_name'] })
-                    .where('A.categories_id IS NOT NULL')
+                    .where({
+                        categories_id: { o: '?', v: 'IS NOT NULL', alias: 'A'}
+                    })
                     .orderBy('B.name')
                     .exec(function (subcategorias) {
                         return cb(null, subcategorias);
@@ -243,14 +256,16 @@ exports.edit = function(req, res, next) {
                 .select('authors')
                 .orderBy('name')
                 .exec(function (authors) {
-                    console.log('at::', authors);
+                    //console.log('at::', authors);
                     return cb(null, authors);
                 })
         },
         subcategorias: function (cb) {
             mysql.select('categories', ['id AS sub_id', 'name AS sub_name'])
                 .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS cat_name'] })
-                .where('A.categories_id IS NOT NULL')
+                .where({
+                    categories_id: { alias: 'A', o: '?', v: 'IS NOT NULL' }
+                })
                 .orderBy('B.name')
                 .exec(function (subcategorias) {
                     return cb(null, subcategorias);
@@ -286,17 +301,20 @@ exports.edit = function(req, res, next) {
             .join({ table: 'authors', on: 'id', key: 'A.authors_id', columns: ['id AS aut_id'] }) //d
             .join({ type: 'LEFT', table: 'locations_has_articles', on: 'articles_id', key: 'A.id', columns: ['locations_id'] }) //e
             .join({ type: 'LEFT', table: 'articles_has_tags', on: 'articles_id', key: 'A.id', columns: ["GROUP_CONCAT(F.tags_id) AS tags"] }) //f
-            .where('A.id = '+id)
+            .where({
+                id: { alias: 'A', o: '=', v: id }
+            })
             .groupBy('A.id')
             .exec(function (row) {
                 row = row[0];
-                row.categoria = { id: row.sud_id };
+                console.log("\n\nROW::", row);
+                row.categoria = { id: row.sub_id };
                 row.edicao = { id: row.edi_id };
                 row.autor = { id: row.aut_id };
                 row.localizacao = { id: row.locations_id };
                 // row.tags = ( !row.tags ) ? [] : row.tags.split(',');
                 row.tags = ( !row.tags ) ? [] : row.tags.split(",");
-                console.log('TAGS::', row.tags);
+                //console.log('TAGS::', row.tags);
 
                 var d = row.available_at;
                 var finalDate = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes();
@@ -333,7 +351,9 @@ exports.update = function(req, res, next) {
 
             function (socket, data, callback)  {
                 mysql.update('articles', req.body)
-                    .where('id = '+id)
+                    .where(
+                        { id: { o: '=', v: id } }
+                    )
                     .exec(function (rows) {
                         callback(null, socket, data);
                     });
@@ -437,7 +457,9 @@ exports.delete = function(req, res, next) {
     var id = req.params.id;
 
     mysql.delete('articles')
-        .where('id = '+id)
+        .where({
+            id: { o: '=', v: id }
+        })
         .exec(function (row) {
             req.flash('success', 'O registro foi excluido com sucesso!');
             return res.redirect('/admin/'+base_route);

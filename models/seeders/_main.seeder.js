@@ -6,7 +6,7 @@
  * - Create categories seeder from production DB, before the articles seeder
  */
 
-var mysql 	= require('../../domain/mysql');
+var mysql 	= require('../../domain/mysql-helper/mysql');
 // var extend 	= require('util')._extend;
 
 var articles 	= require('./articles.seeder');

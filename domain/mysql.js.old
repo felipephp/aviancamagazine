@@ -1,10 +1,9 @@
-var MySQLExt = require('mysql');
-var config = require('../config');
+var MySQLExt = require('mysql'); //node-mysql
+var config = require('../config'); //the file that contains db configs.
 
 module.exports = {
 
     connection: null,
-    // query: null,
     stored: {}, //objeto de queries armazenado para pegar psoterior a um laoço, caso não haja callback
 
     createConnection: function()
@@ -276,15 +275,37 @@ module.exports = {
         return this;
     },
 
-    where: function(where){
-        console.log("up::", this.query.update);
-        if (this.query.select == undefined && this.query.update == undefined && this.query.delete == undefined && this.query.insert == undefined) {
-            throw new Error('First [select, joins...] then where. Please, follow the correct SQL sequence,');
+    _where: function (values) {
+        var $this = this._where;
+
+        var WHERE = false;
+        for (var col in values)
+        {
+            var value = values[col];
+            if (!WHERE) {
+                WHERE = col
+            }
         }
+    },
 
-        this.query.where = 'WHERE '+where;
+    /**
+     * @deprecated
+     * */
+    where: function(where){
+        try{
+            this._where(where);
+            return this;
+        }catch (e){
+            console.log('\n\n**** EXEC BY DEPRECATED');
+            //console.log("up::", this.query.update);
+            if (this.query.select == undefined && this.query.update == undefined && this.query.delete == undefined && this.query.insert == undefined) {
+                throw new Error('First [select, joins...] then where. Please, follow the correct SQL sequence,');
+            }
 
-        return this;
+            this.query.where = 'WHERE '+where;
+
+            return this;
+        }
     },
 
     orderBy: function(orderBy){
@@ -423,9 +444,9 @@ module.exports = {
             QUERY_STRING = QUERY_STRING.replace('{{cols}}', this.query.cols);
         }
 
-        console.log('\n ***********************');
-        console.log(QUERY_STRING);
-        console.log('\n ***********************');
+        // console.log('\n ***********************');
+        // console.log(QUERY_STRING);
+        // console.log('\n ***********************');
 
         if (!exec) {
             callback(QUERY_STRING);
