@@ -5,36 +5,30 @@ var Materia = require('../models/materia.model');
 
 var async = require('async');
 var mysql = require('../domain/mysql-helper/mysql');
+var Articles = require('../models/sql_articles');
+var myHelper = require('../lib/articles_helper');
 
 exports.porCategoria = function(req, res, next) {
-
     var categoria_slug = req.params.categoria_slug;
-
-    // console.log("categoria_slug", categoria_slug);
-
     async.waterfall([
-        function(cb) {
-            Categoria.findOne({slug: categoria_slug})
-                .populate('subcategorias')
-                .exec(function(err, categoria) {
-                    if (err) { return cb(err); }
-                    cb(null, categoria);
+        function (cb) {
+            mysql.select('categories')
+                .where({ slug: { o: '=', v: categoria_slug } })
+                .exec(function (row) {
+                    if (!row[0]) {
+                        res.render('Error.');
+                        //return res.render("categoria", {categoria: categoria, materias: materias});
+                    }
+
+                    cb(null, row[0]);
                 })
         },
-        function(categoria, cb) {
-            if (!categoria) {
-                return next();
-            }
-            Materia.find({categoria: categoria._id})
-                .sort('-created_at')
-                .populate(['categoria', 'subcategoria'])
-                .exec(function(err, materias) {
-                    if (err) { return cb(err); }
-                    cb(null, categoria, materias);
-                })
+        function (categoria, cb) {
+            Articles.from('category').getArticle(categoria.id, function (rows) {
+                cb(null, categoria, rows);
+            })
         }
     ], function(cb, categoria, materias) {
-        // console.log("categoria", categoria);
         return res.render("categoria", {categoria: categoria, materias: materias});
     })
 
@@ -47,26 +41,23 @@ exports.porSubcategoria = function(req, res, next) {
     var subcategoria_slug = req.params.subcategoria_slug;
 
     async.waterfall([
-        function(cb) {
-            Subcategoria.findOne({slug: subcategoria_slug})
-                .exec(function(err, subcategoria) {
-                    if (err) { return cb(err); }
-                    cb(null, subcategoria);
+        function (cb) {
+            mysql.select('categories')
+                .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS categoria', 'slug AS cat_slug'] })
+                .where({ slug: { alias: 'A', o: '=', v: subcategoria_slug } })
+                .exec(function (row) {
+                    if (!row[0]) {
+                        res.render('Error.');
+                    }
+                    cb(null, row[0]);
                 })
         },
-        function(subcategoria, cb) {
-            if (!subcategoria) {
-                // console.log("next!");
-                return next();
-            }
-            Materia.find({subcategoria: subcategoria._id})
-                .sort('-created_at')
-                .populate(['categoria', 'subcategoria'])
-                .exec(function(err, materias) {
-                    if (err) { return cb(err); }
-                    cb(null, subcategoria, materias);
-                })
+        function (subcategoria, cb) {
+            Articles.from('subcategory').getArticle(subcategoria.id, function (rows) {
+                cb(null, subcategoria, rows);
+            })
         }
+
     ], function(cb, subcategoria, materias) {
         return res.render("subcategoria", {subcategoria: subcategoria, materias: materias});
     })
@@ -103,7 +94,6 @@ exports.porTag = function(req, res, next) {
         return res.render("tag", {tag: tag, materias: materias});
     })
 
-
 };
 
 exports.mostrar = function(req, res, next) 
@@ -125,103 +115,63 @@ exports.mostrar = function(req, res, next)
             },
 
             findArticle,
-
-            countThisCategory,
-
-            selectRandom,
-
-            add,
+            getRels,
+            author,
+            end
 
         ]
         ,function(err, result) {
             /**
              * function to be called when all functions in async array has been called
              */
-            
-            //STEP 1 1 1 1 1
-            //console.log('project created ....', result)
             return res.render("materia", result );
-            // cb(null, b);
         });
     };
 
     findArticle = function(socket, data, callback) 
     {
-        // console.log("find article", asyncObj);
-        // return;
-        Materia.findOne({slug: slug})
-            .populate('categoria')
-            .populate('subcategoria')
-            .populate('autor')
-            .populate('tags')
-            .exec(function(err, materia) {
+        mysql.select('articles')
+            .where({ slug: { o: '=', v: slug } })
+            .limit(1)
+            .exec(function (row) {
+                row = row[0];
 
-                // asyncObj['materia'] = materia;
-                materia.deepPopulate('subcategoria.categoria', function(err, _materia) {
-                    if (err) { return next(err); }
-                    callback(null, socket, {materia: materia});
+                Articles.from('articles').getArticle(row.id, function (article) {
+                    article = article[0];
+                    callback(null, socket, { materia: article });
                 })
+            })
 
+    };
+
+    getRels = function (socket, data, callback) {
+        mysql.select('articles')
+            .where({ categories_id: { o: '=', v:data.materia.categories_id }  })
+            .limit(3)
+            .orderBy("RAND()")
+            .exec(function (rows) {
+                for(var idx in rows)
+                {
+                    myHelper.getShowInfo(rows[idx]);
+                }
+                data.rels = rows;
+                callback(null, socket, data);
+            })
+
+    };
+
+    author = function (socket, data, callback) {
+        mysql.select('authors')
+            .where({ id: { o: '=', v: data.materia.authors_id } })
+            .exec(function (row) {
+                row = row[0];
+                data.author = row;
+                callback(null, socket, data);
             })
     };
 
-    countThisCategory = function(socket, data, callback) {
-
-        
-        /**
-         * call next function in series
-         * provide sufficient input to next function
-         */
-        Materia.count({ 'subcategoria': data.materia.subcategoria._id })
-            .exec(function(err, count){
-                data['count'] = count;
-                callback(null, socket, data );
-            })
-    };
-
-    selectRandom = function(socket, data, callback) 
-    {
-        // console.log('selRandom', asyncObj);
-        // return;
-        data['rels'] = [];
-        var total = 3;
-        var i = total;
-        while(i > 0)
-        {
-            //TODO Temos um problema aqui. número randomico não pode repetir, no mysql isso é muito mais fácil, e agora? Trocar???
-            //
-            var random = Math.floor(Math.random() * data.count);
-            // Get a random entry
-            //var random = Math.floor(Math.random() * count)
-
-            // Again query all users but only fetch one offset by our random #
-            Materia.findOne({ 'subcategoria': data.materia.subcategoria._id }).skip(random)
-                .select({'conteudo':false})
-                .exec(
-                function (err, result) {
-                    //console.log('rs:: ',result);
-                    data.rels.push(result);
-
-                    if (i == 0) {
-                        add( socket, data, data.rels, total, callback );
-                    }
-                });
-            i--;
-        }
-    };
-
-    add = function( socket, data, asyncObj, total, callback) 
-    {
-        console.log(asyncObj);
-        if (asyncObj.length == total) {
-            callback(null, socket, data, { rels: asyncObj}, 'theend' );
-        }
-
-
-        if (total == 'theend') {
-//            console.log('FinalTTL::', data);
-            callback(null, data );
-        }
+    end = function (socket, data, callback) {
+        callback(null, data);
     };
 
     createGlobalGroup();

@@ -1,11 +1,11 @@
 article.post.post-tp-24
     figure
         a(href='/materias/'+materia.slug)
-            img.adaptive(src=materia.info_imagem+"?dim=270x189", height='189', width='270', alt='Spectr News Theme')
+            img.adaptive(src=materia.showImage+"?dim=270x189", height='189', width='270', alt='Spectr News Theme')
         .ptp-24-overlay
     h3.title-14
-        a(href='/materias/'+materia.slug)= materia.info_titulo
-    p.p  !{materia.info_conteudo}
+        a(href='/materias/'+materia.slug)= materia.showTitle
+    p.p  !{materia.cuttedContent}
     .meta-tp-2
-        //.date
+        //-.date
             span= materia.data_postagem

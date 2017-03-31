@@ -12,13 +12,6 @@ var Model = require.main.require('./models/materia.model');
 var uploadSlimFile = require.main.require('./lib/upload-slim-file');
 
 exports.index = function(req, res, next) {
-
-    // Model.find({})
-    //     .populate(['edicao', 'autor', 'categoria', 'subcategoria'])
-    //     .exec(function(err, all) {
-    //         if (err) { return next(err); }
-    //         return res.render('admin/'+base_route+'/index', {all: all});
-    //     })
     mysql.select('articles', ['title','id'])
         .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS subcategoria'] })
         .join({ table: 'categories', on: 'id', key: 'B.categories_id', columns: ['name AS categoria'] })
@@ -31,17 +24,6 @@ exports.index = function(req, res, next) {
 };
 
 exports.create = function(req, res, next) {
-
-    mysql.select('articles', ['id', 'title'])
-        .where({
-            headline_img_path: { o: '?', v: 'IS NOT NULL' },
-            besides: 'OR',
-            categories_id: { o: '=', v: '12' }
-        })
-        .exec(function (rows) {
-            //console.log('newWhere::', rows);
-            //die();
-        });
 
     var one = new Model;
         async.series({
@@ -145,6 +127,7 @@ exports.store = function(req, res, next) {
             verifyImages,
 
             function (socket, data, callback)  {
+                req.body.slug = generateSlug(req.body.title);
                 mysql.insert('articles', req.body)
                     .exec(function (rows) {
                         // console.log('Inserted::', rows);
@@ -350,6 +333,7 @@ exports.update = function(req, res, next) {
             verifyImages,
 
             function (socket, data, callback)  {
+                req.body.slug = generateSlug(req.body.title);
                 mysql.update('articles', req.body)
                     .where(
                         { id: { o: '=', v: id } }

@@ -11,22 +11,22 @@ block content
 							a(href='') Home
 							i.fa.fa-angle-right
 						li.bc-item
-							a(href='#') Matéria: #{materia.info_titulo}
+							a(href='#') Matéria: #{materia.title}
 		// Page head tile END
 		// Main post image
 		.section
 			article.post.post-tp-27.mb-height
 				figure
 					a(href='')
-						img.adaptive(src=materia.info_imagem+"?dim=1140x535", height='535', width='1140', alt='Spectr News Theme')
+						img.adaptive(src=materia.main_img_path+"?dim=1140x535", height='535', width='1140', alt='Spectr News Theme')
 				.ptp-27-overlay
 					.table
 						.cell
-							a.category-tp-1(href='', tabindex='0') #{materia.categoria.nome} > #{materia.subcategoria.nome}
+							a.category-tp-1(href='', tabindex='0') #{materia.categoria} > #{materia.subcategoria}
 							h2.title-18
-								a(href='')= materia.info_titulo
+								a(href='')= materia.title
 							.meta-tp-4
-								//.date-tp-4
+								//-.date-tp-4
 									i.li_clock
 									| #{materia.data_postagem}
 		// Main post image END
@@ -36,7 +36,7 @@ block content
 					.pst-block
 						.pst-block-main
 							.post-content
-								//.post-sharing-tp-1
+								//-.post-sharing-tp-1
 									ul
 										li.fb
 											a(href='https://www.facebook.com/sharer/sharer.php?u='+thisURL, target="_blank")
@@ -50,10 +50,10 @@ block content
 											a(href='https://plus.google.com/share?url='+thisURL, target="_blank")
 												i.fa.fa-google-plus
 												span.mb-pt-hide Google+
-								p !{ materia.conteudo }
+								p !{ materia.content }
 								.post-tags
 									ul.post-tags-list
-										for tag in materia.tags
+										//-for tag in materia.tags
 											li
 												a(href="/tags/"+tag.nome)= tag.nome
 								
@@ -110,7 +110,7 @@ block content
 													i.fa.fa-facebook
 													span.mb-pt-hide Facebook
 											li.tw
-												a(href='https://twitter.com/intent/tweet?text='+materia.titulo_chamada+'&url='+thisURL+'&original_referer='+thisURL, target="_blank")
+												a(href='https://twitter.com/intent/tweet?text='+materia.showTitle+'&url='+thisURL+'&original_referer='+thisURL, target="_blank")
 													i.fa.fa-twitter
 													span.mb-pt-hide Twitter
 											li.gp
@@ -126,16 +126,18 @@ block content
 										a(href='')
 											i.fa.fa-angle-right
 											span.mb-pt-hide Facebook's Design Resources lastest release: Watches
-								if materia.autor
-									.author-box-1
-										.author-photo
-											if materia.autor.avatar_path
-												img(src=materia.autor.avatar_path+"?dim=95x95", height='95', width='95', alt='Spectr News Theme')
-											else
-												img(src='/assets/img/person-flat.png', height='95', width='95', alt='Spectr News Theme')
-										.author-name= materia.autor.nome
-										.author-profession= materia.autor.cargo
-										.author-description= materia.autor.mini_cv
+								
+								.author-box-1
+									.author-photo
+										//- if materia.autor.avatar_path
+											img(src=materia.autor.avatar_path+"?dim=95x95", height='95', width='95', alt='Spectr News Theme')
+										//-else
+											img(src='/assets/img/person-flat.png', height='95', width='95', alt='Spectr News Theme')
+										img(src='/assets/img/person-flat.png', height='95', width='95', alt='Spectr News Theme')
+									.author-name= author.name
+									.author-profession= author.position
+									.author-description= author.short_resume
+								
 								.pst-box
 									.pst-box-head
 										.title-blc-1
@@ -149,9 +151,9 @@ block content
 													article.post.post-tp-30
 														figure
 															a(href='')
-																img.adaptive(src= ( rel.imagem_chamada_path ) ? rel.imagem_chamada_path : rel.imagem_principal_path, height='150', width='222', alt='Spectr News Theme')
+																img.adaptive(src= rel.showImage, height='150', width='222', alt='Spectr News Theme')
 														h3.title-6
-															a(href='')= ( rel.titulo_chamada ) ? rel.titulo_chamada : rel.titulo
+															a(href='')= rel.showTitle
 								//- .comments-block
 								//- 	.title-blc-2
 								//- 		.title-blc-inner

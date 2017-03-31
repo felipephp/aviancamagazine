@@ -601,7 +601,7 @@ exports.home = function(req, res, next) {
                     .orderBy('A.editions_id DESC')
                     .limit(1)
                     .exec(function (rows) {
-                        console.log("R@::", rows);
+                        //console.log("R@::", rows);
                         slider[0] = rows[0];
                         callback(null, socket, data);
                     });
@@ -672,7 +672,7 @@ exports.home = function(req, res, next) {
                 .join({ table: 'categories', on: 'id', key: 'B.categories_id', columns: ['name AS categoria'] })
                 .orderBy('A.available_at')
                 .exec(function (rows) {
-                    console.log("Guide:: ", rows);
+                    //console.log("Guide:: ", rows);
                     cb(null, rows);
                 })
         },
@@ -716,14 +716,13 @@ exports.home = function(req, res, next) {
         social: function (cb) {
             mysql.select('social')
                 .orderBy('editions_id')
+                .limit('8')
                 .exec(function (rows) {
                     cb(null, rows);
                 })
         },
     }, function(err, results) {
         if (err) { return next(err); }
-        console.log("RES:>:", results.agendaCultural);
-        // categorias = {};
         return res.render('home', {_categorias: results, mainSlider: slider});
     })
 

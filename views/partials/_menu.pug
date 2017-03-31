@@ -6,15 +6,11 @@ nav.main-nav
             a(href='/') home
     
         for cat in categorias
-            //- if cat.slug == 'editorial'
-            //-     li
-            //-         a(href='/edicoes') nossas capas
-
-            //- if cat.slug != "guia-de-entretenimento"
-            if cat._id != "589bbddcd469b56893cfc27b"
+            //destinos
+            if cat.id != '1'
                 li
                     a(href="/"+cat.slug)
-                        | #{cat.nome}
+                        | #{cat.name}
                         if cat.subcategorias.length
                             i.fa.fa-angle-down
                     if cat.subcategorias.length
@@ -22,10 +18,10 @@ nav.main-nav
                             for subcat in cat.subcategorias
                                 if subcat.slug != 'capa'
                                     li
-                                        a(href="/"+cat.slug+"/"+subcat.slug)= subcat.nome
+                                        a(href="/"+cat.slug+"/"+subcat.slug)= subcat.name
                             if cat.slug == 'editorial'
                                 li
-                                    a(href='/edicoes') Nossas Capas
+                                    a(href='/edicoes') Edições anteriores
             else
                 <li class="mf">
                     <a href="/destinos">Destinos<i class="fa fa-angle-down"></i></a>
@@ -52,11 +48,11 @@ nav.main-nav
                                                     <article class="post">
                                                         <figure>
                                                             <a href="/materias/#{des_menu.slug}">
-                                                                img(src=des_menu.imagem_principal_path, height="136", width="203")
+                                                                img(src=des_menu.showImage, height="136", width="203")
                                                                 //- <img src= '#{des_menu.imagem_principal_path}' height="136" width="203" alt="Spectr News Theme" class="adaptive" />
                                                             </a>
                                                         </figure>
-                                                        <h6 class="title-12"><a href="">#{des_menu.titulo}</a></h6>
+                                                        <h6 class="title-12"><a href="">#{des_menu.showTitle}</a></h6>
                                                     </article>
                                                 </div> 
                                             </div>

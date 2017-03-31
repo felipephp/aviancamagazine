@@ -50,20 +50,35 @@ mysql pass do: Elipse#1126
 -[ ] Fazer CRUD de comentários (3 dias)
 -[ ] Ajustes de segurança em WHERE e ORDER by enviando valores via ? e arrayValues (2 dias)
 -[ ] No slider, ainda aparece "OF". e só muda para 3 of 3 qdo clica, no início é 1/14.
+-[ ] Ao buscar por slugs, podemos futuramente perder o link, então, tratar slug apenas para SEO e enviar tbm o ID da materia/cat/subcat para URL
 
 LAYOUTS
 -[ ] Menu avianca, post_template_one (todos) - sem sidebar - Usar accordion ou jquery tabs para todos os conteudos
 -[ ] Guia e mapa de rotas: Imagem grande, sem conteúdo (apenas click) category_style_six
 -[ ] Welove e social galeria SHORTCODES (lembrar do share por foto em welove)
-- Edições anteriores / Nossas capas 
+-[x] Edições anteriores / Nossas capas 
 - botao anuncie depois do welove
 
 -converter corretamente o db novo, we love, social. manter entretenimento do jeito que está
+
+- ajustar TAGS na materia e na página para filtrar por tags
+- Ajustar pesquisa para SQL
+- ajustar usuarios via SQL
 
 pagina de anuncie será contat_one MIDIA KIT
 
 qdo clicar na revista, embed do issu no site
 
-menua vianca...
+menu avianca...
 quem somos, carol
 mapa de rotas (img)
+
+//fixeds ids
+1 - destinos
+2 - cultura
+3 - life-style
+4 - negocios
+5 - guia de entret
+10 - destinos -> internacionais
+11 - destinos -> nacionais
+35 - destinos -> capa
