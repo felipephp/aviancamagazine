@@ -18,30 +18,67 @@ mysql pass do: Elipse#1126
 ### --------------------------------------------------------------------------------
 
 #### Hard
--[ ] <a name="1">Finalizar conversão do DB mongo/mysql</a>
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span> Finalizar conversão do DB mongo/mysql
 -[ ] Reescrever queries do painel
+-[ ] Reescrever queries do site e ajustes de rotas
 -[ ] Transformar em pop up o cadastro welove;
 -[ ] <span style="color: orange; font-weight: bold">Layout</span>Alterar a galeria.
 
 #### Medium
--[ ] Reescrever queries do site
--[ ] HTML da revista no topo
--[ ] <span style="color: orange; font-weight: bold">Layout</span>colocar o prêmio da revista e logo 
--[ ] <span style="color: orange; font-weight: bold">Layout</span>No item de compartilhar, colocar o texto "gostou do nosso conteúdo? compartilhe "
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span> HTML da revista no topo
+-[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span>colocar o prêmio da revista e logo 
+-[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span>No item de compartilhar, colocar o texto "gostou do nosso conteúdo? compartilhe "
 
 #### Easy
--[ ] remover LOVE 
--[ ] remover icones redes sociais 
--[ ] adicionar template HTML de comentários
--[ ] Mudar o Banner escrever; ( clique aqui e envie sua foto )
--[ ] Retirar lojas Avianca 
--[ ] Colocar um item Avianca ( Quem é Avianca, prêmios, contatos, WiFi)
--[ ] Retirar as redes sociais da parte superior
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span> remover LOVE 
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span>remover icones redes sociais 
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span>remover horários 
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span> Adicionar template HTML de comentários
+-[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span> Mudar o Banner escrever; ( clique aqui e envie sua foto )
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span>Retirar lojas Avianca 
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span>Colocar um item Avianca ( Quem é Avianca, prêmios, contatos, WiFi)
+-[x] <span style="color: green; font-weight: bold">[ OK ]</span>Retirar as redes sociais da parte superior
+-[ ] Quando mudar para mysql, listar notícias por available_At dentro da single de categoria
  
  #### PÓS
- -[ ] <span style="color: orange; font-weight: bold">Layout</span> Galerias internas- colocar um campo de nome em cada foto para cadastrar o fotografo
- -[ ] <span style="color: orange; font-weight: bold">Layout</span> No item de compartilhar, colocar o texto "gostou do nosso conteúdo? compartilhe "
- -[ ] Galerias dentro do texto. 
- -[ ] liberar o link para externo
- -[ ] Social  -> criar a página
- -[ ] Converter usuários para Mysql e verificar segurança da senha
+-[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span> Galerias internas- colocar um campo de nome em cada foto para cadastrar o fotografo
+-[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span> No item de compartilhar, colocar o texto "gostou do nosso conteúdo? compartilhe"
+-[ ] Galerias dentro do texto. 
+-[ ] liberar o link para externo
+-[ ] Social  -> criar a página
+-[ ] Converter usuários para Mysql e verificar segurança da senha
+-[ ] Fazer CRUD de comentários (3 dias)
+-[ ] Ajustes de segurança em WHERE e ORDER by enviando valores via ? e arrayValues (2 dias)
+-[ ] No slider, ainda aparece "OF". e só muda para 3 of 3 qdo clica, no início é 1/14.
+-[ ] Ao buscar por slugs, podemos futuramente perder o link, então, tratar slug apenas para SEO e enviar tbm o ID da materia/cat/subcat para URL
+
+LAYOUTS
+-[ ] Menu avianca, post_template_one (todos) - sem sidebar - Usar accordion ou jquery tabs para todos os conteudos
+-[ ] Guia e mapa de rotas: Imagem grande, sem conteúdo (apenas click) category_style_six
+-[ ] Welove e social galeria SHORTCODES (lembrar do share por foto em welove)
+-[x] Edições anteriores / Nossas capas 
+- botao anuncie depois do welove
+
+-converter corretamente o db novo, we love, social. manter entretenimento do jeito que está
+
+- ajustar TAGS na materia e na página para filtrar por tags
+- Ajustar pesquisa para SQL
+- ajustar usuarios via SQL
+
+pagina de anuncie será contat_one MIDIA KIT
+
+qdo clicar na revista, embed do issu no site
+
+menu avianca...
+quem somos, carol
+mapa de rotas (img)
+
+//fixeds ids
+1 - destinos
+2 - cultura
+3 - life-style
+4 - negocios
+5 - guia de entret
+10 - destinos -> internacionais
+11 - destinos -> nacionais
+35 - destinos -> capa

@@ -21,11 +21,11 @@ var i18n = require('i18n');
 var moment = require('moment');
 require('moment/locale/pt-br');
 moment.locale('pt-br');
-var mysql = require('./domain/mysql');
-
 var config = require('./config');
 
 var app = express();
+
+var mysql = require('./domain/mysql-helper/mysql');
 
 var Categoria = require('./models/categoria.model');
 var SubCategoria = require('./models/subcategoria.model');
@@ -33,6 +33,8 @@ var Tag = require('./models/tag.model');
 var Edicao = require('./models/edicao.model');
 var Materia = require('./models/materia.model');
 var Config = require('./models/config.model');
+
+var articlesHelper = require('./lib/articles_helper');
 
 String.prototype.capitalizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -65,9 +67,6 @@ app.use(expressValidator({
 app.use(log());
 app.use(favicon('./public/assets/img/favicon.png'));
 
-//var enFile = require(__dirname + '/locales/en');
-//var ptFile = require(__dirname + '/locales/pt-BR');
-
 app.set('views', './views');
 app.set('view engine', 'pug');
 
@@ -81,15 +80,6 @@ var connection = mongoose.connect(config.mongoose.url);
 autoIncrement.initialize(connection);
 
 var User = require('./models/user.model');
-
-//var user = new User;
-//user.username = "admin";
-//user.email = "gabriel@verumeventos.com.br";
-//user.type = "admin";
-//user.password = "popai2016*";
-//user.save(function(err, saved) {
-//    console.log(saved);
-//});
 
 passport.use('local', new LocalStrategy({usernameField: 'email', passwordField: 'password'},
     function(email, password, done) {
@@ -228,191 +218,92 @@ app.use(function(req, res, next) {
 
 });
 
+/*
+* Mount menu with cats and subcats.
+* */
 app.use(function(req, res, next){
-    Categoria.find({ 'fixed_menu' : true })
-        .sort('ordem')
-        .populate(['subcategorias','subcategoria'])
-        .exec(function(err, menuCats){
-            if (err) { return next(err); }
 
-            app.locals.categorias = menuCats;
+    mysql.select('categories')
+        .where({ fixed: { o: '=', v: '1' } })
+        .orderBy('position')
+        .exec(function (rows) {
 
+            var i = 0;
+            var total = rows.length;
+            for(var idx in rows)
+            {
+                var cat = rows[idx];
+                getsub(rows[idx]);
+                i++;
+                theEnd(i);
+            }
+
+            function getsub(row) {
+                mysql.select('categories')
+                    .where({ categories_id: { o: '=', v: cat.id.toString()} })
+                    .exec(function (subs) {
+                        if (!subs) {
+                            row.subcategorias = {}
+                        }else{
+                            row.subcategorias = subs;
+                        }
+                    })
+            }
+
+            function theEnd(i) {
+                if (i == total) {
+                    app.locals.categorias = rows;
+                    next();
+                }
+            }
+        });
+});
+
+//get tags
+app.use(function(req, res, next) {
+    mysql.select('tags')
+        .orderBy('name')
+        .exec(function (rows) {
+            app.locals.tags = rows;
             next();
         })
 });
 
+//get all editions and set last edition to top site
 app.use(function(req, res, next) {
 
-    //Agenda Cultural
-    Materia.find({ categoria : '589bbe420551da698b474c05' })
-        .populate('subcategoria')
-        .populate('categoria')
-        .limit(3)
-        .sort('created_at')
-        .exec(function(err, res)
-        {
-            //if (err) { return next(err); }
-            app.locals.AgendaCultural = res;
+    mysql.select('editions')
+        .orderBy('number')
+        .exec(function (rows) {
+            app.locals.edicoes = rows;
+            app.locals.ultima_edicao = rows[ (rows.length-1) ];
             next();
         });
 });
 
+/*
+* Destinos do menu
+* */
 app.use(function(req, res, next) {
+    mysql.select('categories', false)
+        .join({ table: 'articles', on: 'categories_id', key: 'A.id', columns: ['id', 'slug', 'title', 'headline_title', 'main_img_path', 'headline_img_path'] })
+        .where({ categories_id: { alias: 'A', o: '=', v: '1' } })
+        .orderBy("RAND()")
+        .limit('4')
+        .exec(function (rows) {
 
-    Tag.find({})
-        .sort('nome')
-        .exec(function(err, tags) {
-            if (err) { return next(err); }
-            app.locals.tags = tags;
-            next();
-        });
-
-});
-
-app.use(function(req, res, next) {
-
-    Edicao.findOne({})
-        .sort('-numero')
-        .limit(1)
-        .exec(function(err, result) {
-            if (err) { return next(err); }
-            app.locals.ultima_edicao = result;
-            next();
-        });
-});
-
-app.use(function(req, res, next) {
-
-    Edicao.find({})
-        .sort('-numero')
-        .limit(3)
-        .exec(function(err, result) {
-            if (err) { return next(err); }
-            app.locals.ultimas_edicoes = result;
-            next();
-        });
-});
-
-app.use(function(req, res, next) {
-
-    //Capa
-    Materia.findOne({subcategoria: "58a5eab84f533c41dad42be4"})
-        .sort('-created_at')
-        .populate(['categoria', 'subcategoria'])
-        .exec(function(err, result) {
-            if (err) { return next(err); }
-            app.locals.capa = result;
-            next();
-        });
-});
-
-app.use(function(req, res, next) {
-
-    Materia.find({})
-        .sort('-created_at')
-        .limit(3)
-        .populate(['categoria', 'subcategoria'])
-        .exec(function(err, result) {
-            if (err) { return next(err); }
-            app.locals.ultimas_materias = result;
-            next();
-        });
-});
-
-app.use(function(req, res, next) {
-
-    Materia.find({edicao: {$ne: app.locals.ultima_edicao._id}})
-        .sort('-created_at')
-        .skip(3)
-        .limit(3)
-        .populate(['categoria', 'subcategoria'])
-        .exec(function(err, result) {
-            if (err) { return next(err); }
-            app.locals.ultimas_materias_2 = result;
-            next();
-        });
-});
-
-app.use(function(req, res, next) {
-
-    Edicao.find({})
-        .sort('-numero')
-        // .limit(8)
-        .exec(function(err, result) {
-            if (err) { return next(err); }
-            app.locals.edicoes = result;
-            next();
-        });
-});
-
-app.use(function(req, res, next) {
-
-    Config.find({key: {$in: ['video1_url', 'video2_url', 'video3_url', 'video4_url', 'video5_url']}})
-        .exec(function(err, result) {
-            if (err) { return next(err); }
-            app.locals.videos = result;
-            next();
-        });
-});
-
-app.use(function(req, res, next) {
-
-    app.locals.getRandomFromArray = function(myArray) {
-        var rand = myArray[Math.floor(Math.random() * myArray.length)];
-        return rand;
-    }
-
-    Materia.find({})
-        // .sort('-created_at')
-        .sort('-available_at')
-        .populate(['categoria', 'subcategoria', 'autor'])
-        .exec(function(err, result) {
-            if (err) { return next(err); }
-            app.locals.materias = result;
-            next();
-        });
-});
-
-app.use(function(req, res, next) {
-
-    Materia.find({categoria: '589bbddcd469b56893cfc27b'})
-        .select({"conteudo":false})
-        .sort('-created_at')
-        .populate(['categoria', 'subcategoria', 'autor'])
-        .exec(function(err, result) {
-            if (err) { return next(err); }
-            
-            var destinos_menu = [];
-
-            //Inicia no 2, pois os [0,1] ja são exibidos no slider principal 
-            var idx = 2;
-            while(idx < 6)
-            {
-                destinos_menu.push(result[idx]);
-                idx++;
+            for (var idx in rows){
+                var article = rows[idx];
+                articlesHelper.getShowInfo(article);
             }
 
-            app.locals.destinos_menu = destinos_menu;
-            app.locals.destinos = result;
+            app.locals.destinos = rows;
+            app.locals.destinos_menu = rows;
             next();
-        });
+        })
 });
-
-app.use(function(req, res, next) {
-    Materia.findOne({categoria: '589bbddcd469b56893cfc27b', edicao: app.locals.ultima_edicao._id})
-        .sort('-created_at')
-        .populate(['categoria', 'subcategoria', 'autor'])
-        .exec(function(err, result) {
-            if (err) { return next(err); }
-            app.locals.ultimo_destino = result;
-            next();
-        });
-});
-
-
 
 var routes = require('./routes/index.routes')(app);
-
 
 app.use(function(req, res, next) {
     app.locals.old = {};

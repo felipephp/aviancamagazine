@@ -11,18 +11,18 @@ block content
 							a(href='/') Home
 							i.fa.fa-angle-right
 						li.bc-item
-							a(href='/'+categoria.slug) Categoria: #{categoria.nome}
+							a(href='/'+categoria.slug) Categoria: #{categoria.name}
 				.page-title
 					h1.title-16
-						strong Categoria: #{categoria.nome}
+						strong Categoria: #{categoria.name}
 					.filters
 						ul.filters-list-1
-							if categoria.subcategorias.length
+							//-if categoria.subcategorias.length
 								li
 									a.active(href='/'+categoria.slug) todos
-							for subcategoria in categoria.subcategorias
+							//-for subcategoria in categoria.subcategorias
 								li
-									a(href='/'+categoria.slug+"/"+subcategoria.slug)= subcategoria.nome
+									a(href='/'+categoria.slug+"/"+subcategoria.slug)= subcategoria.name
 		// Page head tile END
 		.main-posts-3
 			- var first_post = materias[0]
@@ -32,13 +32,13 @@ block content
 						article.post.post-tp-12
 							figure
 								a(href='/materias/'+first_post.slug)
-									img.adaptive(src=first_post.info_imagem+"?dim=568x500", height='500', width='568', alt='Spectr News Theme')
+									img.adaptive(src=first_post.showImage+"?dim=568x500", height='500', width='568', alt='Spectr News Theme')
 							.ptp-1-overlay
 								.ptp-1-data
-									a.category-tp-1(href='/materias/'+first_post.slug) #{first_post.categoria.nome} > #{first_post.subcategoria.nome}
+									a.category-tp-1(href='/materias/'+first_post.slug) #{first_post.categoria} > #{first_post.subcategoria}
 									h2.title-13
-										a(href='/materias/'+first_post.slug)= first_post.info_titulo
-									.meta-tp-1
+										a(href='/materias/'+first_post.slug)= first_post.showTitle
+									//-.meta-tp-1
 										.ptp-1-date
 											a(href='/materias/'+first_post.slug)= first_post.data_postagem
 				.half.sm-full
@@ -48,13 +48,13 @@ block content
 							article.post.post-tp-12
 								figure
 									a(href='/materias/'+materia.slug)
-										img.adaptive(src=materia.info_imagem+"?dim=282x248", height='248', width='282', alt='Spectr News Theme')
+										img.adaptive(src=materia.showImage+"?dim=282x248", height='248', width='282', alt='Spectr News Theme')
 								.ptp-1-overlay
 									.ptp-1-data
-										a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria.nome} > #{materia.subcategoria.nome}
+										a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria} > #{materia.subcategoria}
 										h2.title-15
-											a(href='/materias/'+materia.slug)= materia.info_titulo
-										.meta-tp-1
+											a(href='/materias/'+materia.slug)= materia.showTitle
+										//-.meta-tp-1
 											.ptp-1-date
 												a(href='')= materia.data_postagem
 						- var materia = materias[2]
@@ -62,13 +62,13 @@ block content
 							article.post.post-tp-12
 								figure
 									a(href='/materias/'+materia.slug)
-										img.adaptive(src=materia.info_imagem+"?dim=282x248", height='248', width='282', alt='Spectr News Theme')
+										img.adaptive(src=materia.showImage+"?dim=282x248", height='248', width='282', alt='Spectr News Theme')
 								.ptp-1-overlay
 									.ptp-1-data
-										a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria.nome} > #{materia.subcategoria.nome}
+										a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria} > #{materia.subcategoria}
 										h2.title-15
-											a(href='/materias/'+materia.slug)= materia.info_titulo
-										.meta-tp-1
+											a(href='/materias/'+materia.slug)= materia.showTitle
+										//-.meta-tp-1
 											.ptp-1-date
 												a(href='')= materia.data_postagem
 					.half
@@ -77,13 +77,13 @@ block content
 							article.post.post-tp-12
 								figure
 									a(href='/materias/'+materia.slug)
-										img.adaptive(src=materia.info_imagem+"?dim=282x248", height='248', width='282', alt='Spectr News Theme')
+										img.adaptive(src=materia.showImage+"?dim=282x248", height='248', width='282', alt='Spectr News Theme')
 								.ptp-1-overlay
 									.ptp-1-data
-										a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria.nome} > #{materia.subcategoria.nome}
+										a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria} > #{materia.subcategoria}
 										h2.title-15
-											a(href='/materias/'+materia.slug)= materia.info_titulo
-										.meta-tp-1
+											a(href='/materias/'+materia.slug)= materia.showTitle
+										//-.meta-tp-1
 											.ptp-1-date
 												a(href='')= materia.data_postagem
 						- var materia = materias[4]
@@ -91,13 +91,13 @@ block content
 							article.post.post-tp-12
 								figure
 									a(href='/materias/'+materia.slug)
-										img.adaptive(src=materia.info_imagem+"?dim=282x248", height='248', width='282', alt='Spectr News Theme')
+										img.adaptive(src=materia.showImage+"?dim=282x248", height='248', width='282', alt='Spectr News Theme')
 								.ptp-1-overlay
 									.ptp-1-data
-										a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria.nome} > #{materia.subcategoria.nome}
+										a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria} > #{materia.subcategoria}
 										h2.title-15
-											a(href='/materias/'+materia.slug)= materia.info_titulo
-										.meta-tp-1
+											a(href='/materias/'+materia.slug)= materia.showTitle
+										//-.meta-tp-1
 											.ptp-1-date
 												a(href='')= materia.data_postagem
 		.section

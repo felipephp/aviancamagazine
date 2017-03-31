@@ -11,22 +11,22 @@ block content
 							a(href='') Home
 							i.fa.fa-angle-right
 						li.bc-item
-							a(href='#') Matéria: #{materia.info_titulo}
+							a(href='#') Matéria: #{materia.title}
 		// Page head tile END
 		// Main post image
 		.section
 			article.post.post-tp-27.mb-height
 				figure
 					a(href='')
-						img.adaptive(src=materia.info_imagem+"?dim=1140x535", height='535', width='1140', alt='Spectr News Theme')
+						img.adaptive(src=materia.main_img_path+"?dim=1140x535", height='535', width='1140', alt='Spectr News Theme')
 				.ptp-27-overlay
 					.table
 						.cell
-							a.category-tp-1(href='', tabindex='0') #{materia.categoria.nome} > #{materia.subcategoria.nome}
+							a.category-tp-1(href='', tabindex='0') #{materia.categoria} > #{materia.subcategoria}
 							h2.title-18
-								a(href='')= materia.info_titulo
+								a(href='')= materia.title
 							.meta-tp-4
-								.date-tp-4
+								//-.date-tp-4
 									i.li_clock
 									| #{materia.data_postagem}
 		// Main post image END
@@ -36,7 +36,7 @@ block content
 					.pst-block
 						.pst-block-main
 							.post-content
-								.post-sharing-tp-1
+								//-.post-sharing-tp-1
 									ul
 										li.fb
 											a(href='https://www.facebook.com/sharer/sharer.php?u='+thisURL, target="_blank")
@@ -50,10 +50,10 @@ block content
 											a(href='https://plus.google.com/share?url='+thisURL, target="_blank")
 												i.fa.fa-google-plus
 												span.mb-pt-hide Google+
-								p !{ materia.conteudo }
+								p !{ materia.content }
 								.post-tags
 									ul.post-tags-list
-										for tag in materia.tags
+										//-for tag in materia.tags
 											li
 												a(href="/tags/"+tag.nome)= tag.nome
 								
@@ -102,7 +102,7 @@ block content
 								//- </section>
 
 								.sharing-block(style="margin-top: 100px;")
-									.sharing-title Compartilhe com os seus amigos!
+									.sharing-title Gostou do nosso conteúdo? Compartilhe!
 									.post-sharing-tp-2
 										ul
 											li.fb
@@ -110,7 +110,7 @@ block content
 													i.fa.fa-facebook
 													span.mb-pt-hide Facebook
 											li.tw
-												a(href='https://twitter.com/intent/tweet?text='+materia.titulo_chamada+'&url='+thisURL+'&original_referer='+thisURL, target="_blank")
+												a(href='https://twitter.com/intent/tweet?text='+materia.showTitle+'&url='+thisURL+'&original_referer='+thisURL, target="_blank")
 													i.fa.fa-twitter
 													span.mb-pt-hide Twitter
 											li.gp
@@ -126,16 +126,18 @@ block content
 										a(href='')
 											i.fa.fa-angle-right
 											span.mb-pt-hide Facebook's Design Resources lastest release: Watches
-								if materia.autor
-									.author-box-1
-										.author-photo
-											if materia.autor.avatar_path
-												img(src=materia.autor.avatar_path+"?dim=95x95", height='95', width='95', alt='Spectr News Theme')
-											else
-												img(src='/assets/img/person-flat.png', height='95', width='95', alt='Spectr News Theme')
-										.author-name= materia.autor.nome
-										.author-profession= materia.autor.cargo
-										.author-description= materia.autor.mini_cv
+								
+								.author-box-1
+									.author-photo
+										//- if materia.autor.avatar_path
+											img(src=materia.autor.avatar_path+"?dim=95x95", height='95', width='95', alt='Spectr News Theme')
+										//-else
+											img(src='/assets/img/person-flat.png', height='95', width='95', alt='Spectr News Theme')
+										img(src='/assets/img/person-flat.png', height='95', width='95', alt='Spectr News Theme')
+									.author-name= author.name
+									.author-profession= author.position
+									.author-description= author.short_resume
+								
 								.pst-box
 									.pst-box-head
 										.title-blc-1
@@ -149,9 +151,9 @@ block content
 													article.post.post-tp-30
 														figure
 															a(href='')
-																img.adaptive(src= ( rel.imagem_chamada_path ) ? rel.imagem_chamada_path : rel.imagem_principal_path, height='150', width='222', alt='Spectr News Theme')
+																img.adaptive(src= rel.showImage, height='150', width='222', alt='Spectr News Theme')
 														h3.title-6
-															a(href='')= ( rel.titulo_chamada ) ? rel.titulo_chamada : rel.titulo
+															a(href='')= rel.showTitle
 								//- .comments-block
 								//- 	.title-blc-2
 								//- 		.title-blc-inner
@@ -177,7 +179,83 @@ block content
 								//- 			noscript
 								//- 				| Please enable JavaScript to view the
 								//- 				a(href='https://disqus.com/?ref_noscript') comments powered by Disqus.
-
+								<div class="comments-block">
+									<div class="title-blc-2">
+										<div class="title-blc-inner">
+											<h4>Comentários</h4>
+										</div>
+									</div>
+									<div class="comments">
+										<ul class="comment-list">
+											<li class="comment">
+												<article>
+													<div class="comment-photo">
+														<img src="img/comment-photo.png" height="49" width="49" alt="Spectr News Theme">
+													</div>
+													<h6 class="title-20"><a href="">Albert Dowson</a></h6>
+													<p>Sed ut perspiciatis unde omnis iste natus sit voluptatem accusantium doloremque laudanTium, totamrem aperiam, eaque ipsa quae ab illo inventore veritatis</p>
+													//- <div class="comment-date">Yesterday in 16:00</div>
+													<div class="reply">Responder</div>
+												</article>
+												<ul class="sub-comment-list">
+													<li class="comment">
+													<article>
+														<div class="comment-photo">
+															<img src="img/comment-photo.png" height="49" width="49" alt="Spectr News Theme">
+														</div>
+														<h6 class="title-20"><a href="">Jason Born</a></h6>
+														<p>Sed ut perspiciatis unde omnis iste natus sit voluptatem accusantium doloremque laudanTium, totamrem aperiam, eaque ipsa quae ab illo inventore veritatis</p>
+														//- <div class="comment-date">Yesterday in 16:00</div>
+														<div class="reply">Responder</div>
+													</article>
+												</li>
+												<li class="comment">
+													<article>
+														<div class="comment-photo">
+														<img src="img/comment-photo.png" height="49" width="49" alt="Spectr News Theme">
+														</div>
+														<h6 class="title-20"><a href="">Albert Dowson</a></h6>
+														<p>Sed ut perspiciatis unde omnis iste natus sit voluptatem accusantium doloremque laudanTium, totamrem aperiam, eaque ipsa quae ab illo inventore veritatis</p>
+														//- <div class="comment-date">Yesterday in 16:00</div>
+														<div class="reply">Responder</div>
+													</article>
+												</li>
+											</ul>
+											</li>
+										</ul>
+									</div>
+								</div>
+								<div class="live-comments-block">
+									<div class="title-blc-2">
+										<div class="title-blc-inner">
+											<h4>Deixa um <span>comentário</span></h4>
+											<p>Seu e-mail não será publicado.</p>
+										</div>
+									</div>
+									<div class="comments-form">
+									<form action="#" method="post">
+										<div class="form-control">
+											<label>
+												|Nome*
+												<input type="text">
+											</label>
+										</div>
+										<div class="form-control">
+											<label>
+												|E-mail*
+												<input type="email">
+											</label>
+										</div>
+										<div class="form-control">
+											<label>
+												|Comentários
+												<textarea></textarea>
+											</label>
+										</div>
+										<button class="btn-3">ENVIAR</button>
+									</form>
+									</div>
+								</div>
 				aside.side-bar
 					.js-sidebar
 						include ./partials/_search

@@ -1,18 +1,25 @@
 extends base
 
+block scripts
+    script(src="/assets/js/vue.min.js")
+    script(src="/assets/js/home.js")
+    script.
+        home.negocios.categories    = !{JSON.stringify(_categorias.negociosSub)}
+        home.lifeStyle.categories   = !{JSON.stringify(_categorias.lifeStyleSub)}
+
+
 block content
     .main-content
-        init from -node
         #app
             .trending-posts-line
                 .container
                     .trending-line
                         .trending-now
-                            | Acontece
+                            | Últimas Matérias
                         .tl-slider
-                            for materia in ultimas_materias
+                            for materia in _categorias.lastArticles
                                 div
-                                    a(href='/materias/'+materia.slug)= materia.info_titulo
+                                    a(href='/materias/'+materia.slug)= materia.title
                         .tl-slider-control
             .main-posts-1
                 .mp-section
@@ -33,7 +40,7 @@ block content
                                                     h1.title-1
                                                         a(href='/materias/'+materiaSlider.slug)= materiaSlider.title
                                                     .meta-tp-1
-                                                        .ptp-1-date
+                                                        //.ptp-1-date
                                                     a.read-tp-1(href='/materias/'+materiaSlider.slug)
                                                         span Leia mais
                                                         span.arr-right-light-ic
@@ -71,20 +78,20 @@ block content
                                             i
                 .mp-section
 
-                    for materia in AgendaCultural
+                    for materia in _categorias.agendaCultural
                         .one-third.sm-half.xs-full
                             article.post.post-tp-2
                                 figure
                                     a(href='/materias/'+materia.slug)
-                                        img.adaptive(src=materia.info_imagem+"?dim=380x258", height='258', width='380', alt='Spectr News Theme')
+                                        img.adaptive(src=materia.main_img_path+"?dim=380x258", height='258', width='380', alt='Spectr News Theme')
                                 .ptp-1-overlay
                                     .ptp-1-data
-                                        a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria.nome} > #{materia.subcategoria.nome}
+                                        a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria} > #{materia.subcategoria}
                                         h2.title-29
                                             //- a(href='#1')= materia.info_titulo
-                                            a(href='#1')= materia.info_titulo
-                                        .meta-tp-1
-                                            .ptp-1-date
+                                            a(href='#1')= materia.title
+                                        //.meta-tp-1
+                                            //.ptp-1-date
                                                 a(href='')= materia.data_postagem
             // Main posts END
             .section
@@ -96,26 +103,26 @@ block content
                             .filters
                                 ul.filters-list-1.xs-hide
                                     li
-                                        a(href="javascript:void(0)", "v-on:click"="getMateriasByCategory('life_style', '589bbdfeebbd1068f49c0611')", "v-bind:class"="{active: life_style.active_sub == ''}") todos
-                                        li(v-for="subcategoria in life_style.subcategorias")
-                                            a(href='javascript:void(0)', "v-on:click"="getMateriasBySubCategory('life_style', subcategoria._id)" "v-bind:class"="{active: life_style.active_sub == subcategoria._id}") {{ subcategoria.nome }}
+                                        a(href="javascript:;", v-on:click="home.vue.getByCategory('lifeStyle', 3, 4)") todos
+                                        for scat in _categorias.lifeStyleSub
+                                            li
+                                                a(href='javascript:void(0)', v-on:click="home.vue.getBySub('lifeStyle',"+scat.id+", 2)", "v-bind:class"="{active: lifeStyle.active_sub == ''}")= scat.name
                         .pst-block-main
-                            //- p Count: {{ count_negocios }}
                             .col-row
-                                .alert.alert-danger(v-show="!life_style.materias.length") Não existem matérias nesta categoria.
-                                .col-one-quarter(v-for="materia in life_style.materias")
+                                .alert.alert-danger(v-show="!lifeStyle.materias.length") Não existem matérias nesta categoria.
+                                .col-one-quarter(v-for="materia in lifeStyle.materias")
                                     article.post.post-tp-4
                                         figure
                                             a("v-bind:href"="'/materias/'+materia.slug")
-                                                img.adaptive("v-bind:src"="materia.info_imagem+'?dim?260x186'", height='186', width='260', alt='Spectr News Theme')
+                                                img.adaptive("v-bind:src"="materia.showImage+'?dim?260x186'", height='186', width='260', alt='Spectr News Theme')
                                         h3.title-3
-                                            a("v-bind:href"="'/materias/'+materia.slug") {{ materia.info_titulo }}
+                                            a("v-bind:href"="'/materias/'+materia.slug") {{ materia.showTitle }}
                                         .meta-tp-2
-                                            .date
-                                                span {{ materia.data_postagem }}
+                                            //.date
+                                                //span {{ materia.data_postagem }}
                                             .category
                                                 i.li_pen
-                                                span {{ materia.subcategoria.nome }}
+                                                span {{ materia.main_categ_name }}
                         .pst-block-foot
                             a(href='/life-style') mais matérias
 
@@ -126,41 +133,38 @@ block content
                             h2.title-4
                                 strong Vídeos
 
-                        .vpst-block-main
-                            .js-video-pst-slider
-                                .vps-item
-                                    .half.sm-full.mb-pt-hide
-                                        - var video = _categorias.videos.shift()
-                                        article.post.post-tpv-1
+                        .vpst-block-main   
+                            .half.sm-full.mb-pt-hide
+                                - var video = _categorias.videos.shift()
+                                article.post.post-tpv-1
+                                    figure
+                                        a(href='/videos/'+video.slug)
+                                            img.adaptive(src=video.img_path+"?dim=570x430", height='430', width='570', alt='Spectr News Theme')
+                                    .ptp-1-overlay
+                                        span.arr-left-light-lg-ic.video-lg-ic
+                                            i
+                                        .ptp-1-data
+                                            //a.category-tp-1.breve(href='javascript:void(0)') video
+                                            h2.title-7
+                                                a(href='/videos/'+video.slug)= video.title
+                                            .meta-tp-1
+                                                //.ptp-1-date
+                                                    a.breve(href='javascript:void(0)')= video.data_cadastro
+
+                            .half.sm-full
+                                for video in _categorias.videos
+                                    .half
+                                        article.post.post-tpv-2
                                             figure
                                                 a(href='/videos/'+video.slug)
-                                                    img.adaptive(src=video.miniatura_path+"?dim=570x430", height='430', width='570', alt='Spectr News Theme')
+                                                    img.adaptive(src=video.img_path+"?dim=285x215", height='215', width='285', alt='Spectr News Theme')
                                             .ptp-1-overlay
-                                                span.arr-left-light-lg-ic.video-lg-ic
-                                                    i
                                                 .ptp-1-data
-                                                    a.category-tp-1.breve(href='javascript:void(0)') video
-                                                    h2.title-7
-                                                        a(href='/videos/'+video.slug)= video.nome
-                                                    .meta-tp-1
-                                                        .ptp-1-date
-                                                            // a.breve(href='javascript:void(0)')= video.data_cadastro
-
-                                    .half.sm-full
-                                        for video in _categorias.videos
-                                            .half
-                                                article.post.post-tpv-2
-                                                    figure
-                                                        a(href='/videos/'+video.slug)
-                                                            img.adaptive(src=video.miniatura_path+"?dim=285x215", height='215', width='285', alt='Spectr News Theme')
-                                                    .ptp-1-overlay
-                                                        .ptp-1-data
-                                                            span.arr-left-light-sm-ic.video-sm-ic
-                                                                i
-                                                            h2.title-5
-                                                                a(href='/videos/'+video.slug)= video.nome
-                                                            .date-tp-2
-                                                                //- span= video.data_cadastro
+                                                    span.arr-left-light-sm-ic.video-sm-ic
+                                                        i
+                                                    h2.title-5
+                                                        a(href='/videos/'+video.slug)= video.title
+                                                    .date-tp-2
                         .vpst-block-foot
                             a.breve(href='/videos') Mais vídeos
 
@@ -180,9 +184,11 @@ block content
                                     .filters
                                         ul.filters-list-1.xs-hide
                                             li
-                                                a(href="javascript:void(0)", "v-on:click"="getMateriasByCategory('negocios', '589bbe4c01c0ae69d1a0c181', 2)", "v-bind:class"="{active: negocios.active_sub == ''}") todos
-                                                li(v-for="subcategoria in negocios.subcategorias")
-                                                    a(href='javascript:void(0)', "v-on:click"="getMateriasBySubCategory('negocios', subcategoria._id, 2)" "v-bind:class"="{active: negocios.active_sub == subcategoria._id}") {{ subcategoria.nome }}
+                                                a(href="javascript:;", v-on:click="home.vue.getByCategory('negocios', 4, 2)") todos
+                                                for scat in _categorias.negociosSub
+                                                    li
+                                                        a(href='javascript:void(0)', v-on:click="home.vue.getBySub('negocios',"+scat.id+", 2)", "v-bind:class"="{active: negocios.active_sub == ''}")= scat.name
+
                                 .pst-block-main
                                     .col-row
                                         .alert.alert-danger(v-show="!negocios.materias.length") Não existem matérias nesta categoria.
@@ -190,17 +196,16 @@ block content
                                             article.post.post-tp-5
                                                 figure
                                                     a("v-bind:href"="'/materias/'+materia.slug")
-                                                        img.adaptive("v-bind:src"="materia.info_imagem+'?dim?260x186'", height='186', width='260', alt='Spectr News Theme')
+                                                        img.adaptive("v-bind:src"="materia.showImage+'?dim?260x186'", height='186', width='260', alt='Spectr News Theme')
                                                 h3.title-5
-                                                    a("v-bind:href"="'/materias/'+materia.slug") {{ materia.info_titulo }}
+                                                    a("v-bind:href"="'/materias/'+materia.slug") {{ materia.showTitle }}
                                                 .meta-tp-2
-                                                    .date
-                                                        span {{ materia.data_postagem }}
+                                                    //.date
+                                                        //span {{ materia.data_postagem }}
                                                     .category
                                                         i.li_pen
-                                                        span {{ materia.subcategoria.nome }}
-                                                p.p {{ materia.info_conteudo }}
-
+                                                        span {{ materia.main_categ_name }}
+                                                p.p {{ materia.showContent }}                               
                                 .pst-block-foot
                                     a(href='/negocios') mais matérias
 
@@ -219,14 +224,14 @@ block content
                                     article.post.post-tp-1
                                         figure
                                             a(href='/materias/'+materia.slug)
-                                                img.adaptive(src=materia.info_imagem+"?dim=1140x511", height='511', width='1140', alt='Spectr News Theme')
+                                                img.adaptive(src=materia.showImage+"?dim=1140x511", height='511', width='1140', alt='Spectr News Theme')
                                         .ptp-1-overlay
                                             .ptp-1-data
-                                                a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria.nome} > #{materia.subcategoria.nome}
+                                                //-a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria.nome} > #{materia.subcategoria.nome}
                                                 h1.title-1
-                                                    a(href='#1')= materia.info_titulo
+                                                    a(href='#1')= materia.showTitle
                                                 .meta-tp-1
-                                                    .ptp-1-date
+                                                    //-.ptp-1-date
                                                         a(href='')= materia.data_postagem
                                                 a.read-tp-1(href='')
                                                     span Leia mais
@@ -247,28 +252,18 @@ block content
                             h2.title-4
                                 strong We Love Avianca
                         .vpst-block-main
-                            .js-video-pst-slider
-                                .vps-item
-                                    .half.sm-full
-                                        for a in [1, 2, 3, 4]
-                                            - var welove = getRandomFromArray(_categorias.welove)
-                                            - var index = _categorias.welove.indexOf(welove);
-                                            - _categorias.welove.splice(index, 1);
-                                            if welove
-                                                .half
-                                                    article.post.post-tpv-2
-                                                        figure
-                                                            img.adaptive(src=welove.imagem_path+"?dim=285x215", height='215', width='285', alt='Spectr News Theme')
-                                    .half.sm-full
-                                        for a in [1, 2, 3, 4]
-                                            - var welove = getRandomFromArray(_categorias.welove)
-                                            - var index = _categorias.welove.indexOf(welove);
-                                            - _categorias.welove.splice(index, 1);
-                                            if welove
-                                                .half
-                                                    article.post.post-tpv-2
-                                                        figure
-                                                            img.adaptive(src=welove.imagem_path+"?dim=285x215", height='215', width='285', alt='Spectr News Theme')
+                            .half.sm-full
+                                for a in _categorias.welove[0]
+                                    .half
+                                        article.post.post-tpv-2
+                                            figure
+                                                img.adaptive(src=a.image+"?dim=285x215", height='215', width='285', alt='Spectr News Theme')
+                            .half.sm-full
+                                for b in _categorias.welove[1]
+                                    .half
+                                        article.post.post-tpv-2
+                                            figure
+                                                img.adaptive(src=b.image+"?dim=285x215", height='215', width='285', alt='Spectr News Theme')
                         .vpst-block-foot
                             a.breve(href='/welove') Mais fotos
 
@@ -279,86 +274,33 @@ block content
                         h2.title-4
                             strong Guia de Entretenimento
                     .pst-block-main
-                        //- p Count: {{ count_negocios }}
                         .col-row
-                            //.alert.alert-danger(v-show="!life_style.materias.length") Não existem matérias nesta categoria.
-                        - var first_four = _categorias.guia_de_entretenimento.splice(0, 4)
-                        for materia in first_four
+                        for materia in _categorias.guia
                             .col-one-quarter
                                 article.post.post-tp-4
                                     figure
                                         a
-                                            img.adaptive(src=materia.info_imagem, height='186', width='260', alt='Spectr News Theme')
+                                            img.adaptive(src=materia.main_img_path, height='186', width='260', alt='Spectr News Theme')
                                     h3.title-3
-                                        //- a(href='/materias/'+materia.slug)= materia.info_titulo
                                         a
                                     .meta-tp-2
                     .pst-block-foot
-                        //- a(href='/life-style') Veja a programação que está a bordo
                         a Veja a programação que está a bordo
 
-        .main-video-posts(style="background: #ebebeb; margin: 0;")
+        .main-video-posts(style="background: #fff; margin: 0;")
             .video-posts-pane
                 .vpst-block
                     .vpst-block-head
                         h2.title-4
                             strong(style="color: #000") Social
                     .vpst-block-main
-                        each val, index in _categorias.social.imagens
-                            if val
-                                .social-image
-                                        article.post.post-tpv-2
-                                            figure
-                                                img.adaptive(src=val+"?dim=285x215", height='215', width='285', alt='Spectr News Theme')
-                                            .ptp-1-overlay
-                                                .ptp-1-data
-                                                    h2.title-7= _categorias.social.titulos[index]
+                        for person in _categorias.social
+                            .social-image
+                                article.post.post-tpv-2
+                                    figure
+                                        img.adaptive(src=person.img_path+"?dim=285x215", height='215', width='285', alt='Spectr News Theme')
+                                    .ptp-1-overlay
+                                        .ptp-1-data
+                                            h2.title-7= person.title
                 .vpst-block-foot
                     a.breve.social(href='#') Mais fotos
-
-block scripts
-    script(src="/assets/js/vue.min.js")
-    script.
-
-        $(document).ready(function(){
-            var subcategorias_negocios = !{JSON.stringify(_categorias.negocios.subcategorias)};
-            var subcategorias_life_style = !{JSON.stringify(_categorias.life_style.subcategorias)};
-
-            new Vue({
-                el: "#app",
-                data: {
-                    negocios: {materias: [], active_sub: "", subcategorias: subcategorias_negocios},
-                    life_style: {materias: [], active_sub: "", subcategorias: subcategorias_life_style},
-                },
-                mounted: function() {
-                    console.log("ready");
-                    this.getMateriasByCategory("negocios", "589bbe4c01c0ae69d1a0c181", 2);
-                    this.getMateriasByCategory("life_style", "589bbdfeebbd1068f49c0611");
-                },
-                methods: {
-                    getMateriasBySubCategory: function(key, sub, lmt) {
-                        var self = this;
-                        var limit = lmt || 4;
-                        $.ajax({
-                            url: "/api/subcategorias/"+sub+"/materias?limit="+limit,
-                            success: function(data) {
-                                self[key].materias = data.results;
-                                self[key].active_sub = sub;
-                            }
-                        })
-                    },
-                    getMateriasByCategory: function(key, cat, lmt) {
-                        var self = this;
-                        var limit = lmt || 4;
-                        $.ajax({
-                            url: "/api/categorias/"+cat+"/materias?limit="+limit,
-                            success: function(data) {
-                            console.log(data);
-                                self[key].materias = data.results;
-                                self[key].active_sub = "";
-                            }
-                        })
-                    },
-                }
-            })
-        })

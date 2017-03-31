@@ -47,8 +47,11 @@ module.exports = function(app) {
 
     app.get('/materias/:slug', materias.mostrar)
 
-    app.get('/api/subcategorias/:subcategoria_id/materias', materias.porSubcategoriaApi);
-    app.get('/api/categorias/:categoria_id/materias', materias.porCategoriaApi);
+    // app.get('/api/subcategorias/:subcategoria_id/materias', materias.porSubcategoriaApi);
+    // app.get('/api/categorias/:categoria_id/materias', materias.porCategoriaApi);
+
+    app.post('/api/subcategorias/materias', materias.porSubcategoriaApi);
+    app.post('/api/categorias/materias', materias.porCategoriaApi);
 
     // ADMIN
     app.get('/admin', requireAdmin, admin.dashboard);
