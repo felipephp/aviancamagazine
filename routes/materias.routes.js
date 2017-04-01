@@ -197,14 +197,16 @@ exports.porSubcategoriaApi = function(req, res, next) {
 exports.porCategoriaApi = function(req, res, next) {
 
     var id = req.body.id;
+    console.log('id::', id);
     var limit = parseInt(req.body.limit);
 
     mysql.select('categories', ['name AS main_categ_name'])
-        .join({ type: 'LEFT', table: 'articles', on: 'categories_id', key: 'A.id', columns: ['*'] })
+        .join({ table: 'articles', on: 'categories_id', key: 'A.id', columns: ['*'] })
         .where({ categories_id: { alias: 'A', o: '=', v: id } })
         .orderBy('B.available_at')
         .limit(limit)
         .exec(function (rows) {
+            console.log("MA::", rows);
             return res.send({results: rows});
         })
 

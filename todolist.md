@@ -64,6 +64,7 @@ LAYOUTS
 - ajustar TAGS na materia e na página para filtrar por tags
 - Ajustar pesquisa para SQL
 - ajustar usuarios via SQL
+-campo de fotos do autor no bsnco
 
 pagina de anuncie será contat_one MIDIA KIT
 

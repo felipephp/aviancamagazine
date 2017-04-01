@@ -30,12 +30,12 @@ exports.migrate = function(req, res, next){
                 callback(null, socket, data);
             },
 
-            //readCateg,
+            //readCateg, OK
             //readArticles,
-            //readEditions,
+            //readEditions, //OK
             //readAuthors,
-            //readSubcat,
-            // updateArticlesFK,
+            //readSubcat, ok
+            updateArticlesFK,
             convert,
             confirmExport
 
@@ -101,6 +101,7 @@ exports.migrate = function(req, res, next){
         //var sub_id = 'Here';
 
         Materia.find({})
+            .sort({'created_at': 1})
             .populate(['subcategoria','autor','edicao'])
             .exec(function(err, result){
                 if (err) { return next(err); }
@@ -125,6 +126,7 @@ exports.migrate = function(req, res, next){
 
 
                 data.controllers = {
+
                     old_id: function(value){
                         return "'"+value+"'";
                     },
@@ -298,8 +300,8 @@ exports.migrate = function(req, res, next){
                     callback2(null, socket, data);
                 },
 
-                getCategories,
-                getAuthors,
+                //getCategories,
+                //getAuthors,
                 getEdtitions,
             ],
             function(err2, finalResult)
@@ -314,7 +316,7 @@ exports.migrate = function(req, res, next){
             callback2(null, socket2, data2);
             return false;
 
-            mysql.query('SELECT id, old_id FROM categories WHERE categories_id IS NOT NULL', function(subcats){
+            mysql._devQuery('SELECT id, old_id FROM categories WHERE categories_id IS NOT NULL', function(subcats){
                 
                 for(var idx in subcats)
                 {
@@ -337,7 +339,7 @@ exports.migrate = function(req, res, next){
             callback2(null, socket2, data2);
             return false;
 
-            mysql.query('SELECT id, old_id FROM authors', function(authors){
+            mysql._devQuery('SELECT id, old_id FROM authors', function(authors){
                 
                 for(var idx in authors)
                 {
@@ -355,11 +357,11 @@ exports.migrate = function(req, res, next){
 
         function getEdtitions(socket2, data2, callback2) {
 
-            console.log('\n ************************************** \n * editions have already been updated * \n **************************************');
-            callback2(null, socket2, data2);
-            return false;
+            // console.log('\n ************************************** \n * editions have already been updated * \n **************************************');
+            // callback2(null, socket2, data2);
+            // return false;
 
-            mysql.query('SELECT id, old_id FROM editions', function(editions){
+            mysql._devQuery('SELECT id, old_id FROM editions', function(editions){
                 
                 for(var idx in editions)
                 {
@@ -640,7 +642,7 @@ exports.home = function(req, res, next) {
         },
 
         lastArticles: function (cb) {
-            mysql.select('articles', ['id', 'title'])
+            mysql.select('articles', ['id', 'title', 'slug'])
                 .limit(12)
                 .orderBy('available_at')
                 .exec(function (rows) {
