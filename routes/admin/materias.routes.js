@@ -25,7 +25,7 @@ exports.index = function(req, res, next) {
 
 exports.create = function(req, res, next) {
 
-    // var one = new Model;
+    var one = {};
         async.series({
             autores: function (cb) {
                 mysql
@@ -73,7 +73,7 @@ exports.create = function(req, res, next) {
 
             // return res.send(results);
 
-            one.edicao = results.edicoes[0]._id;
+            one.edicao = results.edicoes[0].id; //set the last editons as selected
 
             return res.render('admin/'+base_route+'/form', {mode: "create", one: one, results: results});
 
@@ -272,7 +272,16 @@ exports.edit = function(req, res, next) {
                 .exec(function (locais) {
                     return cb(null, locais);
                 })
-        }
+        },
+        articleTags: function (cb) {
+            mysql.select('tags')
+                .join({ table: 'articles_has_tags', on: 'tags_id', key: 'A.id' })
+                .where({ articles_id: { alias: 'B', o: '=', v: id } })
+                .exec(function (hasTags) {
+                    console.log('has::', hasTags);
+                    return cb(null, hasTags);
+                })
+        },
     }, function(err, results) {
         if (err) { return next(err); }
 
@@ -288,14 +297,14 @@ exports.edit = function(req, res, next) {
             .groupBy('A.id')
             .exec(function (row) {
                 row = row[0];
-                console.log("\n\nROW::", row);
+                // console.log("\n\nROW::", row);
                 row.categoria = { id: row.sub_id };
                 row.edicao = { id: row.edi_id };
                 row.autor = { id: row.aut_id };
                 row.localizacao = { id: row.locations_id };
                 // row.tags = ( !row.tags ) ? [] : row.tags.split(',');
                 row.tags = ( !row.tags ) ? [] : row.tags.split(",");
-                //console.log('TAGS::', row.tags);
+                console.log('TAGS::', row.tags);
 
                 var d = row.available_at;
                 var finalDate = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes();

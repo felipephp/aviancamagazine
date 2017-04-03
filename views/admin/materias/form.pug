@@ -95,9 +95,9 @@ block content
 													if !results.tags.length
 														option(value="") Nenhuma tag cadastrada
 													else
-														option(value="", disabled) -- Selecione uma edição --
+														option(value="", disabled) -- Selecione as Tags --
 														for tag in results.tags
-															option(value=tag.id, selected=one.tags.indexOf(tag.id.toString()) != -1) ##{tag.name}
+															option(value=tag.id, selected= ( one.tags.indexOf(tag.id.toString()) >= 0 ) ) ##{tag.name}
 
 										.form-group
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='edicao')
