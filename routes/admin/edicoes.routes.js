@@ -1,5 +1,5 @@
 // var Model = require.main.require('./models/edicao.model');
-// var base_route = 'edicoes';
+var base_route = 'edicoes';
 
 var path = require('path');
 var async = require('async');

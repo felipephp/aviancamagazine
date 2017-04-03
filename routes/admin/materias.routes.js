@@ -25,7 +25,7 @@ exports.index = function(req, res, next) {
 
 exports.create = function(req, res, next) {
 
-    var one = new Model;
+    // var one = new Model;
         async.series({
             autores: function (cb) {
                 mysql
