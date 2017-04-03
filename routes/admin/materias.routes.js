@@ -74,6 +74,7 @@ exports.create = function(req, res, next) {
             // return res.send(results);
 
             one.edicao = results.edicoes[0].id; //set the last editons as selected
+            one.tags = [];
 
             return res.render('admin/'+base_route+'/form', {mode: "create", one: one, results: results});
 
