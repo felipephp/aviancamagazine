@@ -22,10 +22,10 @@ block content
                                 tbody
                                     for one in all
                                         tr
-                                            td #{one.nome}
+                                            td #{one.name}
                                             td
-                                                a.btn.btn-primary.btn-sm(href='/admin/'+base_route+'/'+one._id+'/edit') Editar
-                                                a.btn.btn-primary.btn-sm.anchor-confirm(href='/admin/'+base_route+'/'+one._id+'/delete') Deletar
+                                                a.btn.btn-primary.btn-sm(href='/admin/'+base_route+'/'+one.id+'/edit') Editar
+                                                a.btn.btn-primary.btn-sm.anchor-confirm(href='/admin/'+base_route+'/'+one.id+'/delete') Deletar
 block scripts
         // iCheck
         script(src='/admin_assets/vendors/iCheck/icheck.min.js')

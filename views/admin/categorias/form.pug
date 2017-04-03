@@ -13,7 +13,7 @@ block content
                 .clearfix
               .x_content
                 br
-                form(action= mode == 'create' ? '/admin/'+base_route : '/admin/'+base_route+'/'+one._id, method="POST").form-horizontal.form-label-left
+                form(action= mode == 'create' ? '/admin/'+base_route : '/admin/'+base_route+'/'+one.id, method="POST").form-horizontal.form-label-left
                   .col-md-12
                       include ../../partials/_errors
                   .form-group
@@ -21,7 +21,7 @@ block content
                       | Nome
                       span.required *
                     .col-md-6.col-sm-6.col-xs-12
-                      input#nome.form-control.col-md-7.col-xs-12(type='text', required, name="nome", value=one.nome)
+                      input#nome.form-control.col-md-7.col-xs-12(type='text', required, name="name", value=one.name)
                   .ln_solid
                   .form-group
                     .col-md-6.col-sm-6.col-xs-12.col-md-offset-3

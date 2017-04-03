@@ -1,6 +1,5 @@
 var Model = require('../models/video.model');
 
-var async = require('async');
 var path = require('path');
 var random = require('../lib/random');
 // var uploadFile = require('../lib/upload-file');

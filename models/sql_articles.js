@@ -19,7 +19,7 @@ module.exports = {
             .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS subcategoria', 'slug AS sub_slug'] })
             .join({ table: 'categories', on: 'id', key: 'B.categories_id', columns: ['name AS categoria', 'slug AS cat_slug'] })
             .where({ id: { alias: ALIAS,  o: '=', v: from_id } })
-            .orderBy('A.available_at')
+            .orderBy('A.available_at DESC')
             .exec(function (rows) {
                 for(var idx in rows)
                 {

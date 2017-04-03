@@ -17,7 +17,7 @@ block content
 							a(href='/'+subcategoria.cat_slug+'/'+subcategoria.slug) #{subcategoria.name}
 				.page-title
 					h1.title-16
-						strong Categoria: #{subcategoria.categoria} > #{subcategoria.name}
+						strong #{subcategoria.categoria} > #{subcategoria.name}
 		.main-posts-3
 			- var first_post = materias[0]
 			.mp-section
@@ -29,7 +29,7 @@ block content
 									img.adaptive(src=first_post.showImage+"?dim=568x500", height='500', width='568', alt='Spectr News Theme')
 							.ptp-1-overlay
 								.ptp-1-data
-									a.category-tp-1(href='/materias/'+first_post.slug) #{first_post.categoria.name} > #{first_post.subcategoria.name}
+									a.category-tp-1(href='/materias/'+first_post.slug) #{first_post.categoria} > #{first_post.subcategoria}
 									h2.title-13
 										a(href='/materias/'+first_post.slug)= first_post.showTitle
 									.meta-tp-1

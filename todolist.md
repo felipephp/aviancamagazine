@@ -38,7 +38,7 @@ mysql pass do: Elipse#1126
 -[x] <span style="color: green; font-weight: bold">[ OK ]</span>Retirar lojas Avianca 
 -[x] <span style="color: green; font-weight: bold">[ OK ]</span>Colocar um item Avianca ( Quem é Avianca, prêmios, contatos, WiFi)
 -[x] <span style="color: green; font-weight: bold">[ OK ]</span>Retirar as redes sociais da parte superior
--[ ] Quando mudar para mysql, listar notícias por available_At dentro da single de categoria
+-[x] Quando mudar para mysql, listar notícias por available_At dentro da single de categoria
  
  #### PÓS
 -[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span> Galerias internas- colocar um campo de nome em cada foto para cadastrar o fotografo
@@ -48,7 +48,7 @@ mysql pass do: Elipse#1126
 -[ ] Social  -> criar a página
 -[ ] Converter usuários para Mysql e verificar segurança da senha
 -[ ] Fazer CRUD de comentários (3 dias)
--[ ] Ajustes de segurança em WHERE e ORDER by enviando valores via ? e arrayValues (2 dias)
+-[x] Ajustes de segurança em WHERE e ORDER by enviando valores via ? e arrayValues (2 dias)
 -[ ] No slider, ainda aparece "OF". e só muda para 3 of 3 qdo clica, no início é 1/14.
 -[ ] Ao buscar por slugs, podemos futuramente perder o link, então, tratar slug apenas para SEO e enviar tbm o ID da materia/cat/subcat para URL
 
@@ -64,7 +64,6 @@ LAYOUTS
 - ajustar TAGS na materia e na página para filtrar por tags
 - Ajustar pesquisa para SQL
 - ajustar usuarios via SQL
--campo de fotos do autor no bsnco
 
 pagina de anuncie será contat_one MIDIA KIT
 
@@ -74,12 +73,16 @@ menu avianca...
 quem somos, carol
 mapa de rotas (img)
 
-//fixeds ids
-1 - destinos
-2 - cultura
-3 - life-style
-4 - negocios
-5 - guia de entret
-10 - destinos -> internacionais
-11 - destinos -> nacionais
-35 - destinos -> capa
+Autores - revisar parte de upload de fotos para reutilizar função, revisar forma de salvar a foto original, tem muita coisa lá.
+
+falta
+
+-[x] localizações
+-[x] tags
+-[ ] videos
+-[ ] welove
+-[ ] pesquisa (controller e página do site)
+-[ ] config_videos inutilizada, deletar.
+-[ ] Faltou fazer upload de SLUG das tags, colocar isso no script e atualizar tag por tag para recriar slugs
+-[ ] Falta materias.routes.porTag para MySQL
+-[ ] usuarios [depois]

@@ -13,7 +13,7 @@ block content
                 .clearfix
               .x_content
                 br
-                form(action= mode == 'create' ? '/admin/'+base_route : '/admin/'+base_route+'/'+one._id, method="POST" enctype="multipart/form-data").form-horizontal.form-label-left
+                form(action= mode == 'create' ? '/admin/'+base_route : '/admin/'+base_route+'/'+one.id, method="POST" enctype="multipart/form-data").form-horizontal.form-label-left
                   .col-md-12
                       include ../../partials/_errors
                   .form-group
@@ -21,19 +21,19 @@ block content
                       | Número
                       span.required *
                     .col-md-6.col-sm-6.col-xs-12
-                      input#numero.form-control.col-md-7.col-xs-12(type='number', required, name="numero", value=one.numero)
+                      input#numero.form-control.col-md-7.col-xs-12(type='number', required, name="number", value=one.number)
                   .form-group
                     label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
                       | Título
                       span.required *
                     .col-md-6.col-sm-6.col-xs-12
-                      input#titulo.form-control.col-md-7.col-xs-12(type='text', required, name="titulo", value=one.titulo)
+                      input#titulo.form-control.col-md-7.col-xs-12(type='text', required, name="title", value=one.title)
                   .form-group
                     label.control-label.col-md-3.col-sm-3.col-xs-12(for='link_online')
                       | Link Online
                       span.required *
                     .col-md-6.col-sm-6.col-xs-12
-                      input#link_online.form-control.col-md-7.col-xs-12(type='text', required, name="link_online", value=one.link_online)
+                      input#link_online.form-control.col-md-7.col-xs-12(type='text', required, name="link", value=one.link)
                   .form-group
                       label.control-label.col-md-3.col-sm-3.col-xs-12(for='capa')
                           if mode == 'create'
@@ -48,7 +48,7 @@ block content
                           label.control-label.col-md-3.col-sm-3.col-xs-12(for='capa')
                               | Miniatura (atual)
                           .col-md-6.col-sm-6.col-xs-12
-                              img(src=one.capa_path)
+                              img(src=one.img_path)
                   .ln_solid
                   .form-group
                     .col-md-6.col-sm-6.col-xs-12.col-md-offset-3

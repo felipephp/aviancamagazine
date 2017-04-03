@@ -8,7 +8,7 @@ var uploadFile = require('../../lib/upload-file');
 var random = require('../../lib/random');
 
 var base_route = "materias";
-var Model = require.main.require('./models/materia.model');
+// var Model = require.main.require('./models/materia.model');
 var uploadSlimFile = require.main.require('./lib/upload-slim-file');
 
 exports.index = function(req, res, next) {
@@ -130,9 +130,7 @@ exports.store = function(req, res, next) {
                 req.body.slug = generateSlug(req.body.title);
                 mysql.insert('articles', req.body)
                     .exec(function (rows) {
-                        // console.log('Inserted::', rows);
                         id = rows.insertId;
-                        // return false;
                         callback(null, socket, data);
                     });
             },

@@ -24,7 +24,7 @@ exports.porCategoria = function(req, res, next) {
                 })
         },
         function (categoria, cb) {
-            Articles.from('category').getArticle(categoria.id, function (rows) {
+            Articles.from('category').getArticle(categoria.id, 400, function (rows) {
                 cb(null, categoria, rows);
             })
         }
@@ -53,7 +53,7 @@ exports.porSubcategoria = function(req, res, next) {
                 })
         },
         function (subcategoria, cb) {
-            Articles.from('subcategory').getArticle(subcategoria.id, function (rows) {
+            Articles.from('subcategory').getArticle(subcategoria.id, 600, function (rows) {
                 cb(null, subcategoria, rows);
             })
         }

@@ -1,141 +1,80 @@
-var Model = require.main.require('./models/subcategoria.model');
-var Categoria = require.main.require('./models/categoria.model');
+// var Model = require.main.require('./models/subcategoria.model');
+// var Categoria = require.main.require('./models/categoria.model');
 var base_route = 'subcategorias';
 
+var Slug = require('../../domain/generate-slug');
 var async = require('async');
+var mysql = require('../../domain/mysql-helper/mysql');
 
 exports.index = function(req, res, next) {
-
-    Model.find({})
-        .populate('categoria')
-        .exec(function(err, all) {
-            if (err) { return next(err); }
+    mysql.select('categories')
+        .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS categoria'] })
+        .where({categories_id : { alias: 'A', o: '?', v: 'IS NOT NULL' }})
+        .orderBy('A.name')
+        .exec(function (all) {
             return res.render('admin/'+base_route+'/index', {all: all, base_route: base_route});
         })
 
 };
 
 exports.create = function(req, res, next) {
-
-    var one = new Model;
-
-    Categoria.find({})
-        .sort('nome')
-        .exec(function(err, categorias) {
-            if (err) { return next(err); }
-            return res.render('admin/'+base_route+'/form', {mode: "create", one: one, base_route: base_route, categorias: categorias});
+    mysql.select('categories')
+        .where({ categories_id: { o: '?', v: 'IS NULL' } })
+        .orderBy('name')
+        .exec(function (rows) {
+            return res.render('admin/'+base_route+'/form', {mode: "create", one: {}, base_route: base_route, categorias: rows});
         })
-
-
-}
+};
 
 exports.store = function(req, res, next) {
 
-    var one = new Model(req.body);
-
-    async.waterfall([
-        function(cb) {
-            one.save(function(err, saved) {
-                if (err) { return cb(err); }
-                cb(null, saved);
-            })
-        },
-        function(subcategoria, cb) {
-            console.log("subcategoria", subcategoria);
-            Categoria.findOne({_id: subcategoria.categoria})
-                .exec(function(err, categoria) {
-                    if (err) { return cb(err); }
-                    console.log("categoria", categoria);
-                    categoria.subcategorias.push(subcategoria._id);
-                    cb(null, categoria);
-                });
-        },
-        function(categoria, cb) {
-            categoria.save(function(err, saved) {
-                if (err) { return cb(err); }
-                cb(null);
-            });
-        }
-    ], function(cb) {
-        req.flash('success', 'O registro foi criado com sucesso!');
-        return res.redirect('/admin/'+base_route);
-    })
-
-}
+    req.body.slug = Slug(req.body.name);
+    mysql.insert('categories', req.body)
+        .exec(function (rows) {
+            id = rows.insertId;
+            req.flash('success', 'O registro foi criado com sucesso!');
+            return res.redirect('/admin/'+base_route);
+        });
+};
 
 exports.edit = function(req, res, next) {
 
-    var id = req.params.id;
+    //All main categories
+    mysql.select('categories')
+        .where({ categories_id: { o: '?', v: 'IS NULL' } })
+        .orderBy('name')
+        .exec(function (categories) {
 
-    Categoria.find({})
-        .sort('nome')
-        .exec(function(err, categorias) {
-            if (err) { return next(err); }
-            Model.findOne({_id: id}, function(err, one) {
-                if (err) { return next(err); }
-                return res.render('admin/'+base_route+'/form', {mode: "edit", one: one, base_route: base_route, categorias: categorias});
-            });
-        })
+            //Selected categories to edit
+            mysql.select('categories')
+                .where({ id: { o: '=', v: req.params.id } })
+                .exec(function (row) {
+                    return res.render('admin/'+base_route+'/form', { mode: "edit", one: row[0], base_route: base_route, categorias: categories });
+                });
+        });
 
-
-
-
-}
+};
 
 
 exports.update = function(req, res, next) {
+    req.body.slug = Slug(req.body.name);
 
-    var id = req.params.id;
-
-    Model.findOne({_id: id})
-        .exec(function(err, one) {
-            if (err) { return next(err); }
-            one.nome = req.body.nome;
-            one.save(function(err, saved) {
-                if (err) { return next(err); }
-                req.flash('success', 'O registro foi atualizado com sucesso!');
-                return res.redirect('/admin/'+base_route);
-            })
-        });
-
-}
+    mysql.update('categories', req.body)
+        .where({ id: { o: '=', v: req.params.id } })
+        .exec(function (row) {
+            req.flash('success', 'O registro foi atualizado com sucesso!');
+            return res.redirect('/admin/'+base_route);
+        })
+};
 
 
 exports.delete = function(req, res, next) {
 
-    var id = req.params.id;
+    mysql.delete('categories')
+        .where({ id: { o: '=', v: req.params.id } })
+        .exec(function (row) {
+            req.flash('success', 'O registro foi excluido com sucesso!');
+            return res.redirect('/admin/'+base_route);
+        })
 
-    async.waterfall([
-        function(cb) {
-            Model.findOne({_id: id}, function(err, one) {
-                if (err) { return cb(err); }
-                one.remove(function(err) {
-                    cb(null, one);
-                });
-            });
-        },
-        function(subcategoria, cb) {
-
-            Categoria.findOne({_id: subcategoria.categoria})
-                .exec(function(err, categoria) {
-                    if (err) { return cb(err); }
-                    var index = categoria.subcategorias.indexOf(id);
-                    categoria.subcategorias.splice(index, 1);
-                    cb(null, categoria);
-                })
-        },
-        function(categoria, cb) {
-            categoria.save(function(err, saved) {
-                if (err) { return cb(err); }
-                cb(null);
-            })
-        }
-    ], function(err) {
-        if (err) { return next(err); }
-        req.flash('success', 'O registro foi excluido com sucesso!');
-        return res.redirect('/admin/'+base_route);
-    })
-
-
-
-}
+};

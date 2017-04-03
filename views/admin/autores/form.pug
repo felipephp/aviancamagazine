@@ -16,27 +16,27 @@ block content
 							.clearfix
 						.x_content
 							br
-							form(action= mode == 'create' ? '/admin/'+base_route : '/admin/'+base_route+'/'+one._id, method="POST", enctype="multipart/form-data").form-horizontal.form-label-left
+							form(action= mode == 'create' ? '/admin/'+base_route : '/admin/'+base_route+'/'+one.id, method="POST", enctype="multipart/form-data").form-horizontal.form-label-left
 								.col-md-12
 									include ../../partials/_errors
 								.form-group
-									label.control-label.col-md-3.col-sm-3.col-xs-12(for='nome')
+									label.control-label.col-md-3.col-sm-3.col-xs-12(for='name')
 										| Nome
 										span.required *
 									.col-md-6.col-sm-6.col-xs-12
-										input#nome.form-control.col-md-7.col-xs-12(type='text', required, name="nome", value=one.nome)
+										input#nome.form-control.col-md-7.col-xs-12(type='text', required, name="name", value=one.name)
 								.form-group
-									label.control-label.col-md-3.col-sm-3.col-xs-12(for='nome')
+									label.control-label.col-md-3.col-sm-3.col-xs-12(for='position')
 										| Cargo
 										span.required *
 									.col-md-6.col-sm-6.col-xs-12
-										input#cargo.form-control.col-md-7.col-xs-12(type='text', required, name="cargo", value=one.cargo)
+										input#cargo.form-control.col-md-7.col-xs-12(type='text', required, name="position", value=one.position)
 								.form-group
-									label.control-label.col-md-3.col-sm-3.col-xs-12(for='nome')
+									label.control-label.col-md-3.col-sm-3.col-xs-12(for='short_resume')
 										| Mini CV
 										span.required *
 									.col-md-6.col-sm-6.col-xs-12
-										textarea#mini_cv.form-control.col-md-7.col-xs-12(type='text', required, name="mini_cv", maxlength=200)= one.mini_cv
+										textarea#mini_cv.form-control.col-md-7.col-xs-12(type='text', required, name="short_resume", maxlength=200)= one.short_resume
 								.form-group
 									label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
 										| Avatar
@@ -45,7 +45,7 @@ block content
 										data-instant-edit="true" data-button-confirm-label="Confirmar"
 										data-button-cancel-label="Cancelar" data-post="input, output, actions"
 										data-size="900,900", style="width: 200px; height: 200px;")
-											img(src=one.avatar_path, alt="")
+											img(src=one.photo, alt="")
 											input(type='file', name='avatar')
 								.ln_solid
 								.form-group

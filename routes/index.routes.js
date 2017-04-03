@@ -26,7 +26,7 @@ var adminMaterias = require('./admin/materias.routes');
 var adminVideos = require('./admin/videos.routes');
 var adminWeLove = require('./admin/welove.routes');
 
-var configVideos = require('./admin/config_videos.routes');
+// var configVideos = require('./admin/config_videos.routes');
 var configSocial = require('./admin/config/social.routes');
 
 module.exports = function(app) {
