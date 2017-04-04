@@ -1,7 +1,7 @@
 var Categoria = require('../models/categoria.model');
-var Subcategoria = require('../models/subcategoria.model');
-var Tag = require('../models/tag.model');
-var Materia = require('../models/materia.model');
+// var Subcategoria = require('../models/subcategoria.model');
+// var Tag = require('../models/tag.model');
+// var Materia = require('../models/materia.model');
 
 var async = require('async');
 var mysql = require('../domain/mysql-helper/mysql');
@@ -16,6 +16,7 @@ exports.porCategoria = function(req, res, next) {
                 .where({ slug: { o: '=', v: categoria_slug } })
                 .exec(function (row) {
                     if (!row[0]) {
+                        console.log('********************mysql error por Categoria!!!');
                         res.render('Error.');
                         //return res.render("categoria", {categoria: categoria, materias: materias});
                     }
@@ -47,6 +48,7 @@ exports.porSubcategoria = function(req, res, next) {
                 .where({ slug: { alias: 'A', o: '=', v: subcategoria_slug } })
                 .exec(function (row) {
                     if (!row[0]) {
+                        console.log('********************mysql error por Sub!!!');
                         res.render('Error.');
                     }
                     cb(null, row[0]);
@@ -70,23 +72,26 @@ exports.porTag = function(req, res, next) {
     var tag_slug = req.params.tag_slug;
 
     async.waterfall([
-        function(cb) {
-            Tag.findOne({nome: tag_slug})
-                .exec(function(err, tag) {
-                    if (err) { return cb(err); }
+        function (cb) {
+            mysql.select('tags')
+                .where({ slug: { o: '=', v: tag_slug } })
+                .exec(function (tag) {
+                    tag = tag[0];
                     cb(null, tag);
                 })
         },
         function(tag, cb) {
             if (!tag) {
-                // console.log("Tag not found");
                 return next();
             }
-            Materia.find({tags: tag._id})
-                .populate(['categoria', 'subcategoria'])
-                .sort('-available_at')
-                .exec(function(err, materias) {
-                    if (err) { return cb(err); }
+            mysql.select('articles_has_tags', null)
+                .join({ table: 'articles', on: 'id', key: 'A.articles_id', columns: ['*'] })
+                .join({ table: 'categories', on: 'id', key: 'B.categories_id', columns: ['name AS subcat'] })
+                .join({ table: 'categories', on: 'id', key: 'C.categories_id', columns: ['name AS categorie'] })
+                .where({ tags_id: { o: '=', v: tag.id } })
+                .exec(function (materias) {
+                    myHelper.getShowInfoMany(materias, 400);
+                    console.log("Materias::", materias);
                     cb(null, tag, materias);
                 })
         }

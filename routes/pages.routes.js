@@ -746,6 +746,10 @@ exports.edicoes = function(req, res) {
 
 };
 
-exports.contato = function(req, res) {
-    return res.render('contato');
+exports.anuncie = function(req, res) {
+    return res.render('anuncie', { data: {} });
+};
+
+exports.avianca = function(req, res) {
+    return res.render('avianca');
 };

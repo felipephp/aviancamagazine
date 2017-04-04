@@ -17,6 +17,36 @@
     clear: both !important;
 }
 
+.red-title{
+    font-family: 'montserrat', sans-serif; font-weight: 100; color: #e20613; text-transform: uppercase;
+}
+
+.devices {
+    width: 300px;
+    height: 200px;
+    float: left;
+    margin: 0px 25px 1px 0px;
+    position: relative;
+}
+
+.devices img:nth-child(3) {
+    position: absolute;
+    width: 20%;
+    bottom: 0;
+    left: 75px;
+}
+.devices img:nth-child(2) {
+    width: 34%;
+    position: absolute;
+    bottom: 0;
+}
+.devices img:nth-child(1) {
+    position: absolute;
+    width: 80%;
+    bottom: 0px;
+    right: 0;
+}
+
 .mh-logo img {
     height: 70px;
 }
@@ -283,4 +313,32 @@ form[name="welove"] .foto .foto-container #foto-src{
 .welove.members-photo img {
     width: 200px;
     height: 200px;
+}
+.reader-container{
+    background-color: rgba(0, 0, 0, 0.8) !important;
+}
+.Issu {
+    position: fixed;
+    top: 0px;
+    z-index: 999;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+[data-cls="Issuu"] {
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    height: 100% !important;
+}
+
+#closeIssuu {
+    cursor: pointer;
+    color: red;
+    position: fixed;
+    right: 15px;
+    top: 15px;
+    z-index: 9999;
+    font-size: 30px;
+    display: none;
 }

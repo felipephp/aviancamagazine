@@ -1,24 +1,19 @@
-var Materia = require('../models/materia.model');
+// var Materia = require('../models/materia.model');
+var mysql = require('../domain/mysql-helper/mysql');
+var myHelper = require('../lib/articles_helper');
 
 exports.go = function(req, res, next) {
 
-    var query = req.query.q;
-
-    console.log("query", query);
-
-    var mongoose_query = { $or: [
-        {"titulo": { $regex: new RegExp(query.toLowerCase(), "i") }},
-        {"conteudo": { $regex: new RegExp(query.toLowerCase(), "i") }}
-    ]}
-
-    console.log("mongoose_query", mongoose_query);
-
-    Materia.find(mongoose_query)
-        .populate(['categoria', 'subcategoria'])
-        .sort('-created_at')
-        .exec(function(err, materias) {
-            if (err) { return next(err); }
-            return res.render("busca", {materias: materias, q: query});
+    var word = req.query.q;
+    mysql.select('articles')
+        .where({
+            content: { o: 'LIKE', v: '%'+word+'%' },
+            besides: 'OR',
+            title: { o: 'LIKE', v: '%'+word+'%' }
         })
-
-}
+        .limit(200)
+        .exec(function (materias) {
+            myHelper.getShowInfoMany(materias, 400);
+            return res.render("busca", {materias: materias, q: word});
+        })
+};

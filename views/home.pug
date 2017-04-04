@@ -19,7 +19,7 @@ block content
                         .tl-slider
                             for materia in _categorias.lastArticles
                                 div
-                                    a(href='/materias/'+materia.slug)= materia.title
+                                    a(href='/materia/'+materia.slug)= materia.title
                         .tl-slider-control
             .main-posts-1
                 .mp-section
@@ -31,17 +31,17 @@ block content
                                     .swiper-slide
                                         article.post.post-tp-1(Style="height: 100%")
                                             figure(Style="height: 100%")
-                                                a(href='/materias/'+materiaSlider.slug Style="height: 100%")
+                                                a(href='/materia/'+materiaSlider.slug Style="height: 100%")
                                                     div.adaptive(alt='Spectr News Theme' Style="height: 100%; width: 100%; background-image: url('"+materiaSlider.main_img_path+"'); background-size: 100%; background-position: 50%;")
                                             .ptp-1-overlay
                                                 .ptp-1-data
-                                                    a.category-tp-1(href='/materias/'+materiaSlider.slug)
+                                                    a.category-tp-1(href='/materia/'+materiaSlider.slug)
                                                      | #{materiaSlider.categoria} > #{materiaSlider.subcategoria}
                                                     h1.title-1
-                                                        a(href='/materias/'+materiaSlider.slug)= materiaSlider.title
+                                                        a(href='/materia/'+materiaSlider.slug)= materiaSlider.title
                                                     .meta-tp-1
                                                         //.ptp-1-date
-                                                    a.read-tp-1(href='/materias/'+materiaSlider.slug)
+                                                    a.read-tp-1(href='/materia/'+materiaSlider.slug)
                                                         span Leia mais
                                                         span.arr-right-light-ic
                                                             i
@@ -70,7 +70,7 @@ block content
                                                             img.adaptive(src=materiaSlider.main_img_path+"?dim=126x98", height='98', width='126', alt='Spectr News Theme')
                                                     a.category-tp-2(href='') #{materiaSlider.subcategoria}
                                                     h3.title-3
-                                                        a(href='/materias/'+materiaSlider.slug)= materiaSlider.title
+                                                        a(href='/materia/'+materiaSlider.slug)= materiaSlider.title
                                 .trpst-block-foot
                                     a(href='/edicoes')
                                         span.more-txt Mais matérias
@@ -82,11 +82,11 @@ block content
                         .one-third.sm-half.xs-full
                             article.post.post-tp-2
                                 figure
-                                    a(href='/materias/'+materia.slug)
+                                    a(href='/materia/'+materia.slug)
                                         img.adaptive(src=materia.main_img_path+"?dim=380x258", height='258', width='380', alt='Spectr News Theme')
                                 .ptp-1-overlay
                                     .ptp-1-data
-                                        a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria} > #{materia.subcategoria}
+                                        a.category-tp-1(href='/materia/'+materia.slug) #{materia.categoria} > #{materia.subcategoria}
                                         h2.title-29
                                             //- a(href='#1')= materia.info_titulo
                                             a(href='#1')= materia.title
@@ -113,10 +113,10 @@ block content
                                 .col-one-quarter(v-for="materia in lifeStyle.materias")
                                     article.post.post-tp-4
                                         figure
-                                            a("v-bind:href"="'/materias/'+materia.slug")
+                                            a("v-bind:href"="'/materia/'+materia.slug")
                                                 img.adaptive("v-bind:src"="materia.showImage+'?dim?260x186'", height='186', width='260', alt='Spectr News Theme')
                                         h3.title-3
-                                            a("v-bind:href"="'/materias/'+materia.slug") {{ materia.showTitle }}
+                                            a("v-bind:href"="'/materia/'+materia.slug") {{ materia.showTitle }}
                                         .meta-tp-2
                                             //.date
                                                 //span {{ materia.data_postagem }}
@@ -124,7 +124,7 @@ block content
                                                 i.li_pen
                                                 span {{ materia.main_categ_name }}
                         .pst-block-foot
-                            a(href='/life-style') mais matérias
+                            a(href='/materias/life-style') mais matérias
 
             .main-video-posts
                 .video-posts-pane
@@ -156,7 +156,7 @@ block content
                                     .half
                                         article.post.post-tpv-2
                                             figure
-                                                a(href='/videos/'+video.slug)
+                                                a(href='/video/'+video.slug)
                                                     img.adaptive(src=video.img_path+"?dim=285x215", height='215', width='285', alt='Spectr News Theme')
                                             .ptp-1-overlay
                                                 .ptp-1-data
@@ -195,19 +195,19 @@ block content
                                         .col-half(v-for="materia in negocios.materias")
                                             article.post.post-tp-5
                                                 figure
-                                                    a("v-bind:href"="'/materias/'+materia.slug")
+                                                    a("v-bind:href"="'/materia/'+materia.slug")
                                                         img.adaptive("v-bind:src"="materia.showImage+'?dim?260x186'", height='186', width='260', alt='Spectr News Theme')
                                                 h3.title-5
-                                                    a("v-bind:href"="'/materias/'+materia.slug") {{ materia.showTitle }}
+                                                    a("v-bind:href"="'/materia/'+materia.slug") {{ materia.showTitle }}
                                                 .meta-tp-2
-                                                    //.date
-                                                        //span {{ materia.data_postagem }}
+                                                    //-.date
+                                                        span {{ materia.data_postagem }}
                                                     .category
                                                         i.li_pen
                                                         span {{ materia.main_categ_name }}
                                                 p.p {{ materia.showContent }}                               
                                 .pst-block-foot
-                                    a(href='/negocios') mais matérias
+                                    a(href='/materias/negocios') mais matérias
 
 
                     aside.side-bar
@@ -223,11 +223,11 @@ block content
                                 .swiper-slide
                                     article.post.post-tp-1
                                         figure
-                                            a(href='/materias/'+materia.slug)
+                                            a(href='/materia/'+materia.slug)
                                                 img.adaptive(src=materia.showImage+"?dim=1140x511", height='511', width='1140', alt='Spectr News Theme')
                                         .ptp-1-overlay
                                             .ptp-1-data
-                                                //-a.category-tp-1(href='/materias/'+materia.slug) #{materia.categoria.nome} > #{materia.subcategoria.nome}
+                                                //-a.category-tp-1(href='/materia/'+materia.slug) #{materia.categoria.nome} > #{materia.subcategoria.nome}
                                                 h1.title-1
                                                     a(href='#1')= materia.showTitle
                                                 .meta-tp-1

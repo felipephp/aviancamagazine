@@ -259,9 +259,10 @@ app.use(function(req, res, next){
         });
 });
 
-//get tags
+//get tags - only with relations
 app.use(function(req, res, next) {
-    mysql.select('tags')
+    mysql.select('tags', ['distinct(A.id) as id', 'name', 'slug'])
+        .join({ table: 'articles_has_tags', on: 'tags_id', key: 'A.id' })
         .orderBy('name')
         .exec(function (rows) {
             app.locals.tags = rows;

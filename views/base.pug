@@ -61,6 +61,10 @@ html(lang='en')
         block scripts
         // endbuild
     body
+        <div id="closeIssuu"> <i class="remove-ic-1"></i> </div>
+        //- <div data-cls="Issuu" data-configid="4954280/45423114" style="width:100%; height:500px;" class="issuuembed"></div>
+        //- <script type="text/javascript" src="//e.issuu.com/embed.js" async="true"></script>
+        <div id="issuuLoader"></div>
         // Loader
         //- .page-loader
             .loader
@@ -120,8 +124,8 @@ html(lang='en')
                         .container
                             .row.flex
                                 .mh-logo
-                                    a(href='/')
-                                        img(src=ultima_edicao.img_path alt='Avianca Revista')
+                                    a(href='#')
+                                        img(src=ultima_edicao.img_path alt='Avianca Revista', id="lastEdition")
                                     .top-phrase#top-phrase
                                         span Nossa<br>edição<br>de <span style="font-weight: 400;">{{month}}</span><br>Já está<br>a bordo
                                         //- <img src="/media/images/topo-site.png">
@@ -141,6 +145,7 @@ html(lang='en')
                 .main
                     // Content
                     block content
+
                     // Content END
                     // Footer
                     footer.main-footer
@@ -167,7 +172,7 @@ html(lang='en')
                                             h4.ft-title-1
                                                 strong Media Onboard
                                             p.p Responsável por todo o entretenimento e mídia de bordo das aeronaves Avianca Brasil, oferecendo diversas plataformas criativas online e off-line para impactar o público alvo.
-                                            a(href="http://www.mediaonboard.com.br" target="_blank").footer-anuncie anuncie
+                                            a(href="/anuncie" target="_blank").footer-anuncie anuncie
                                     .ft-social
                                         ul.ft-social-list.pull-right
                                             li.fb

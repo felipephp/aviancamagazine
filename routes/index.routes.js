@@ -39,16 +39,20 @@ module.exports = function(app) {
     app.get('/edicoes', pages.edicoes);
     app.get('/welove', welove.index);
     app.post('/welove', multipartMiddleware, welove.send);
+    app.get('/anuncie', pages.anuncie);
+    app.get('/avianca', pages.avianca);
     // app.get('/contato', pages.contato);
 
     app.get('/buscar', search.go);
     app.get('/videos', videos.view);
     app.get('/videos/:slug', videos.video);
 
-    app.get('/materias/:slug', materias.mostrar)
+    //SITE
+    app.get('/materia/:slug', materias.mostrar);
 
-    // app.get('/api/subcategorias/:subcategoria_id/materias', materias.porSubcategoriaApi);
-    // app.get('/api/categorias/:categoria_id/materias', materias.porCategoriaApi);
+    app.get('/materias/tags/:tag_slug', materias.porTag);
+    app.get('/materias/:categoria_slug', materias.porCategoria);
+    app.get('/materias/:categoria_slug/:subcategoria_slug', materias.porSubcategoria);
 
     app.post('/api/subcategorias/materias', materias.porSubcategoriaApi);
     app.post('/api/categorias/materias', materias.porCategoriaApi);
@@ -137,15 +141,4 @@ module.exports = function(app) {
     app.post('/redefinir-senha', rules.resetPassword, checkValidation, user.resetPassword);
     app.get('/admin/login', admin.loginForm);
     app.post('/admin/login', admin.login);
-
-
-    app.get('/tags/:tag_slug', materias.porTag);
-
-    app.get('/:categoria_slug', materias.porCategoria);
-
-    app.get('/:categoria_slug/:subcategoria_slug', materias.porSubcategoria);
-
-
-
-
 };

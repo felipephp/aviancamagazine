@@ -32,7 +32,7 @@ block content
 												| Título
 												span.required *
 											.col-md-6.col-sm-6.col-xs-12
-												input#titulo.form-control.col-md-7.col-xs-12(type='text', required, name="title", value=one.title, maxlength="70")
+												input#titulo.form-control.col-md-7.col-xs-12(type='text', required, name="title", value=one.title, maxlength="255")
 										.form-group
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
 												| Imagem principal
@@ -48,7 +48,7 @@ block content
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
 												| Título de Chamada
 											.col-md-6.col-sm-6.col-xs-12
-												input#titulo.form-control.col-md-7.col-xs-12.limit(type='text', name="headline_title", value=one.headline_title, maxlength="40")
+												input#titulo.form-control.col-md-7.col-xs-12.limit(type='text', name="headline_title", value=one.headline_title, maxlength="255")
 										.form-group
 											label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
 												| Imagem da Chamada

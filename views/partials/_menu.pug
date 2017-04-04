@@ -9,7 +9,7 @@ nav.main-nav
             //destinos
             if cat.id != '1'
                 li
-                    a(href="/"+cat.slug)
+                    a(href="/materias/"+cat.slug)
                         | #{cat.name}
                         if cat.subcategorias.length
                             i.fa.fa-angle-down
@@ -18,29 +18,29 @@ nav.main-nav
                             for subcat in cat.subcategorias
                                 if subcat.slug != 'capa'
                                     li
-                                        a(href="/"+cat.slug+"/"+subcat.slug)= subcat.name
+                                        a(href="/materias/"+cat.slug+"/"+subcat.slug)= subcat.name
                             if cat.slug == 'editorial'
                                 li
                                     a(href='/edicoes') Edições anteriores
             else
                 <li class="mf">
-                    <a href="/destinos">Destinos<i class="fa fa-angle-down"></i></a>
+                    <a href="/materias/destinos">Destinos<i class="fa fa-angle-down"></i></a>
                     <ul class="sub">
                         <li>
                             <div class="mega-menu">
                                 <div class="col-row">
                                     <div class="col-one-fifth sm-col-one-fifth cats">
                                         <ul>
-                                            <li><a href="/destinos/nacionais">Nacional</a></li>
-                                            <li><a href="/destinos/internacionais">Internacional</a></li>
-                                            <li><a href="/destinos/expedicao">Expedição</a></li>
+                                            <li><a href="/materias/destinos/nacionais">Nacional</a></li>
+                                            <li><a href="/materias/destinos/internacionais">Internacional</a></li>
+                                            <li><a href="/materias/destinos/expedicao">Expedição</a></li>
                                         </ul>
                                     </div>
                                     <div class="col-four-fifths sm-col-four-fifths">
                                         <div class="mm-life-st-pst">
                                             <div class="mm-life-st-title">
                                                 <span>Destinos</span>
-                                                <a href="/destinos" class="all">Todos os destinos</a>
+                                                <a href="/materias/destinos" class="all">Todos os destinos</a>
                                             </div>
                                             <div class="col-row">
                                             for des_menu in destinos_menu
@@ -65,18 +65,7 @@ nav.main-nav
 
         <li>
             //- <a href="/quem-somos">Avianca<i class="fa fa-angle-down"></i></a>
-            <a href="#">Avianca<i class="fa fa-angle-down"></i></a>
-            <ul class="sub">
-                <li>
-                    <a href="#">Quem é Avianca</a>
-                    <a href="#">Prêmios</a>
-                    <a href="#">Contatos</a>
-                    <a href="#">Wifi</a>
-                    <a href="#">Guia de Entretenimento</a>
-                    <a href="#">Mapa de Rotas</a>
-                    //- <a href="#">Lojas Avianca</a>
-                </li>
-            </ul>
+            <a href="/avianca">Avianca</a>
         </li>
 
         li
@@ -84,5 +73,7 @@ nav.main-nav
                 | We&nbsp;
                 img.welove-icon(src="/assets/img/like.png")
                 | &nbsp;Avianca
-        //- li
-            a(href="/contato") Contato
+        <li>
+            <a href="/anuncie">Anuncie</a>
+            
+        </li>

@@ -20,14 +20,13 @@ mysql pass do: Elipse#1126
 #### Hard
 -[x] <span style="color: green; font-weight: bold">[ OK ]</span> Finalizar conversão do DB mongo/mysql
 -[ ] Reescrever queries do painel
--[ ] Reescrever queries do site e ajustes de rotas
--[ ] Transformar em pop up o cadastro welove;
--[ ] <span style="color: orange; font-weight: bold">Layout</span>Alterar a galeria.
+-[ ] Reescrever queries do site e ajustes de rotas (inserir prefix materias/)
+-[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span>Alterar a galeria.
 
 #### Medium
 -[x] <span style="color: green; font-weight: bold">[ OK ]</span> HTML da revista no topo
 -[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span>colocar o prêmio da revista e logo 
--[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span>No item de compartilhar, colocar o texto "gostou do nosso conteúdo? compartilhe "
+-[x] <span style="color: orange; font-weight: bold">[ Layout ]</span>No item de compartilhar, colocar o texto "gostou do nosso conteúdo? compartilhe "
 
 #### Easy
 -[x] <span style="color: green; font-weight: bold">[ OK ]</span> remover LOVE 
@@ -47,42 +46,50 @@ mysql pass do: Elipse#1126
 -[ ] liberar o link para externo
 -[ ] Social  -> criar a página
 -[ ] Converter usuários para Mysql e verificar segurança da senha
--[ ] Fazer CRUD de comentários (3 dias)
+-[ ] Fazer CRUD de comentários (7 dias)
 -[x] Ajustes de segurança em WHERE e ORDER by enviando valores via ? e arrayValues (2 dias)
 -[ ] No slider, ainda aparece "OF". e só muda para 3 of 3 qdo clica, no início é 1/14.
 -[ ] Ao buscar por slugs, podemos futuramente perder o link, então, tratar slug apenas para SEO e enviar tbm o ID da materia/cat/subcat para URL
+-[ ] ajustar usuarios via SQL
+-[ ] Aspas de chamada[NOVO]
+-[ ] Transformar em pop up o cadastro welove;
 
 LAYOUTS
--[ ] Menu avianca, post_template_one (todos) - sem sidebar - Usar accordion ou jquery tabs para todos os conteudos
--[ ] Guia e mapa de rotas: Imagem grande, sem conteúdo (apenas click) category_style_six
--[ ] Welove e social galeria SHORTCODES (lembrar do share por foto em welove)
+-[x] Menu avianca, post_template_one (todos) - sem sidebar - Usar accordion ou jquery tabs para todos os conteudos[NOVO] Texto quem somos + premios + aeronaves
+-[x] ajustar TAGS na materia e na página para filtrar por tags 
+-[ ] Guia e mapa de rotas: Imagem grande, sem conteúdo (apenas click) category_style_six[NOVO]
+-[ ] Welove e social galeria SHORTCODES (lembrar do share por foto em welove)[NOVO]
+-[ ] welove backend
 -[x] Edições anteriores / Nossas capas 
-- botao anuncie depois do welove
-
--converter corretamente o db novo, we love, social. manter entretenimento do jeito que está
-
-- ajustar TAGS na materia e na página para filtrar por tags
-- Ajustar pesquisa para SQL
-- ajustar usuarios via SQL
-
-pagina de anuncie será contat_one MIDIA KIT
-
-qdo clicar na revista, embed do issu no site
-
-menu avianca...
-quem somos, carol
-mapa de rotas (img)
-
-Autores - revisar parte de upload de fotos para reutilizar função, revisar forma de salvar a foto original, tem muita coisa lá.
+-[x] botao anuncie depois do welove
+-[x] pesquisa (controller e página do site)
+-[x] pagina de anuncie será contat_one MIDIA KIT[NOVO]
+-[ ] qdo clicar na revista, embed do issu no site[NOVO]
+-[x] menu avianca... quem somos, carol, mapa de rotas (img)
+-[x] Faltou fazer upload de SLUG das tags, colocar isso no script e atualizar tag por tag para recriar slugs
+-[x] Embed do issuu, Ok, mas, e as outras? Vai cadastrar via banco?
+-[ ] converter corretamente o db novo, we love, social. manter entretenimento do jeito que está
+-[ ] Autores - revisar parte de upload de fotos para reutilizar função, revisar forma de salvar a foto original, tem muita coisa lá.
 
 falta
+
+[hoje]
+pg anuncie OK
+pg avianca OK
+
+[amanha]
+pg tags, OK 
+pesquisa,  OK
+postar coisas no antigo
+
+[quinta]
+embed do issus OK +ou-
+start welove
+
+[sexta]
+final welove
 
 -[x] localizações
 -[x] tags
 -[ ] videos
--[ ] welove
--[ ] pesquisa (controller e página do site)
 -[ ] config_videos inutilizada, deletar.
--[ ] Faltou fazer upload de SLUG das tags, colocar isso no script e atualizar tag por tag para recriar slugs
--[ ] Falta materias.routes.porTag para MySQL
--[ ] usuarios [depois]
