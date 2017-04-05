@@ -676,6 +676,7 @@ function openTab(tabName) {
 
     maps.each(function() {
         var currentMap = $(this);
+        // console.log('Lat::', currentMap.attr('data-latitude'), 'Lng::', currentMap.attr('data-longitude'));
         var latlng = new google.maps.LatLng(currentMap.attr('data-longitude'), currentMap.attr('data-latitude'));
         var point = currentMap.attr('data-marker');
         var mapColor = currentMap.attr('data-map-color');

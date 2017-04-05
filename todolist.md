@@ -53,6 +53,8 @@ mysql pass do: Elipse#1126
 -[ ] ajustar usuarios via SQL
 -[ ] Aspas de chamada[NOVO]
 -[ ] Transformar em pop up o cadastro welove;
+-[ ] Redirecionar rotas inexistentes ou com erro apra 404, para evitar queda de sistema.
+-[ ] Restringir chave de API google maps para o dominio, quando estiver funcionando
 
 LAYOUTS
 -[x] Menu avianca, post_template_one (todos) - sem sidebar - Usar accordion ou jquery tabs para todos os conteudos[NOVO] Texto quem somos + premios + aeronaves
@@ -81,6 +83,7 @@ pg avianca OK
 pg tags, OK 
 pesquisa,  OK
 postar coisas no antigo
+ajustar quem somos e anuncie, bugzinhos de layout
 
 [quinta]
 embed do issus OK +ou-
@@ -93,3 +96,4 @@ final welove
 -[x] tags
 -[ ] videos
 -[ ] config_videos inutilizada, deletar.
+
