@@ -717,7 +717,6 @@ exports.home = function(req, res, next) {
 
         social: function (cb) {
             mysql.select('social')
-                .orderBy('editions_id')
                 .limit('8')
                 .exec(function (rows) {
                     cb(null, rows);

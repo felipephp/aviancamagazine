@@ -25,6 +25,7 @@ var adminLocalizacoes = require('./admin/localizacoes.routes');
 var adminMaterias = require('./admin/materias.routes');
 var adminVideos = require('./admin/videos.routes');
 var adminWeLove = require('./admin/welove.routes');
+var adminSocial = require('./admin/social.routes');
 
 // var configVideos = require('./admin/config_videos.routes');
 var configSocial = require('./admin/config/social.routes');
@@ -70,8 +71,11 @@ module.exports = function(app) {
     // app.get('/admin/config/videos', requireAdmin, configVideos.index);
     // app.post('/admin/config/videos', requireAdmin, configVideos.update);
 
-    app.get('/admin/config/social', requireAdmin, configSocial.index);
-    app.post('/admin/config/social', requireAdmin, multipartMiddleware, configSocial.update);
+    // app.get('/admin/config/social', requireAdmin, configSocial.index);
+    // app.post('/admin/config/social', requireAdmin, multipartMiddleware, configSocial.update);
+
+    app.get('/admin/social', requireAdmin, adminSocial.index);
+    app.post('/admin/social/store', requireAdmin, multipartMiddleware, adminSocial.store);
 
     app.get('/admin/autores', requireAdmin, adminAutores.index);
     app.get('/admin/autores/create', requireAdmin, adminAutores.create);

@@ -1,0 +1,61 @@
+extends ../base
+
+block styles
+  link(rel="stylesheet", href="/admin_assets/css/slim.min.css")
+
+block content
+  .right_col(role='main')
+    div
+      .row
+        .col-md-12.col-sm-12.col-xs-12
+          .x_panel
+            .x_title
+              h2
+                | Configurações
+                small Social - Home
+              .clearfix
+            .x_content
+              br
+
+              form(action="/admin/social/store", method="POST", enctype="multipart/form-data")
+                .form-group
+                  .col-md-6.col-sm-6.col-xs-12.col-md-offset-3
+                    button.btn.btn-success(type='submit') Enviar
+                .form-horizontal.form-label-left
+                  .col-md-12
+                      include ../../partials/_errors
+                      include ../../partials/_success
+                      - for (var a=0; a<16; a++)
+                        -var id = all[a] ? all[a].id : 0
+                        -var title = all[a] ? all[a].title : 'Não cadastrado'
+                        -var image = all[a] ? all[a].img_path : 'none.jpeg'
+                        //-for a in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+                        .form-group
+                          input(type="hidden", name='social['+a+']'+'[id]', value=id )
+                          label.control-label.col-md-3.col-sm-3.col-xs-12(for='nome')
+                            | Título #{a+1}
+                            span.required *
+                          .col-md-6.col-sm-6.col-xs-12
+                            input.form-control.col-md-7.col-xs-12(type='text', name="social["+a+"][title]", 
+                            value=title)
+                        .form-group
+                          label.control-label.col-md-3.col-sm-3.col-xs-12(for='titulo')
+                            | Imagem #{a+1}
+                          .col-md-6.col-sm-6.col-xs-12
+                            .slim(data-ratio="4:3", data-label="Clique aqui para escolher a imagem"
+                            data-instant-edit="true" data-button-confirm-label="Confirmar"
+                            data-button-cancel-label="Cancelar" data-post="input, output, actions"
+                            data-size="900,679", style="width: 200px; height: 151px;")
+                              img(src=image, alt="")
+                              input(type='file', name='social['+a+'][imagem]')
+                        hr
+
+
+                      .ln_solid
+                      .form-group
+                        .col-md-6.col-sm-6.col-xs-12.col-md-offset-3
+                          button.btn.btn-success(type='submit') Enviar
+  // /page content
+
+block scripts
+  script(src="/admin_assets/js/slim.kickstart.min.js")
