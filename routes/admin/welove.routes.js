@@ -5,8 +5,9 @@ var mysql = require('../../domain/mysql-helper/mysql');
 exports.index = function(req, res, next) {
 
     mysql.select('welove')
-        .orderBy('created_at')
+        .orderBy('created_at DESC')
         .exec(function (rows) {
+            console.log("Love::", rows);
             return res.render('admin/'+base_route+'/index', {all: rows, base_route: base_route});
         });
 };

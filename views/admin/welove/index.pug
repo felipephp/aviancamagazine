@@ -23,10 +23,10 @@ block content
                                 tbody
                                     for one in all
                                         tr
-                                            td #{one.email}
-                                            td #{one.email}
-                                            td #{one.status}
-                                            td
+                                            td <img style="max-height: 90px;" src="#{one.image}">
+                                            td(style="vertical-align:middle;") #{one.email}
+                                            td(style="vertical-align:middle;") #{one.status}
+                                            td(style="vertical-align:middle;")
                                                 a.btn.btn-primary.btn-sm(href='/admin/'+base_route+'/'+one.id+'/edit') Editar
                                                 a.btn.btn-primary.btn-sm.anchor-confirm(href='/admin/'+base_route+'/'+one.id+'/delete') Deletar
 block scripts
@@ -106,7 +106,7 @@ block scripts
                 });
                 var $datatable = $('#datatable-checkbox');
                 $datatable.dataTable({
-                    'order': [[ 1, 'asc' ]],
+                    //'order': [[ 1, 'asc' ]],
                     'columnDefs': [
                         { orderable: false, targets: [0] }
                     ]

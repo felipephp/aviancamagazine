@@ -342,3 +342,74 @@ form[name="welove"] .foto .foto-container #foto-src{
     font-size: 30px;
     display: none;
 }
+
+/*topo*/
+
+.main-header > .mh-top > .container{
+    position: relative;
+    height: 210px;
+}
+
+.main-header > .mh-top > .container .mh-logo {
+    position: absolute;
+    right: -195px;
+    top: 0;
+}
+
+.main-header > .mh-top > .container .mh-banner {
+    position: absolute;
+    right: 195px;
+    top: 30px;
+}
+
+.mh-logoimg {
+    width: 200px;
+    position: absolute;
+    top: 49px;
+    left: 3px;
+}
+.mh-logoimg img {
+    width: 100%;
+}
+
+.mh-logo img {
+    height: 112px;
+    position: absolute;
+    top: 50%;
+    margin-top: -57px;
+    left: 50%;
+    margin-left: -42.5px;
+}
+
+.mh-logo a {
+    display: block;
+    width: 97px;
+    height: 125px;
+    border: 1px solid #ccc;
+    text-align: center;
+    position: relative;
+    top: 30px;
+    left: 17px;
+}
+
+.top-phrase {
+    line-height: 14px;
+    text-transform: uppercase;
+    font-family: 'montserrat', sans-serif;
+    font-weight: 100;
+    width: 118px;
+    position: absolute;
+    left: 125px;
+    top: 50%;
+    height: 70px;
+    margin-top: -22px;
+    background: #fff;
+    padding-left: 5px;
+    font-size: 15px;
+}
+
+/*topo cinza*/
+
+.trend-pst-slider, .trpst-block-foot a {
+    background: #ededed;
+}

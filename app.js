@@ -274,7 +274,7 @@ app.use(function(req, res, next) {
 app.use(function(req, res, next) {
 
     mysql.select('editions')
-        .orderBy('number')
+        .orderBy('number DESC')
         .exec(function (rows) {
             app.locals.edicoes = rows;
             app.locals.ultima_edicao = rows[ (rows.length-1) ];

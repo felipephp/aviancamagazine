@@ -1853,7 +1853,7 @@ blockquote {
 /* line 322, /scss/_typography.scss */
 .title-4 {
   color: #000;
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 25px;
   float: left;
@@ -10686,7 +10686,9 @@ a.footer-anuncie {
   margin-left: auto;
   margin-right: auto;
   padding: 0 15px;
-  margin-bottom: 17px; }
+  margin-bottom: 17px;
+  margin-top: 25px;
+}
   /* line 20, /vendor/bourbon/app/assets/stylesheets/addons/_clearfix.scss */
   .main-posts-1::after {
     clear: both;
