@@ -44,7 +44,7 @@ mysql pass do: Elipse#1126
 -[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span> No item de compartilhar, colocar o texto "gostou do nosso conteúdo? compartilhe"
 -[ ] Galerias dentro do texto. 
 -[ ] liberar o link para externo
--[ ] Social  -> criar a página
+-[x] Social  -> converter para mysql
 -[ ] Converter usuários para Mysql e verificar segurança da senha
 -[ ] Fazer CRUD de comentários (7 dias)
 -[x] Ajustes de segurança em WHERE e ORDER by enviando valores via ? e arrayValues (2 dias)
@@ -59,18 +59,18 @@ mysql pass do: Elipse#1126
 LAYOUTS
 -[x] Menu avianca, post_template_one (todos) - sem sidebar - Usar accordion ou jquery tabs para todos os conteudos[NOVO] Texto quem somos + premios + aeronaves
 -[x] ajustar TAGS na materia e na página para filtrar por tags 
--[ ] Guia e mapa de rotas: Imagem grande, sem conteúdo (apenas click) category_style_six[NOVO]
+-[x] Guia e mapa de rotas: Imagem grande, sem conteúdo (apenas click) category_style_six[NOVO]
 -[ ] Welove e social galeria SHORTCODES (lembrar do share por foto em welove)[NOVO]
--[ ] welove backend
+-[x] welove backend
 -[x] Edições anteriores / Nossas capas 
 -[x] botao anuncie depois do welove
 -[x] pesquisa (controller e página do site)
 -[x] pagina de anuncie será contat_one MIDIA KIT[NOVO]
--[ ] qdo clicar na revista, embed do issu no site[NOVO]
+-[x] qdo clicar na revista, embed do issu no site[NOVO]
 -[x] menu avianca... quem somos, carol, mapa de rotas (img)
 -[x] Faltou fazer upload de SLUG das tags, colocar isso no script e atualizar tag por tag para recriar slugs
 -[x] Embed do issuu, Ok, mas, e as outras? Vai cadastrar via banco?
--[ ] converter corretamente o db novo, we love, social. manter entretenimento do jeito que está
+-[x] converter corretamente o db novo, we love, social. manter entretenimento do jeito que está
 -[ ] Autores - revisar parte de upload de fotos para reutilizar função, revisar forma de salvar a foto original, tem muita coisa lá.
 
 falta
@@ -83,7 +83,7 @@ pg avianca OK
 pg tags, OK 
 pesquisa,  OK
 postar coisas no antigo
-ajustar quem somos e anuncie, bugzinhos de layout
+ajustar quem somos e anuncie, bugzinhos de layout ok
 
 [quinta]
 embed do issus OK +ou-
@@ -96,4 +96,9 @@ final welove
 -[x] tags
 -[ ] videos
 -[ ] config_videos inutilizada, deletar.
+-[ ] required nao funciona no safari (autor, imagem, categoria...)
 
+Telefone da avianca antes dos avioes - logo depois, premios
+Título nossa frota para os avioes (tablea HTML)
+tira paltaformas online
+mapa de rotas

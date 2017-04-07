@@ -17,11 +17,9 @@ exports.index = function(req, res, next) {
 };
 
 exports.create = function(req, res, next) {
-
     var one = new Model;
-
     return res.render('admin/'+base_route+'/form', {mode: "create", one: one, base_route: base_route});
-}
+};
 
 exports.store = function(req, res, next) {
 
@@ -159,11 +157,7 @@ exports.update = function(req, res, next) {
         });
 
     });
-
-
-
-
-}
+};
 
 
 exports.delete = function(req, res, next) {

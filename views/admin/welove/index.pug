@@ -16,6 +16,7 @@ block content
                             table#datatable.table.table-striped.table-bordered
                                 thead
                                     tr
+                                        th Foto
                                         th E-mail
                                         th Status
                                         th Ações
@@ -23,10 +24,11 @@ block content
                                     for one in all
                                         tr
                                             td #{one.email}
-                                            td #{one.status_text}
+                                            td #{one.email}
+                                            td #{one.status}
                                             td
-                                                a.btn.btn-primary.btn-sm(href='/admin/'+base_route+'/'+one._id+'/edit') Editar
-                                                a.btn.btn-primary.btn-sm.anchor-confirm(href='/admin/'+base_route+'/'+one._id+'/delete') Deletar
+                                                a.btn.btn-primary.btn-sm(href='/admin/'+base_route+'/'+one.id+'/edit') Editar
+                                                a.btn.btn-primary.btn-sm.anchor-confirm(href='/admin/'+base_route+'/'+one.id+'/delete') Deletar
 block scripts
         // iCheck
         script(src='/admin_assets/vendors/iCheck/icheck.min.js')

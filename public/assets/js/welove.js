@@ -11,7 +11,7 @@ welove = {
 
 	set: function(){
 		this.form 		= document.forms.welove;
-		this.inputFile 	= this.form.imagem;
+		this.inputFile 	= this.form.image;
 		console.log(this.inputFile);
 		this.fotoSrc 	= document.getElementById('foto-src');
 	},

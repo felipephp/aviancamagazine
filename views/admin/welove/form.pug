@@ -12,7 +12,7 @@ block content
                 .clearfix
               .x_content
                 br
-                form(action= mode == 'create' ? '/admin/'+base_route : '/admin/'+base_route+'/'+one._id, method="POST").form-horizontal.form-label-left
+                form(action= mode == 'create' ? '/admin/'+base_route : '/admin/'+base_route+'/'+one.id, method="POST").form-horizontal.form-label-left
                   .col-md-12
                       include ../../partials/_errors
                   .form-group
@@ -26,27 +26,27 @@ block content
                       | Origem
                       span.required *
                     .col-md-6.col-sm-6.col-xs-12
-                      input#origem.form-control.col-md-7.col-xs-12(type='text', required, name="origem", value=one.origem)
+                      input#origem.form-control.col-md-7.col-xs-12(type='text', required, name="departure", value=one.departure)
                   .form-group
                     label.control-label.col-md-3.col-sm-3.col-xs-12(for='destino')
                       | Destino
                       span.required *
                     .col-md-6.col-sm-6.col-xs-12
-                      input#destino.form-control.col-md-7.col-xs-12(type='text', required, name="destino", value=one.destino)
+                      input#destino.form-control.col-md-7.col-xs-12(type='text', required, name="arrive", value=one.arrive)
                   .form-group
                     label.control-label.col-md-3.col-sm-3.col-xs-12(for='destino')
                       | Status
                       span.required *
                     .col-md-6.col-sm-6.col-xs-12
                       select.form-control(name="status")
-                        option(value="aguardando_aprovacao", selected=one.status == 'aguardando_aprovacao') Aguardando Aprovação
-                        option(value="aprovado", selected=one.status == 'aprovado') Aprovado
+                        option(value="0", selected=one.status == '0') Aguardando Aprovação
+                        option(value="1", selected=one.status == '1') Aprovado
                   .form-group
                       label.control-label.col-md-3.col-sm-3.col-xs-12(for='destino')
                         | Imagem
                         span.required *
                       .col-md-6.col-sm-6.col-xs-12
-                          img(src=one.imagem_path+"?dim=250x250")
+                          img(src=one.image+"?dim=250x250")
                   .ln_solid
                   .form-group
                     .col-md-6.col-sm-6.col-xs-12.col-md-offset-3
