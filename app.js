@@ -277,7 +277,8 @@ app.use(function(req, res, next) {
         .orderBy('number DESC')
         .exec(function (rows) {
             app.locals.edicoes = rows;
-            app.locals.ultima_edicao = rows[ (rows.length-1) ];
+            // app.locals.ultima_edicao = rows[ (rows.length-1) ];
+            app.locals.ultima_edicao = rows[0];
             next();
         });
 });
