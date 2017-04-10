@@ -634,7 +634,7 @@ exports.home = function(req, res, next) {
                 .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS subcategoria'] })
                 .join({ table: 'categories', on: 'id', key: 'B.categories_id', columns: ['name AS categoria'] })
                 .where({ id: { alias: 'C',  o: '=', v: '2' } })
-                .orderBy('A.available_at')
+                .orderBy('A.available_at DESC')
                 .limit('3')
                 .exec(function (rows) {
                     cb(null, rows);
@@ -644,7 +644,7 @@ exports.home = function(req, res, next) {
         lastArticles: function (cb) {
             mysql.select('articles', ['id', 'title', 'slug'])
                 .limit(12)
-                .orderBy('available_at')
+                .orderBy('available_at DESC')
                 .exec(function (rows) {
                     cb(null, rows);
                 })

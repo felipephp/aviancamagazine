@@ -192,7 +192,7 @@ exports.porSubcategoriaApi = function(req, res, next) {
         .join({ table: 'categories', on: 'id', key: 'A.categories_id', columns: ['name AS main_categ_name'] })
         .where({categories_id: { alias: 'A', o: '=', v: subcategoria_id } })
         .limit(limit)
-        .orderBy('available_at')
+        .orderBy('available_at DESC')
         .exec(function (materias) {
             // console.log("RESLTS:: ", materias);
             return res.send({results: materias});
@@ -208,7 +208,7 @@ exports.porCategoriaApi = function(req, res, next) {
     mysql.select('categories', ['name AS main_categ_name'])
         .join({ table: 'articles', on: 'categories_id', key: 'A.id', columns: ['*'] })
         .where({ categories_id: { alias: 'A', o: '=', v: id } })
-        .orderBy('B.available_at')
+        .orderBy('B.available_at DESC')
         .limit(limit)
         .exec(function (rows) {
             console.log("MA::", rows);

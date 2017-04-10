@@ -19,14 +19,15 @@ mysql pass do: Elipse#1126
 
 #### Hard
 -[x] <span style="color: green; font-weight: bold">[ OK ]</span> Finalizar conversão do DB mongo/mysql
--[ ] Reescrever queries do painel
--[ ] Reescrever queries do site e ajustes de rotas (inserir prefix materias/)
--[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span>Alterar a galeria.
+-[x] Reescrever queries do painel
+-[x] Reescrever queries do site e ajustes de rotas (inserir prefix materias/)
+-[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span>Galeria com LEGENDA
 
 #### Medium
 -[x] <span style="color: green; font-weight: bold">[ OK ]</span> HTML da revista no topo
 -[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span>colocar o prêmio da revista e logo 
 -[x] <span style="color: orange; font-weight: bold">[ Layout ]</span>No item de compartilhar, colocar o texto "gostou do nosso conteúdo? compartilhe "
+-[ ] Prêmios com fundo transparente, 4º avião
 
 #### Easy
 -[x] <span style="color: green; font-weight: bold">[ OK ]</span> remover LOVE 
@@ -41,26 +42,24 @@ mysql pass do: Elipse#1126
  
  #### PÓS
 -[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span> Galerias internas- colocar um campo de nome em cada foto para cadastrar o fotografo
--[ ] <span style="color: orange; font-weight: bold">[ Layout ]</span> No item de compartilhar, colocar o texto "gostou do nosso conteúdo? compartilhe"
--[ ] Galerias dentro do texto. 
--[ ] liberar o link para externo
+-[ ] Galerias dentro do texto (ContentTools?) e liberar links dentro do post
 -[x] Social  -> converter para mysql
 -[ ] Converter usuários para Mysql e verificar segurança da senha
--[ ] Fazer CRUD de comentários (7 dias)
 -[x] Ajustes de segurança em WHERE e ORDER by enviando valores via ? e arrayValues (2 dias)
--[ ] No slider, ainda aparece "OF". e só muda para 3 of 3 qdo clica, no início é 1/14.
 -[ ] Ao buscar por slugs, podemos futuramente perder o link, então, tratar slug apenas para SEO e enviar tbm o ID da materia/cat/subcat para URL
--[ ] ajustar usuarios via SQL
 -[ ] Aspas de chamada[NOVO]
--[ ] Transformar em pop up o cadastro welove;
--[ ] Redirecionar rotas inexistentes ou com erro apra 404, para evitar queda de sistema.
+-[ ] Redirecionar rotas inexistentes ou com erro para 404, para evitar queda de sistema.
+-[ ] Autores - revisar parte de upload de fotos para reutilizar função, revisar forma de salvar a foto original, tem muita coisa lá.
+
 -[ ] Restringir chave de API google maps para o dominio, quando estiver funcionando
+-[ ] No slider, ainda aparece "OF". e só muda para 3 of 3 qdo clica, no início é 1/14.
+-[ ] Welove e social galeria SHORTCODES (lembrar do share por foto em welove)[NOVO]
+-[ ] Issu par todas as revistas
 
 LAYOUTS
 -[x] Menu avianca, post_template_one (todos) - sem sidebar - Usar accordion ou jquery tabs para todos os conteudos[NOVO] Texto quem somos + premios + aeronaves
 -[x] ajustar TAGS na materia e na página para filtrar por tags 
 -[x] Guia e mapa de rotas: Imagem grande, sem conteúdo (apenas click) category_style_six[NOVO]
--[ ] Welove e social galeria SHORTCODES (lembrar do share por foto em welove)[NOVO]
 -[x] welove backend
 -[x] Edições anteriores / Nossas capas 
 -[x] botao anuncie depois do welove
@@ -71,34 +70,14 @@ LAYOUTS
 -[x] Faltou fazer upload de SLUG das tags, colocar isso no script e atualizar tag por tag para recriar slugs
 -[x] Embed do issuu, Ok, mas, e as outras? Vai cadastrar via banco?
 -[x] converter corretamente o db novo, we love, social. manter entretenimento do jeito que está
--[ ] Autores - revisar parte de upload de fotos para reutilizar função, revisar forma de salvar a foto original, tem muita coisa lá.
-
-falta
-
-[hoje]
-pg anuncie OK
-pg avianca OK
-
-[amanha]
-pg tags, OK 
-pesquisa,  OK
-postar coisas no antigo
-ajustar quem somos e anuncie, bugzinhos de layout ok
-
-[quinta]
-embed do issus OK +ou-
-start welove
-
-[sexta]
-final welove
 
 -[x] localizações
 -[x] tags
 -[ ] videos
+-[ ] arrumar menu mobile
+-[ ] arrumar mega menu lateral
 -[ ] config_videos inutilizada, deletar.
--[ ] required nao funciona no safari (autor, imagem, categoria...)
-
-Telefone da avianca antes dos avioes - logo depois, premios
-Título nossa frota para os avioes (tablea HTML)
-tira paltaformas online
-mapa de rotas
+-[ ] required nao funciona no safari (autor, imagem, categoria)
+-[ ] Tratar erro de max upload file size
+-[ ] Bloquear botão de enviar após enviar
+-[ ] Requisição ajax de criação de autor, tags, localizações, categoria

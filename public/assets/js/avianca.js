@@ -22,7 +22,8 @@ Main = {
         var loader  = document.getElementById('issuuLoader');
         var last    = document.getElementById('lastEdition');
         //var div = '<div data-cls="Issuu" data-configid="4954280/45423114" style="width:100%; height:500px;" class="issuuembed"></div><script type="text/javascript" src="//e.issuu.com/embed.js" async="true"></script>';
-        var div = '<iframe data-cls="Issuu" style="width:100%; height:500px;" src="//e.issuu.com/embed.html#4954280/45423114" frameborder="0" allowfullscreen></iframe>';
+        // var div = '<iframe data-cls="Issuu" style="width:100%; height:500px;" src="//e.issuu.com/embed.html#4954280/45423114" frameborder="0" allowfullscreen></iframe>';
+        var div = '<iframe data-cls="Issuu" style="width:100%; height:500px;" src="//e.issuu.com/embed.html#4954280/46912615" frameborder="0" allowfullscreen></iframe>';
 
         $(loader).hide();
 
