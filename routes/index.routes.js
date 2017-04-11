@@ -46,7 +46,8 @@ module.exports = function(app) {
 
     app.get('/buscar', search.go);
     app.get('/videos', videos.view);
-    app.get('/videos/:slug', videos.video);
+    app.get('/video/:slug', videos.view);
+    // app.get('/video/:slug', videos.video);
 
     //SITE
     app.get('/materia/:slug', materias.mostrar);

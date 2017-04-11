@@ -352,8 +352,11 @@ form[name="welove"] .foto .foto-container #foto-src{
 
 .main-header > .mh-top > .container .mh-logo {
     position: absolute;
-    right: -195px;
+    right: 0px;
     top: 0;
+}
+.main-header .mh-logo, .sticky-header .mh-logo {
+    width: 19.2125%;
 }
 
 .main-header > .mh-top > .container .mh-banner {
@@ -412,4 +415,9 @@ form[name="welove"] .foto .foto-container #foto-src{
 
 .trend-pst-slider, .trpst-block-foot a {
     background: #ededed;
+}
+
+/*Slider Mobile Home*/
+.main-posts-1 .mp-section:first-child{
+    height: 275px;
 }

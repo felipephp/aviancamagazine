@@ -16,7 +16,7 @@ block content
 						<div class="row">
 							<div class="content" style="width: 100%;">
 								<div class="pst-block">
-									iframe(style="width: 100%; height: 618px" src="https://www.youtube.com/embed/"+selectedVideo.youtube_code allowfullscreen)
+									iframe(style="width: 100%; height: 618px" src="https://www.youtube.com/embed/"+selectedVideo.link allowfullscreen)
 									<div class="pst-block-main">
 										<div class="post-tile">
 											<div class="col-row col-eq">
@@ -24,12 +24,12 @@ block content
 													<div class="col-one-third sm-half mb-ls-full">
 														<article class="post post-tp-29">
 															<figure style="height: 150px; overflow: hidden;">
-																<a href="/videos/#{video.slug}">
-																	<img src=#{video.miniatura_path} height="150" width="224" style="margin-top: -50px;" alt="Spectr News Theme" class="adaptive" />
+																<a href=/video/#{video.slug}>
+																	<img src=#{video.img_path} height="150" width="224" style="margin-top: -50px;" alt="Spectr News Theme" class="adaptive" />
 																</a>
 															</figure>
 															//- <div class="date-tp-2"><span> #{video.created_at} </span></div>
-															<h3 class="title-3"><a href="/videos/#{video.slug}"> #{video.nome} </a></h3>
+															<h3 class="title-3"><a href="/video/"video.slug> #{video.title} </a></h3>
 														</article>
 													</div>
 											</div>

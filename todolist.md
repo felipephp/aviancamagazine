@@ -1,5 +1,5 @@
 mysql pass do: Elipse#1126
-
+7[F5#4(9EV1W3G7
 >## 26/03
 
     >[#hard 1] Finalizar conversão do DB mongo / digitalocean
@@ -73,6 +73,7 @@ LAYOUTS
 
 -[x] localizações
 -[x] tags
+-[ ] configurar form anuncie
 -[ ] videos
 -[ ] arrumar menu mobile
 -[ ] arrumar mega menu lateral
