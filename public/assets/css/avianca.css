@@ -418,6 +418,8 @@ form[name="welove"] .foto .foto-container #foto-src{
 }
 
 /*Slider Mobile Home*/
-.main-posts-1 .mp-section:first-child{
-    height: 275px;
+@media screen and (max-width: 500px){
+    .main-posts-1 .mp-section:first-child{
+        height: 275px;
+    }
 }
