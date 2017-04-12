@@ -47,5 +47,9 @@ module.exports = {
         }
 
         return this;
+    },
+
+    getShowInfo: function (post, cutSentence) {
+        myHelper.getShowInfo(post, cutSentence);
     }
 };

@@ -30,6 +30,9 @@ var adminSocial = require('./admin/social.routes');
 // var configVideos = require('./admin/config_videos.routes');
 var configSocial = require('./admin/config/social.routes');
 
+var multer  = require('multer');
+var mup = multer({ dest: 'uploads/' });
+
 module.exports = function(app) {
 
     // SITE
@@ -51,6 +54,18 @@ module.exports = function(app) {
 
     //SITE
     app.get('/materia/:slug', materias.mostrar);
+    app.get('/materia/edit/:id', requireAdmin, materias.editPost);
+    //API edit post contentTools
+    app.post('/materia/edit/:id', requireAdmin, materias.saveEdit);
+    //app.post('/dev/materia/upload-image', requireAdmin, materias.postImageUpload);
+    //TODO
+    app.post('/dev/materia/upload-image', mup.single('avatar'), function (req, res, next) {
+        console.log('fs -> ', req.files);
+        console.log('bd -> ', req.body);
+        return res.send('mup => ');
+        // req.file is the `avatar` file
+        // req.body will hold the text fields, if there were any
+    });
 
     app.get('/materias/tags/:tag_slug', materias.porTag);
     app.get('/materias/:categoria_slug', materias.porCategoria);

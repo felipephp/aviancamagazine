@@ -10,7 +10,7 @@ $('.form-breve').submit(function() {
 
 $(document).ready(function () {
     Main.init();
-})
+});
 
 Main = {
     init: function () {

@@ -82,3 +82,7 @@ LAYOUTS
 -[ ] Tratar erro de max upload file size
 -[ ] Bloquear botão de enviar após enviar
 -[ ] Requisição ajax de criação de autor, tags, localizações, categoria
+
+News
+-[ ] Existe um bug em findArticle na materia.routes. Esta lenda a mesma materia duas vezes apenas por causa do show info, verificar como resolver.
+-[ ] on create ou update de noticia, voltar para ela mesma, nao para listagem

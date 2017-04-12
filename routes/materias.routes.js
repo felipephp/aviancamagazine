@@ -7,6 +7,7 @@ var async = require('async');
 var mysql = require('../domain/mysql-helper/mysql');
 var Articles = require('../models/sql_articles');
 var myHelper = require('../lib/articles_helper');
+var $this = this;
 
 exports.porCategoria = function(req, res, next) {
     var categoria_slug = req.params.categoria_slug;
@@ -101,9 +102,27 @@ exports.porTag = function(req, res, next) {
 
 };
 
+exports.editPost = function (req, res, next) {
+    // $this = this;
+    console.log('pr::', req.params);
+    console.log('bd::', req.body);
+    mysql.select('articles')
+        .where({ id: { o: '=', v: req.params.id } })
+        .exec(function (row) {
+            //return 'Thats ok';
+            var row = row[0];
+            //req.params.slug = row.slug;
+            req.params.isAdmin = true;
+            req.params.post = row;
+            return $this.mostrar(req, res, next);
+        });
+
+    // return this.mostrar(req, res, next);
+};
+
 exports.mostrar = function(req, res, next) 
 {
-
+    //var editArticle;
     var slug = req.params.slug;
 
     var createGlobalGroup = function(socket, data) 
@@ -135,18 +154,26 @@ exports.mostrar = function(req, res, next)
 
     findArticle = function(socket, data, callback) 
     {
-        mysql.select('articles')
-            .where({ slug: { o: '=', v: slug } })
-            .limit(1)
-            .exec(function (row) {
-                row = row[0];
-
-                Articles.from('articles').getArticle(row.id, function (article) {
-                    article = article[0];
-                    callback(null, socket, { materia: article });
-                })
+        if (req.params.post) {
+            console.log('her!');
+            var row = req.params.post;
+            Articles.from('articles').getArticle(row.id, function (article) {
+                article = article[0];
+                callback(null, socket, { materia: article });
             })
+        }else{
+            mysql.select('articles')
+                .where({ slug: { o: '=', v: slug } })
+                .limit(1)
+                .exec(function (row) {
 
+                    row = row[0];
+                    Articles.from('articles').getArticle(row.id, function (article) {
+                        article = article[0];
+                        callback(null, socket, { materia: article });
+                    })
+                })
+        }
     };
 
     getRels = function (socket, data, callback) {
@@ -176,10 +203,51 @@ exports.mostrar = function(req, res, next)
     };
 
     end = function (socket, data, callback) {
+        if (req.params.isAdmin) {
+            console.log('ok, is admin!');
+            data.isAdmin = true;
+            req.params.post.contentToolsOnSave = 'post.update';
+            data.post = JSON.stringify(req.params.post);
+        }else{
+            console.log('No! =(');
+        }
         callback(null, data);
     };
 
     createGlobalGroup();
+};
+
+exports.saveEdit = function (req, res, next) {
+    var id = parseInt(req.body.id);
+    var regions = req.body.regions;
+    console.log('regions::', req.body);
+
+    mysql.update('articles', { content: regions.article_content.content })
+        .where({ id: { o:'=', v: id } })
+        .exec(function (row) {
+            res.send({ message: 'update', edited: true });
+        });
+
+    // res.send('Hello!');
+};
+
+exports.saveEdit = function (req, res, next) {
+    var id = parseInt(req.body.id);
+    var regions = req.body.regions;
+    console.log('regions::', req.body);
+
+    mysql.update('articles', { content: regions.article_content.content })
+        .where({ id: { o:'=', v: id } })
+        .exec(function (row) {
+            res.send({ message: 'update', edited: true });
+        });
+
+    // res.send('Hello!');
+};
+
+exports.postImageUpload = function (req, res, next) {
+    console.log('Here!!', req.body);
+    return res.send('end...');
 };
 
 exports.porSubcategoriaApi = function(req, res, next) {
